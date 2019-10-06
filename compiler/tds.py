@@ -30,7 +30,7 @@ def poner(k):
 
 def posicion():
 	Scanner.lex = tabla[0].nombre[:]
-	i = it
+	i = it-1
 	while(tabla[i].nombre != Scanner.lex):
 		i-=1
 	return i;		

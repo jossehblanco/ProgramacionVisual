@@ -78,7 +78,7 @@ def declaracionvar():
 def instruccion():    
     if(Lexico.token == Lexico.simbolo.ident):
         i = posicion()
-        if(i == 0):
+        if(i == -1):
             error(11) #error 11: identificador no declarado 
         else:
             if(tabla[i].tipo != objeto.VARIABLE):
@@ -96,7 +96,7 @@ def instruccion():
                 error(14) #error 14: "CALL" debe ir seguido de un identificador 
             else:
                 i = posicion()
-                if(i == 0):
+                if(i == -1):
                     error(11) #error 11: Identificador no declarado 
                 else:
                     if(tabla[i].tipo != objeto.PROCEDIMIENTO):
@@ -151,7 +151,7 @@ def termino():
 def factor():
     if(Lexico.token == Lexico.simbolo.ident):
         i = posicion()
-        if(i == 0):
+        if(i == -1):
             error(11) #error 11: Identificador no declarado
         else:
             if(tabla[i].tipo == objeto.PROCEDIMIENTO):

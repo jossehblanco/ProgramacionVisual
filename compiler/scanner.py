@@ -41,11 +41,19 @@ def obtch():
             print(linea)
             offset-=1
     offset += 1
-
-    if( (linea[offset] == '\0') or (fin_archivo == 1)):
-        return ' '
-    else:
-        return(linea[offset].upper())
+    try:
+        actual = linea[offset]
+        if( (actual == '\0') or (actual == '\n') or (fin_archivo == 1)):
+            return ' '
+        else:
+            return(linea[offset].upper())
+    except IndexError:
+        ll = getline(linea,MAXLINEA)
+        actual = linea[offset]
+        if( (actual == '\0') or (actual == '\n') or (fin_archivo == 1)):
+            return ' '
+        else:
+            return(linea[offset].upper())
 
 def obtoken():
     from auxiliares import error
