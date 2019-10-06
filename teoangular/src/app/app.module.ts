@@ -6,7 +6,9 @@ import { AppComponent } from './app.component';
 
 import { DiagramaComponent } from './diagrama/diagrama.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSidenavModule} from '@angular/material'
+import {MatSidenavModule, MatListModule, MatIconModule, MatButtonModule} from '@angular/material'
+import {MatToolbarModule} from '@angular/material'
+
 
 @NgModule({
   declarations: [
@@ -17,6 +19,10 @@ import {MatSidenavModule} from '@angular/material'
     BrowserModule,
     AppRoutingModule,
     MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
     BrowserAnimationsModule
   ],
   providers: [],

@@ -1,3 +1,68 @@
+<mat-drawer-container
+  [class.drawer-opened]="drawer.opened"
+  class="example-container">
+  <mat-drawer #drawer 
+    class="drawer" 
+    mode="side" 
+    opened="true">
+
+    <mat-toolbar class="header">
+      <div>Herramientas</div>
+      <mat-icon style= "margin-left: 16px; margin-top: 4px;"class="close"
+     (click)="drawer.close()">close</mat-icon>
+    </mat-toolbar>
+    <div class="contents">
+            <div style="height: 580px">
+                    <div id='paletteCanvas'></div>
+            </div>
+    </div>
+  </mat-drawer>
+  
+  <mat-toolbar class="main header">
+    <mat-icon style="margin-right: 8px;"
+      *ngIf="!drawer.opened"
+      (click)="drawer.toggle()">
+      menu
+    </mat-icon>
+    <div>CPitón IDE </div>
+  </mat-toolbar>
+
+  <div class="main contents">
+    <div style="height: 600px">
+            <div id='ideCanvas'> </div>
+    </div>
+  </div>
+
+
+</mat-drawer-container>
+
+
+<!--<mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+            [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+            [mode]="(isHandset$ | async) ? 'over' : 'side'"
+            [opened]="!(isHandset$ | async)">
+          <mat-toolbar>Herramientas</mat-toolbar>
+          
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <mat-toolbar color="primary">
+            <button
+              type="button"
+              aria-label="Toggle sidenav"
+              mat-icon-button
+              (click)="drawer.toggle()"
+              *ngIf="isHandset$ | async">
+              <mat-icon aria-label="Side nav toggle icon">Herramientas</mat-icon>
+            </button>
+            <span>CPitón IDE</span>
+          </mat-toolbar>
+           Add Content Here 
+          
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    -->
+<!--
 <mat-sidenav-container>
     <mat-sidenav mode="side" [opened] = "opened"> 
         <div id="sidenavtitle"> 
@@ -13,3 +78,4 @@
 </mat-sidenav-content>
 </mat-sidenav-container>
 
+-->
