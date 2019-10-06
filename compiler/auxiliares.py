@@ -1,5 +1,5 @@
 from parametros import *
-from lexico import *
+import lexico as Lexico
 from mensajes_de_error import mensaje_de_error
 import sys
 
@@ -19,16 +19,16 @@ def estadisticas():
 def inicializar_espec():
     i = 0
     for i in range (0,255):
-        espec.append(simbolo.nulo)
+        Lexico.espec.append(Lexico.simbolo.nulo)
     
-    espec[43]=simbolo.mas
-    espec[45]=simbolo.menos
-    espec[42]=simbolo.por
-    espec[47]=simbolo.barra
-    espec[40]=simbolo.parena
-    espec[41]=simbolo.parenc
-    espec[61]=simbolo.igl
-    espec[46]=simbolo.punto
-    espec[44]=simbolo.coma
-    espec[59]=simbolo.puntoycoma
+    Lexico.espec[43]=Lexico.simbolo.mas
+    Lexico.espec[45]=Lexico.simbolo.menos
+    Lexico.espec[42]=Lexico.simbolo.por
+    Lexico.espec[47]=Lexico.simbolo.barra
+    Lexico.espec[40]=Lexico.simbolo.parena
+    Lexico.espec[41]=Lexico.simbolo.parenc
+    Lexico.espec[61]=Lexico.simbolo.igl
+    Lexico.espec[46]=Lexico.simbolo.punto
+    Lexico.espec[44]=Lexico.simbolo.coma
+    Lexico.espec[59]=Lexico.simbolo.puntoycoma
 

@@ -33,13 +33,16 @@ def main(argv):
             scanner.ll=0
             scanner.obtoken()
             
-            it=0
+            tds.it=0
             
             parseador.bloque()
             
-            if token!=punto:
+            global token
+            from auxiliares import error
+            if lexico.token!=lexico.simbolo.punto:
                 error(9)
             
+            from auxiliares import estadisticas
             estadisticas()
             
             fp.close

@@ -1,5 +1,5 @@
-from scanner import *
-
+import scanner as Scanner
+from parametros import *
 from enum import Enum
 
 tabla=[]
@@ -20,16 +20,17 @@ class registro(object):
 
 def poner(k):
     from auxiliares import error
+    global it
     it+=1
     if(it > MAXIT):
         error(31)
     else:
-        nuevo = registro(lex,k)
+        nuevo = registro(Scanner.lex,k)
         tabla.insert(it,nuevo)
 
 def posicion():
-	lex = tabla[0].nombre[:]
+	Scanner.lex = tabla[0].nombre[:]
 	i = it
-	while(tabla[i].nombre != lex):
+	while(tabla[i].nombre != Scanner.lex):
 		i-=1
 	return i;		
