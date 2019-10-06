@@ -34,11 +34,33 @@ export class Templates{
     Lo que se está haciendo aqui es definir varias variables con templates.
     */
 
+    /*---------------------------inicio-fin-------------------------------------------------*/
+    //inicio
+    var inicioTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "Circle",
+        { width: 60, height: 60, fill: "white", stroke: "grey", strokeWidth: 3 },
+        { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
+      $(go.TextBlock, { margin: 5 , editable : false},
+        new go.Binding("text", "representa"))
+    );
+
+    //fin
+    var finTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "Circle",
+        { width: 60, height: 60, fill: "white", stroke: "black", strokeWidth: 3 },
+        { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
+      $(go.TextBlock, { margin: 5 , editable : false},
+        new go.Binding("text", "representa"))
+    );
+
+
     /*---------------------------Control de Flujo--------------------------------------------*/ 
     var ifTemplate =
     $(go.Node, "Auto", //Primero se tiene que especificar que es un nodo (hay otros tipos, como grupo, link, etc)
       $(go.Shape, "Diamond", //Shape es el dibujito que va a mostrar, este puede ser custom o predefinido. DIamond ya está predefinido
-        { fill: "white" }, //tags de estilo y propiedades, esto lo rellena de blanco
+        { fill: "white", stroke: "black", strokeWidth: 3 }, //tags de estilo y propiedades, esto lo rellena de blanco
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5, editable: true}, //esto le dice que tengamos un textbox dentro del nodo, con margen de 5 y editable (esto permite escribir cuando lo arrastramos)
         new go.Binding("text", "representa")) //Hacemos un bind de la propiedad text (por defecto de un textblock) con la propiedad representa de cada nodo. Esto se ve  mas adelante cuando se inicializa el nodearray
@@ -52,7 +74,17 @@ export class Templates{
     var forTemplate =
     $(go.Node, "Auto",
       $(go.Shape, "Pentagon",
-        { fill: "white" },
+        { fill: "white", stroke: "green", strokeWidth: 3 },
+        { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
+      $(go.TextBlock, { margin: 5 , editable : true},
+        new go.Binding("text", "representa"))
+    );
+
+    //endfor
+    var endforTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "Pentagon",
+        { fill: "white", stroke: "red", strokeWidth: 3 },
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5 , editable : true},
         new go.Binding("text", "representa"))
@@ -62,7 +94,17 @@ export class Templates{
     var mientrasTemplate =
     $(go.Node,"Auto",
       $(go.Shape, "Hexagon",
-        {fill: "white"},
+        {fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //end mientras
+    var endmientrasTemplate =
+    $(go.Node,"Auto",
+      $(go.Shape, "Hexagon",
+        {fill: "white", stroke: "red", strokeWidth: 3 },
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -72,7 +114,17 @@ export class Templates{
     var hmientrasTemplate =
     $(go.Node, "Auto",
       $(go.Shape, "Heptagon",
-        {fill: "white"},
+        {fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //end has mientras
+    var endhmientrasTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "Heptagon",
+        {fill: "white", stroke: "red", strokeWidth: 3 },
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -84,7 +136,7 @@ export class Templates{
     var leerTemplate =
     $(go.Node, "Auto",
       $(go.Shape, "ManualInput",
-        {fill: "white"},
+        {fill: "white", stroke: "black", strokeWidth: 3 },
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -94,7 +146,7 @@ export class Templates{
     var impTemplate =
     $(go.Node, "Auto",
       $(go.Shape, "Display",
-        {fill: "white"},
+        {fill: "white", stroke: "black", strokeWidth: 3},
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -105,7 +157,7 @@ export class Templates{
     var abrirATemplate = 
     $(go.Node, "Auto",
       $(go.Shape, "File",
-        {fill: "white"},
+        {fill: "white", stroke: "black", strokeWidth: 3},
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -115,7 +167,7 @@ export class Templates{
     var cerrarATemplate = 
     $(go.Node, "Auto",
       $(go.Shape, "Junction",    
-        {fill: "white"},
+        {fill: "white", stroke: "black", strokeWidth: 3},
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -125,7 +177,7 @@ export class Templates{
     var leerATemplate = 
     $(go.Node, "Auto",
       $(go.Shape, "TransmittalTape",
-        {fill: "white"},
+        {fill: "white", stroke: "black", strokeWidth: 3},
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -135,7 +187,7 @@ export class Templates{
     var escATemplate = 
     $(go.Node, "Auto",
       $(go.Shape, "Buffer",
-        {fill: "white"},
+        {fill: "white", stroke: "black", strokeWidth: 3},
         {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
       $(go.TextBlock, {margin: 5, editable: true},
         new go.Binding("text", "representa"))
@@ -145,7 +197,7 @@ export class Templates{
     var procTemplate =
     $(go.Node, "Auto",
       $(go.Shape, "Rectangle",
-        { fill: "white" },
+        { fill: "white", stroke: "black", strokeWidth: 3 },
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5 , editable : true},
         new go.Binding("text", "representa"))
@@ -153,11 +205,16 @@ export class Templates{
 
 
 
+        this.diagramTemplateMap.add("inicio", inicioTemplate);
+        this.diagramTemplateMap.add("fin", finTemplate);
         this.diagramTemplateMap.add("if", ifTemplate);
         this.diagramTemplateMap.add("for", forTemplate);
+        this.diagramTemplateMap.add("efor", endforTemplate);
         this.diagramTemplateMap.add("proc", procTemplate);
         this.diagramTemplateMap.add("mientras", mientrasTemplate);
+        this.diagramTemplateMap.add("emientras", endmientrasTemplate);
         this.diagramTemplateMap.add("hasm", hmientrasTemplate);
+        this.diagramTemplateMap.add("ehasm", endhmientrasTemplate);
         this.diagramTemplateMap.add("leer", leerTemplate);
         this.diagramTemplateMap.add("imp", impTemplate);
         this.diagramTemplateMap.add("abrira", abrirATemplate);
@@ -165,11 +222,16 @@ export class Templates{
         this.diagramTemplateMap.add("leera", leerATemplate);
         this.diagramTemplateMap.add("esca", escATemplate);
 
+        this.paletteTemplateMap.add("inicio", inicioTemplate);
+        this.paletteTemplateMap.add("fin", finTemplate);
         this.paletteTemplateMap.add("if", ifTemplate);
         this.paletteTemplateMap.add("for", forTemplate);
+        this.paletteTemplateMap.add("efor", endforTemplate);
         this.paletteTemplateMap.add("proc", procTemplate);
         this.paletteTemplateMap.add("mientras", mientrasTemplate);
+        this.paletteTemplateMap.add("emientras", endmientrasTemplate);
         this.paletteTemplateMap.add("hasm", hmientrasTemplate);
+        this.paletteTemplateMap.add("ehasm", endhmientrasTemplate);
         this.paletteTemplateMap.add("leer", leerTemplate);
         this.paletteTemplateMap.add("imp", impTemplate);
         this.paletteTemplateMap.add("abrira", abrirATemplate);

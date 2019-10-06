@@ -90,11 +90,16 @@ export class DiagramaComponent implements OnInit {
        llama igual en ambos, esta cambiará si está definida con otro estilo cuando se arrastre.       
        */
       this.palette.model.nodeDataArray = [
+        { key: "inicionode", representa: "Inicio", color: "white", category : "inicio"},
+        { key: "finnode", representa: "Fin", color: "white", category : "fin"},
         { key: "ifnode", representa: "condicion", color: "white", category : "if"},
         { key: "fornode", representa: "para a rango", color: "white", category : "for"},
+        { key: "endfornode", representa: "fin para a rango", color: "white", category: "efor"},
         { key: "procnode", representa: "proceso", color: "white" , category : "proc"},
         { key: "mientrasnode", representa: "mientras", color: "white", category : "mientras"},
+        { key: "endmientrasnode", representa: "fin mientras", color: "white", category: "emientras"},
         { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"},
+        { key: "endhasnode", representa: "fin has mientras", color: "white", category: "ehasm"},
         { key: "leernode", representa: "leerstd", color: "white", category : "leer"},
         { key: "impnode", representa: "imp", color: "white", category : "imp"},
         { key: "abriranode", representa: "abrir archivo", color: "white", category : "abrira"},
