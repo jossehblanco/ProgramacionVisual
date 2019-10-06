@@ -115,7 +115,7 @@ def instruccion():
                 if(Lexico.token == Lexico.simbolo.begintok):
                     obtoken()
                     instruccion()
-                    while (Lexico.token == Lexico.simbolo.puntoycoma):
+                    while (Lexico.token == Lexico.simbolo.puntoycoma or Lexico.token == Lexico.simbolo.coma):
                         obtoken()
                         instruccion()
                     if(Lexico.token == Lexico.simbolo.endtok):

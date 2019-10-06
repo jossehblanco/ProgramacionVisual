@@ -88,29 +88,40 @@ def obtoken():
         lex = lexid
 
     else:
-        if(isinstance(ch,int)):
+        #if(isinstance(ch,int)):
+        try:
+            prueba = int(ch)
             lexid = ch
             i=j=1
             ch = obtch()
-            while ( isinstance(ch,int)):
-                if(i<MAXDIGIT):
-                    i+=1
-                    lexid += ch
-                j+=1
-                ch = obtch()
-            lexid += '\0'
+            #while ( isinstance(ch,int)):
+            while(1):
+                try:
+                    prueba = int(ch)
+                    if(i<MAXDIGIT):
+                        i+=1
+                        lexid += ch
+                    j+=1
+                    ch = obtch()
+                except ValueError:
+                    break
             if(j>MAXDIGIT):
                 auxiliares.error(30)
             Lexico.token = Lexico.simbolo.numero
             valor = int(lexid)
-        else:
+            lexid += '\0'
+        except ValueError:
             if(ch == '<'):
                 ch=obtch()
                 if(ch == '='):
                     Lexico.token = Lexico.simbolo.mei
                     ch = obtch()
                 else:
-                    Lexico.token = Lexico.simbolo.mnr
+                    if(ch == '>'):
+                        Lexico.token = Lexico.simbolo.nig
+                        ch = obtch()
+                    else:
+                        Lexico.token = Lexico.simbolo.mnr
             elif(ch == '>'):
                 ch = obtch()
                 if(ch == '='):
@@ -123,20 +134,20 @@ def obtoken():
                         #ch = obtch()
                 else:
                     Lexico.token = Lexico.simbolo.myr
-            elif(ch == '!'):
+            elif(ch == ':'):
                 ch = obtch()
                 if(ch == '='):
-                    Lexico.token = Lexico.simbolo.nig
+                    Lexico.token = Lexico.simbolo.asignacion
                     ch = obtch()
                 else:
                     Lexico.token = Lexico.simbolo.nulo
-            elif(ch == '='):
-                ch = obtch()
-                if(ch == '='):
-                    Lexico.token = Lexico.simbolo.igl
-                    ch = obtch()
-                else:
-                    Lexico.token = Lexico.simbolo.asignacion
+            #elif(ch == '='):
+            #    ch = obtch()
+            #    if(ch == '='):
+            #        Lexico.token = Lexico.simbolo.igl
+            #        ch = obtch()
+            #    else:
+            #        Lexico.token = Lexico.simbolo.asignacion
             else:
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()
