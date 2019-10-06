@@ -41,16 +41,12 @@ export class DiagramaComponent implements OnInit {
     */
     this.diagram = $(go.Diagram, 'ideCanvas', {
       layout: $(go.TreeLayout,{ //Este layout se encarga de ordenarlos asi bien rikolino
-        isOngoing : true,
+        isOngoing : false,
         treeStyle : go.TreeLayout.StyleAlternating,
         arrangement: go.TreeLayout.ArrangementFixedRoots, //Esto nos permite arrastrar de la paleta sin que lo ordene automatico
         //Propiedades para el arbol
         angle: 90,
-        layerSpacing : 35,
-        alternateAngle : 90,
-        alternateLayerSpacing : 35,
-        alternateAlignment : go.TreeLayout.AlignmentBus,
-        alternateNodeSpacing : 20
+        layerSpacing : 50
       })
     }
     );
@@ -147,7 +143,7 @@ export class DiagramaComponent implements OnInit {
       //igualo el modelo de mi diagrama (que está definido en este archivo) con this.model
       //Esto causa que tenga una referencia al modelo en app-component.ts (por data binding)
       this.diagram.model = this.model;
-
+      this.diagram.grid.visible = true;
 
 
       //Un listener para ver si doy doble click sobre un nodo. 

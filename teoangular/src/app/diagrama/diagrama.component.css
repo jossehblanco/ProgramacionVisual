@@ -6,7 +6,7 @@ se define el estilo para el div del diagrama y el dela paleta
     width : 1500px;
     height : 500px;
     border: 1px solid black;
-    background-color : #696969;
+    background-color : #e6e6e6;
 }
 #paletteCanvas{
     width: 500px;
