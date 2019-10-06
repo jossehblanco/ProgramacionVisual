@@ -1,14 +1,16 @@
 import datetime
 import mensajes_de_error
 import lexico
-import auxiliares
+#import auxiliares
 import parametros
 import scanner
-import parser
+import parseador
 import tds
- 
+
+fp = None
+
 def main(argv):
-    
+    global fp
     if argv==None:
         print("\nNo se ha proporcionado el nombre del programa fuente (uso: parser1 progfuente)")
     
@@ -18,20 +20,22 @@ def main(argv):
             print("\nNo se encontro el programa fuente indicado")
         else:
             timer=datetime.datetime.today()
-            print("\n\nCompilador de pl0 version 3.0/Parser1 --- abril de 2011 --- A2\n")
+            print("\n\nCompilador de pl0 version 3.0/parser1 --- abril de 2011 --- A2\n")
             print(timer)
             
+            from auxiliares import inicializar_espec
+            #print(auxiliares.hola)
             inicializar_espec()
             
-            ch=' '
-            fin_de_archivo=0
-            offset=-1
-            ll=0
-            obtoken()
+            scanner.ch=' '
+            scanner.fin_de_archivo=0
+            scanner.offset=-1
+            scanner.ll=0
+            scanner.obtoken()
             
             it=0
             
-            bloque()
+            parseador.bloque()
             
             if token!=punto:
                 error(9)
@@ -41,5 +45,3 @@ def main(argv):
             fp.close
             
     return 0
-
-main("/home/carlos/Documentos/TeoriaProyecto/TeoProyecto/compiler/ejemplo.txt")

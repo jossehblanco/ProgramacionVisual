@@ -1,9 +1,10 @@
 from parametros import *
 from lexico import *
-from pl0 import *
-
+from mensajes_de_error import mensaje_de_error
+import sys
 
 def error(no):
+    from pl0 import fp
     fp.closed
     print("\n^ error"+ mensaje_de_error[no]+"\n")
     sys.exit()
@@ -18,7 +19,7 @@ def estadisticas():
 def inicializar_espec():
     i = 0
     for i in range (0,255):
-        espec[i]= simbolo.nulo
+        espec.append(simbolo.nulo)
     
     espec[43]=simbolo.mas
     espec[45]=simbolo.menos

@@ -1,9 +1,5 @@
-from pl0 import *
 from parametros import *
-from scanner import *
 from lexico import *
-from auxiliares import *
-
 
 linea=" " #buffer de lineas
 ll=0 #contador de caracters
@@ -14,18 +10,28 @@ lex=" " #ultimo lexema leido
 valor=0 #valor numero de un lexema correspondiente a un numero
 
 def getline(s,lim):
-    c = f.read(1)
+    import pl0
+    global linea
+    c = pl0.fp.read(1)
     for i in range(0,lim-1):
-        if(c == '\n'):
+        if(c == '\n' or i == lim):
             break
-        s[i] = c
+        s += c
+        c = pl0.fp.read(1)
     if(c == '\n'):
-        s[i] = c
+        s += c
         i+=1
-    s[i] = '\0'
+    s += '\0'
+    linea = s
     return i
 
 def obtch():
+    from auxiliares import error
+    global fin_archivo
+    global offset
+    global ll
+    global linea
+    global MAXLINEA
     if(fin_archivo == 1):
         error(32)
     if(offset == ll-1):
@@ -39,11 +45,14 @@ def obtch():
     if( (linea[offset] == '\0') or (fin_archivo == 1)):
         return ' '
     else:
-        return(linea[i].upper())
+        return(linea[offset].upper())
 
 def obtoken():
+    from auxiliares import error
     lexid = None
+    global lex
     ok=0
+    global ch
     while(ch == ' ' or ch == '\n' or ch == '\t'):
         ch=obtch()
 
@@ -56,7 +65,7 @@ def obtoken():
                 i+=1
                 lexid += ch
             ch = obtch()
-        lexid += '\0'
+        #lexid += '\0'
 
         for j in range(0,MAXPAL):
             if(lexid == lexpal[j]):
@@ -66,7 +75,7 @@ def obtoken():
         if(ok == 1):
             token = tokpal[j]
         else:
-            token = ident
+            token = lexico.simbolo.ident
 
         lexid = lex
 
@@ -83,21 +92,21 @@ def obtoken():
                 ch = obtch()
             lexid += '\0'
             if(j>MAXDIGIT):
-                error(30)
-            token = numero
-            valor = atol(lexid)
+                auxiliares.error(30)
+            token = lexico.simbolo.numero
+            valor = int(lexid)
         else:
             if(ch == '<'):
                 ch=obtch()
                 if(ch == '='):
-                    token = mei
+                    token = lexico.simbolo.mei
                     ch = obtch()
                 else:
-                    token = mnr
+                    token = lexico.simbolo.mnr
             elif(ch == '>'):
                 ch = obtch()
                 if(ch == '='):
-                    token = mai
+                    token = lexico.simbolo.mai
                     ch = obtch()
                 #elif(ch == ':'):
                     #ch = obtch()
@@ -105,21 +114,21 @@ def obtoken():
                         #token = fin
                         #ch = obtch()
                 else:
-                    token = myr
+                    token = lexico.simbolo.myr
             elif(ch == '!'):
                 ch = obtch()
                 if(ch == '='):
-                    token = nig
+                    token = lexico.simbolo.nig
                     ch = obtch()
                 else:
-                    token = nulo
+                    token = lexico.simbolo.nulo
             elif(ch == '='):
                 ch = obtch()
                 if(ch == '='):
-                    token = igl
+                    token = lexico.simbolo.igl
                     ch = obtch()
                 else:
-                    token = asignacion
+                    token = lexico.simbolo.asignacion
             else:
                 token = espec[ch]
                 ch = obtch()

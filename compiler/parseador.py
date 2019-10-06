@@ -6,39 +6,39 @@ from scanner import *
 def bloque():
     temp = None
 
-    if(token == consttok):
+    if(token == lexico.simbolo.consttok):
         obtoken()
         declaracionconst()
 
-        while (token == coma):
+        while (token == lexico.simbolo.coma):
             obtoken()
             declaracionconst()
         
-        if(token == puntoycoma):
+        if(token == lexico.simbolo.puntoycoma):
             obtoken()
         else:
             error(5)
 
-    if(token == vartok):
+    if(token == lexico.simbolo.vartok):
         obtoken();
         declaracionvar();
 
-        while(token == coma):
+        while(token == lexico.simbolo.coma):
             obtoken()
             declaracionvar()
-        if(token == puntoycoma):
+        if(token == lexico.simbolo.puntoycoma):
             obtoken()
         else:
             error(5)
 
-    while(token == proctok):
+    while(token == lexico.simbolo.proctok):
         obtoken()
-        if(token == ident):
+        if(token == lexico.simbolo.ident):
             poner(PROCEDIMIENTO)
             obtoken()
         else:
             error(4)
-        if(token == puntoycoma):
+        if(token == lexico.simbolo.puntoycoma):
             obtoken()
         else:
             error(5)
@@ -46,7 +46,7 @@ def bloque():
         bloque()
         it = temp
 
-        if(token == puntoycoma):
+        if(token == lexico.simbolo.puntoycoma):
             obtoken()
         else:
             error(5)
@@ -54,11 +54,11 @@ def bloque():
     instruccion()
 
 def declaracionconst():
-    if(token == ident):
+    if(token == lexico.simbolo.ident):
         obtoken()
-        if(token == igl):
+        if(token == lexico.simbolo.igl):
             obtoken()
-            if(token == numero):
+            if(token == lexico.simbolo.numero):
                 poner(CONSTANTE)
                 obtoken()
             else:
@@ -70,7 +70,7 @@ def declaracionconst():
         error(4) #error 4: Const, Var y Procedure deben ir seguidos de un identificador
 
 def declaracionvar():
-    if(token == ident):
+    if(token == lexico.simbolo.ident):
         poner(VARIABLE)
         obtoken()
     else:
@@ -78,7 +78,7 @@ def declaracionvar():
 
 def instruccion():
     i = None
-    if(token == ident):
+    if(token == lexico.simbolo.ident):
         i = posicion()
         if(i == 0):
             error(11) #error 11: identificador no declarado 
@@ -86,15 +86,15 @@ def instruccion():
             if(tabla[i].tipo != VARIABLE):
                 error(12) #error 12: no están permitidas las asignaciones a constantes o a procedimientos
         obtoken()
-        if(token == asignacion):
+        if(token == lexico.simbolo.asignacion):
             obtoken()
         else:
             error(13) #error 13: se esperaba el operador de asignación
         expresion()
     else:
-        if(token == calltok):
+        if(token == lexico.simbolo.calltok):
             obtoken()
-            if(token != ident):
+            if(token != lexico.simbolo.ident):
                 error(14) #error 14: "CALL" debe ir seguido de un identificador 
             else:
                 i = posicion()
@@ -105,54 +105,54 @@ def instruccion():
                         error(15) #error 15 : No tiene sentido llamar a una constante o a una variable 
                 obtoken()
         else:
-            if(token == iftok):
+            if(token == lexico.simbolo.iftok):
                 obtoken()
                 condicion()
-                if(token == thentok):
+                if(token == lexico.simbolo.thentok):
                     obtoken()
                 else:
                     error(16) #error 16: Se esperaba un "THEN"
                 instruccion()
             else:
-                if(token == begintok):
+                if(token == lexico.simbolo.begintok):
                     obtoken()
                     instruccion()
-                    while (token == puntoycoma):
+                    while (token == lexico.simbolo.puntoycoma):
                         obtoken()
                         instruccion()
-                    if(token == endtok):
+                    if(token == lexico.simbolo.endtok):
                         obtoken()
                     else:
                         error(17) #error 17: Se esperaba un "END" o un punto y coma 
                 else:
-                    if(token == whiletok):
+                    if(token == lexico.simbolo.whiletok):
                         obtoken()
                         condicion()
-                        if(token == dotok):
+                        if(token == lexico.simbolo.dotok):
                             obtoken()
                         else:
                             error(18) #error 18: Se esperaba un "DO"
                         instruccion()
 
 def expresion():
-    if(token == mas or token == menos):
+    if(token == lexico.simbolo.mas or token == lexico.simbolo.menos):
         obtoken()
         termino()
     else:
         termino()
-    while(token == mas or token == menos):
+    while(token == lexico.simbolo.mas or token == lexico.simbolo.menos):
         obtoken()
         termino()
 
 def termino():
     factor()
-    while(token == por or token == barra):
+    while(token == lexico.simbolo.por or token == lexico.simbolo.barra):
         obtoken()
         factor()
 
 def factor():
     i = None
-    if(token == ident):
+    if(token == lexico.simbolo.ident):
         i = posicion()
         if(i == 0):
             error(11) #error 11: Identificador no declarado
@@ -161,13 +161,13 @@ def factor():
                 error(21) #error 21: Una expresión no debe contener un identificador de procedimiento
         obtoken()
     else:
-        if(token == numero):
+        if(token == lexico.simbolo.numero):
             obtoken()
         else:
-            if(token == parena):
+            if(token == lexico.simbolo.parena):
                 obtoken()
                 expresion()
-                if(token == parenc):
+                if(token == lexico.simbolo.parenc):
                     obtoken()
                 else:
                     error(22) #error 22: Falta un paréntesis de cierre  
@@ -175,12 +175,12 @@ def factor():
                 error(23) #error 23: El factor anterior no puede ir seguido de este símbolo 
 
 def condicion():
-    if(token == oddtok):
+    if(token == lexico.simbolo.oddtok):
         obtoken()
         expresion()
     else:
         expresion()
-        if((token != igl) and (token != nig) and (token != mei) and (token != myr) and (token != mai)):
+        if((token != lexico.simbolo.igl) and (token != lexico.simbolo.nig) and (token != lexico.simbolo.mei) and (token != lexico.simbolo.myr) and (token != lexico.simbolo.mai)):
             error(20) #error 20: Se esperaba un operador relacional
         else:
             obtoken()

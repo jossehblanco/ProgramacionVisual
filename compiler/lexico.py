@@ -33,19 +33,10 @@ class simbolo(Enum):
     calltok=26
     consttok=27
     vartok=28
-    procto=29
+    proctok=29
 
+tokpal = [simbolo.begintok, simbolo.calltok, simbolo.consttok, simbolo.dotok, simbolo.endtok, simbolo.iftok, simbolo.oddtok, simbolo.proctok, simbolo.thentok, simbolo.vartok, simbolo.whiletok]
 
-class tokpal(Enum):
-    begintok=0
-    calltok=1
-    consttok=2
-    dotok=3
-    endtok=4
-    iftok=5
-    oddtok=6
-    proctok=7
-    thentok=8
-    vartok=9
-    whiletok=10
-    
+token = simbolo.nulo
+
+espec = []
