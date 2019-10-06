@@ -4,9 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { DiagramaComponent } from './diagrama/diagrama.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DiagramaComponent,
   ],
   imports: [
     BrowserModule,
