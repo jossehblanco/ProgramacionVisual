@@ -1,8 +1,15 @@
-<!-- se define un div que va a contener el diagrama de GoJS y se define
-otro que va a contener la paleta de objetos disponibles
--->
-<div id='ideCanvas'> </div>
+<mat-sidenav-container>
+    <mat-sidenav mode="side" [opened] = "opened"> 
+        <div id="sidenavtitle"> 
+                <h3>Herramientas</h3>
+            </div>
+            <div id='paletteCanvas'></div>
+    </mat-sidenav>
+<mat-sidenav-content>
+        <div id='ideCanvas'> </div>
+        <button (click)="opened=!opened" id="toggle">
+            
+            Mostrar Herramientas</button>
+</mat-sidenav-content>
+</mat-sidenav-container>
 
-<div id='paletteCanvas'>
-    
-</div>
