@@ -1,11 +1,11 @@
- import datetime
- import mensajes_de_error
- import lexico
- import auxiliares
- import parametros
+import datetime
+import mensajes_de_error
+import lexico
+import auxiliares
+import parametros
  
- def main(argv):
-     
+def main(argv):
+    
     if argv==null:
         print("\nNo se ha proporcionado el nombre del programa fuente (uso: parser1 progfuente)")
     
@@ -18,17 +18,17 @@
             print("\n\nCompilador de pl0 version 3.0/Parser1 --- abril de 2011 --- A2\n")
             print(timer)
             
-            #inicializar_espec()
+            inicializar_espec()
             
             ch=' '
             fin_de_archivo=0
             offset=-1
             ll=0
-            #obtoken()
+            obtoken()
             
             it=0
             
-            #bloque()
+            bloque()
             
             if token!=punto:
                 error(9)

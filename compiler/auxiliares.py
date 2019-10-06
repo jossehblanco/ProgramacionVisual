@@ -1,6 +1,6 @@
 from parametros import *
 from lexico import *
-#from pl0 import *
+from pl0 import *
 
 
 def error(no):
