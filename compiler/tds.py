@@ -1,3 +1,6 @@
+from auxiliares import *
+from scanner import *
+
 from enum import Enum
 
 tabla

@@ -1,3 +1,10 @@
+from pl0 import *
+from parametros import *
+from scanner import *
+from lexico import *
+from auxiliares import *
+
+
 linea #buffer de lineas
 ll #contador de caracters
 offset #corrimiento en la lectura de los caracteres del programa fuente
