@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { DiagramaComponent } from './diagrama/diagrama.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSidenavModule} from '@angular/material'
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import { DiagramaComponent } from './diagrama/diagrama.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSidenavModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
