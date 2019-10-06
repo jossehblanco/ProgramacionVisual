@@ -50,6 +50,214 @@ export class DiagramaComponent implements OnInit {
       })
     }
     );
+    
+
+    //funciones necesarias para que ciertos poligonos funcionen
+    var _CachedArrays = [];
+    var KAPPA = 4 * ((Math.sqrt(2) - 1) / 3);
+    function tempArray() {
+      var temp = _CachedArrays.pop();
+      if (temp === undefined)
+          return [];
+      return temp;
+    }
+    function freeArray(a) {
+      a.length = 0; // clear any references to objects
+      _CachedArrays.push(a);
+  }
+    function createPolygon(sides) {
+      // Point[] points = new Point[sides + 1];
+      var points = tempArray();
+      var radius = .5;
+      var center = .5;
+      var offsetAngle = Math.PI * 1.5;
+      var angle = 0;
+      // Loop through each side of the polygon
+      for (var i = 0; i < sides; i++) {
+          angle = 2 * Math.PI / sides * i + offsetAngle;
+          points[i] = new go.Point((center + radius * Math.cos(angle)), (center + radius * Math.sin(angle)));
+      }
+      // Add the last line
+      // points[points.length - 1] = points[0];
+      points.push(points[0]);
+      return points;
+  }
+
+    //aca se definen todas las custom shapes que se desean usar, se puede traer todo el archivo figures.js pero seria muy pesado
+    go.Shape.defineFigureGenerator('Parallelogram1', function (shape, w, h) {
+        var param1 = shape ? shape.parameter1 : NaN; // indent's percent distance
+        if (isNaN(param1))
+            param1 = 0.1;
+        else if (param1 < -1)
+            param1 = -1;
+        else if (param1 > 1)
+            param1 = 1;
+        var indent = Math.abs(param1) * w;
+        if (param1 === 0) {
+            var geo = new go.Geometry(go.Geometry.Rectangle);
+            geo.startX = 0;
+            geo.startY = 0;
+            geo.endX = w;
+            geo.endY = h;
+            return geo;
+        }
+        else {
+            var geo = new go.Geometry();
+            if (param1 > 0) {
+                geo.add(new go.PathFigure(indent, 0)
+                    .add(new go.PathSegment(go.PathSegment.Line, w, 0))
+                    .add(new go.PathSegment(go.PathSegment.Line, w - indent, h))
+                    .add(new go.PathSegment(go.PathSegment.Line, 0, h).close()));
+            }
+            else { // param1 < 0
+                geo.add(new go.PathFigure(0, 0)
+                    .add(new go.PathSegment(go.PathSegment.Line, w - indent, 0))
+                    .add(new go.PathSegment(go.PathSegment.Line, w, h))
+                    .add(new go.PathSegment(go.PathSegment.Line, indent, h).close()));
+            }
+            if (indent < w / 2) {
+                geo.setSpots(indent / w, 0, (w - indent) / w, 1);
+            }
+            return geo;
+        }
+    });
+
+    go.Shape.defineFigureGenerator('Hexagon', function (shape, w, h) {
+      var points = createPolygon(6);
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(points[0].x * w, points[0].y * h, true);
+      geo.add(fig);
+      for (var i = 1; i < 6; i++) {
+          fig.add(new go.PathSegment(go.PathSegment.Line, points[i].x * w, points[i].y * h));
+      }
+      fig.add(new go.PathSegment(go.PathSegment.Line, points[0].x * w, points[0].y * h).close());
+      freeArray(points);
+      geo.spot1 = new go.Spot(.07, .25);
+      geo.spot2 = new go.Spot(.93, .75);
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('Heptagon', function (shape, w, h) {
+      var points = createPolygon(7);
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(points[0].x * w, points[0].y * h, true);
+      geo.add(fig);
+      for (var i = 1; i < 7; i++) {
+          fig.add(new go.PathSegment(go.PathSegment.Line, points[i].x * w, points[i].y * h));
+      }
+      fig.add(new go.PathSegment(go.PathSegment.Line, points[0].x * w, points[0].y * h).close());
+      freeArray(points);
+      geo.spot1 = new go.Spot(.2, .15);
+      geo.spot2 = new go.Spot(.8, .85);
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('Pentagon', function (shape, w, h) {
+      var points = createPolygon(5);
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(points[0].x * w, points[0].y * h, true);
+      geo.add(fig);
+      for (var i = 1; i < 5; i++) {
+          fig.add(new go.PathSegment(go.PathSegment.Line, points[i].x * w, points[i].y * h));
+      }
+      fig.add(new go.PathSegment(go.PathSegment.Line, points[0].x * w, points[0].y * h).close());
+      freeArray(points);
+      geo.spot1 = new go.Spot(.2, .22);
+      geo.spot2 = new go.Spot(.8, .9);
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('ManualInput', function (shape, w, h) {
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(w, 0, true);
+      geo.add(fig);
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, .25 * h).close());
+      geo.spot1 = new go.Spot(0, .25);
+      geo.spot2 = go.Spot.BottomRight;
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('Display', function (shape, w, h) {
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(.25 * w, 0, true);
+      geo.add(fig);
+      fig.add(new go.PathSegment(go.PathSegment.Line, .75 * w, 0));
+      fig.add(new go.PathSegment(go.PathSegment.Bezier, .75 * w, h, w, 0, w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, .25 * w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, .5 * h).close());
+      geo.spot1 = new go.Spot(.25, 0);
+      geo.spot2 = new go.Spot(.75, 1);
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('File', function (shape, w, h) {
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(0, 0, true); // starting point
+      geo.add(fig);
+      fig.add(new go.PathSegment(go.PathSegment.Line, .75 * w, 0));
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, .25 * h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, h).close());
+      var fig2 = new go.PathFigure(.75 * w, 0, false);
+      geo.add(fig2);
+      // The Fold
+      fig2.add(new go.PathSegment(go.PathSegment.Line, .75 * w, .25 * h));
+      fig2.add(new go.PathSegment(go.PathSegment.Line, w, .25 * h));
+      geo.spot1 = new go.Spot(0, .25);
+      geo.spot2 = go.Spot.BottomRight;
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('Junction', function (shape, w, h) {
+      var geo = new go.Geometry();
+      var dist = (1 / Math.SQRT2);
+      var small = ((1 - 1 / Math.SQRT2) / 2);
+      var cpOffset = KAPPA * .5;
+      var radius = .5;
+      var fig = new go.PathFigure(w, radius * h, true);
+      geo.add(fig);
+      // Circle
+      fig.add(new go.PathSegment(go.PathSegment.Bezier, radius * w, h, w, (radius + cpOffset) * h, (radius + cpOffset) * w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Bezier, 0, radius * h, (radius - cpOffset) * w, h, 0, (radius + cpOffset) * h));
+      fig.add(new go.PathSegment(go.PathSegment.Bezier, radius * w, 0, 0, (radius - cpOffset) * h, (radius - cpOffset) * w, 0));
+      fig.add(new go.PathSegment(go.PathSegment.Bezier, w, radius * h, (radius + cpOffset) * w, 0, w, (radius - cpOffset) * h));
+      var fig2 = new go.PathFigure((small + dist) * w, (small + dist) * h, false);
+      geo.add(fig2);
+      // X
+      fig2.add(new go.PathSegment(go.PathSegment.Line, small * w, small * h));
+      fig2.add(new go.PathSegment(go.PathSegment.Move, small * w, (small + dist) * h));
+      fig2.add(new go.PathSegment(go.PathSegment.Line, (small + dist) * w, small * h));
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('TransmittalTape', function (shape, w, h) {
+      var geo = new go.Geometry();
+      var param1 = shape ? shape.parameter1 : NaN;
+      if (isNaN(param1))
+          param1 = .1; // Bottom line's distance from the point on the triangle
+      var fig = new go.PathFigure(0, 0, true);
+      geo.add(fig);
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, 0));
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, .75 * w, (1 - param1) * h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, (1 - param1) * h).close());
+      geo.spot1 = go.Spot.TopLeft;
+      // ??? geo.spot2 = new go.Spot(1, 1 - param1);
+      return geo;
+    });
+
+    go.Shape.defineFigureGenerator('Buffer', function (shape, w, h) {
+      var geo = new go.Geometry();
+      var fig = new go.PathFigure(0, 0, true);
+      geo.add(fig);
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, .5 * h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, h).close());
+      geo.spot1 = new go.Spot(0, .25);
+      geo.spot2 = new go.Spot(.5, .75);
+      return geo;
+    });
 
 
     /*Un template define como se va a comportar un nodo
@@ -57,6 +265,7 @@ export class DiagramaComponent implements OnInit {
     Ahorita hay creadas para If, para For y para procedimiento.
     */
 
+    /*---------------------------seleccion--------------------------------------------*/ 
     var ifTemplate =
     $(go.Node, "Auto", //Primero se tiene que especificar que es un nodo (hay otros tipos, como grupo, link, etc)
       $(go.Shape, "Diamond", //Shape es el dibujito que va a mostrar, este puede ser custom o predefinido. DIamond ya está predefinido
@@ -67,15 +276,103 @@ export class DiagramaComponent implements OnInit {
         //basicamente este binding va a hacer que el text del textblock tenga cualquier cosa que esté en el tag "representa"
       );
 
-    //lo mismo para for
+
+
+    /*----------------------------bluces-----------------------------------------------*/
+    //for
     var forTemplate =
     $(go.Node, "Auto",
-      $(go.Shape, "Diamond",
-        { fill: "gray" },
+      $(go.Shape, "Pentagon",
+        { fill: "white" },
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5 , editable : true},
         new go.Binding("text", "representa"))
     );
+
+    //mientras
+    var mientrasTemplate =
+    $(go.Node,"Auto",
+      $(go.Shape, "Hexagon",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //has mientras
+    var hmientrasTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "Heptagon",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+
+    /*---------------------------I/O---------------------------------------*/
+    //leerstd
+    var leerTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "ManualInput",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //imp
+    var impTemplate =
+    $(go.Node, "Auto",
+      $(go.Shape, "Display",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    /*----------------------manejo archivos---------------------------------- */
+    //abArch
+    var abrirATemplate = 
+    $(go.Node, "Auto",
+      $(go.Shape, "File",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //cArch
+    var cerrarATemplate = 
+    $(go.Node, "Auto",
+      $(go.Shape, "Junction",    
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //leerArch
+    var leerATemplate = 
+    $(go.Node, "Auto",
+      $(go.Shape, "TransmittalTape",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    //escArch
+    var escATemplate = 
+    $(go.Node, "Auto",
+      $(go.Shape, "Buffer",
+        {fill: "white"},
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa"))
+    );
+
+    
 
     //lo mismo para procedimiento
     var procTemplate =
@@ -87,6 +384,9 @@ export class DiagramaComponent implements OnInit {
         new go.Binding("text", "representa"))
     );
 
+
+    
+
     //Se inicializa un Map de key string y value go.Node
     var diagramTemplateMap = new go.Map<string, go.Node>();
     //Añadimos los templates que ya creamos al map que hicimos.
@@ -95,6 +395,14 @@ export class DiagramaComponent implements OnInit {
         diagramTemplateMap.add("if", ifTemplate);
         diagramTemplateMap.add("for", forTemplate);
         diagramTemplateMap.add("proc", procTemplate);
+        diagramTemplateMap.add("mientras", mientrasTemplate);
+        diagramTemplateMap.add("hasm", hmientrasTemplate);
+        diagramTemplateMap.add("leer", leerTemplate);
+        diagramTemplateMap.add("imp", impTemplate);
+        diagramTemplateMap.add("abrira", abrirATemplate);
+        diagramTemplateMap.add("cerrara", cerrarATemplate);
+        diagramTemplateMap.add("leera", leerATemplate);
+        diagramTemplateMap.add("esca", escATemplate);
 
 
         //Igualo el template map del diagrama con el map que acabo de crear
@@ -113,6 +421,23 @@ export class DiagramaComponent implements OnInit {
         //Inicializo mi objeto this.pallete como un tipo go.Palette que sera contenido en un div con id paletteCanvas 
       this.palette = $(go.Palette, "paletteCanvas");
 
+      var paletteTemplateMap = new go.Map<string, go.Node>();
+
+          paletteTemplateMap.add("if", ifTemplate);
+          paletteTemplateMap.add("for", forTemplate);
+          paletteTemplateMap.add("proc", procTemplate);
+          paletteTemplateMap.add("mientras", mientrasTemplate);
+          paletteTemplateMap.add("hasm", hmientrasTemplate);
+          paletteTemplateMap.add("leer", leerTemplate);
+          paletteTemplateMap.add("imp", impTemplate);
+          paletteTemplateMap.add("abrira", abrirATemplate);
+          paletteTemplateMap.add("cerrara", cerrarATemplate);
+          paletteTemplateMap.add("leera", leerATemplate);
+          paletteTemplateMap.add("esca", escATemplate);
+
+          this.palette.nodeTemplateMap = paletteTemplateMap;
+          
+
       //defino el template para los nodos que estarán en la paleta.
       //POr ahora solo muestran colores, esto se tiene que cambiar para que se vea como debe de ser.
       this.palette.nodeTemplate =
@@ -121,6 +446,7 @@ export class DiagramaComponent implements OnInit {
           { width: 14, height: 14, fill: "white" },
           new go.Binding("fill", "color")),
         $(go.TextBlock,
+          new go.Binding("fill", "color"),
           new go.Binding("text", "comando"))
       );
 
@@ -134,10 +460,17 @@ export class DiagramaComponent implements OnInit {
        llama igual en ambos, esta cambiará si está definida con otro estilo cuando se arrastre.       
        */
       this.palette.model.nodeDataArray = [
-        { key: "ifnode", representa: "condicion", color: "red", category : "if"},
-        { key: "fornode", representa: "bucle", color: "purple", category : "for"},
-        { key: "procnode", representa: "proceso", color: "green" , category : "proc"}
-
+        { key: "ifnode", representa: "condicion", color: "white", category : "if"},
+        { key: "fornode", representa: "para a rango", color: "white", category : "for"},
+        { key: "procnode", representa: "proceso", color: "white" , category : "proc"},
+        { key: "mientrasnode", representa: "mientras", color: "white", category : "mientras"},
+        { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"},
+        { key: "leernode", representa: "leerstd", color: "white", category : "leer"},
+        { key: "impnode", representa: "imp", color: "white", category : "imp"},
+        { key: "abriranode", representa: "abrir archivo", color: "white", category : "abrira"},
+        { key: "cerraranode", representa: "cerrar archivo", color: "white", category : "cerrara"},
+        { key: "leeranode", representa: "leer archivo", color: "white", category : "leera"},
+        { key: "escanode", representa: "escribir archivo", color: "white", category : "esca"}
       ];
 
       //igualo el modelo de mi diagrama (que está definido en este archivo) con this.model
