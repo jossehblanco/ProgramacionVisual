@@ -5,13 +5,13 @@ from lexico import *
 from auxiliares import *
 
 
-linea #buffer de lineas
-ll #contador de caracters
-offset #corrimiento en la lectura de los caracteres del programa fuente
-fin_archivo #bandera de fin
-ch #ultimo caracter leido
-lex #ultimo lexema leido
-valor #valor numero de un lexema correspondiente a un numero
+linea=" " #buffer de lineas
+ll=0 #contador de caracters
+offset=0 #corrimiento en la lectura de los caracteres del programa fuente
+fin_archivo=0 #bandera de fin
+ch=" " #ultimo caracter leido
+lex=" " #ultimo lexema leido
+valor=0 #valor numero de un lexema correspondiente a un numero
 
 def getline(s,lim):
     c = f.read(1)

@@ -3,8 +3,8 @@ from scanner import *
 
 from enum import Enum
 
-tabla
-it
+tabla=[]
+it=0
 
 class objeto(Enum):
     CONSTANTE = 0
@@ -12,8 +12,8 @@ class objeto(Enum):
     PROCEDIMIENTO = 2
 
 class registro(object):
-	nombre
-	tipo
+	nombre=" "
+	tipo=" "
 
 	def __init__(self,nombre,tipo):
 		self.nombre = nombre

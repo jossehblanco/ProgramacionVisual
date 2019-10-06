@@ -3,18 +3,21 @@ import mensajes_de_error
 import lexico
 import auxiliares
 import parametros
+import scanner
+import parser
+import tds
  
 def main(argv):
     
-    if argv==null:
+    if argv==None:
         print("\nNo se ha proporcionado el nombre del programa fuente (uso: parser1 progfuente)")
     
     else:
-        fp=open(argv,r)
-        if fp==null:
+        fp=open(argv,"r")
+        if fp==None:
             print("\nNo se encontro el programa fuente indicado")
         else:
-            timer=datetime.datetime.now()
+            timer=datetime.datetime.today()
             print("\n\nCompilador de pl0 version 3.0/Parser1 --- abril de 2011 --- A2\n")
             print(timer)
             
@@ -38,3 +41,5 @@ def main(argv):
             fp.close
             
     return 0
+
+main("/home/carlos/Documentos/TeoriaProyecto/TeoProyecto/compiler/ejemplo.txt")
