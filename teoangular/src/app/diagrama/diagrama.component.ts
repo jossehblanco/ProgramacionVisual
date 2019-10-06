@@ -13,6 +13,7 @@ const $ = go.GraphObject.make;
   styleUrls: ['./diagrama.component.css']
 })
 export class DiagramaComponent implements OnInit {
+  opened= false;
   //Declaracion de diagramas y paleta, empiezan como nulo y se inicializan luego
   public diagram : go.Diagram = null;
   public palette : go.Palette = null;
