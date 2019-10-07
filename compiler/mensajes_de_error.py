@@ -1,5 +1,5 @@
 mensaje_de_error=[
-    "1",#0
+    " no existe ese tipo de dato",#0
     " debe ir seguido de un numero",#1
     " el identificador debe ir seguido de ' = ' ",#2
     " se esperaba la instruccion mientras",#3
@@ -39,5 +39,4 @@ mensaje_de_error=[
     "anidamiento demasiado profundo para los procedures",#37
     "se rebasa el maximo entero de cpiton--se asume cero"#38
     ]
-
 

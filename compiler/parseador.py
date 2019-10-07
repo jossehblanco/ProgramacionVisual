@@ -6,28 +6,11 @@ from scanner import *
 def bloque():
     temp = None
 #-------------Declaracion de variable----------------------------------    
-    if(Lexico.token == Lexico.simbolo.vartok):
-        obtoken();
-        declaracionvariable();
-
-        while(Lexico.token == Lexico.simbolo.coma):
-            obtoken()
-            declaracionvariable()
-        if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
-        else:
-            error(5)
+    
+    declaracionvariable();
 #-----------------------------------------------------------------------
 #------------Asignacion------------------------------------------------
-    if(Lexico.token == lexico.simbolo.ident):
-        asignacion()
-        while(Lexico.token == Lexico.simbolo.coma):
-            obtoken()
-            asignacion()
-        if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
-        else:
-            error(5)
+    asignacion()
 #-----------------------------------------------------------------------
 #-------------Declaracion de funciones----------------------------------
     if(Lexico.token == Lexico.simbolo.funtok):
@@ -77,37 +60,83 @@ def bloque():
 
 #--------------------------------------------------------------------------------
 #Declaracion de variables--------------------------------------------------------
-def declaracionvariable():
-    if(lexico.token == lexico.simbolo.ident):
-        poner(objeto.VARIABLE)
+def agregarTipoAIdents(tipao):
+    if(Lexico.token == Lexico.simbolo.ident):
+        if(tipao == objeto.NUM):
+            poner(objeto.NUM)
+        elif(tipao == objeto.DEC):
+            poner(objeto.DEC)
+        elif(tipao == objeto.TEXTO):
+            poner(objeto.TEXTO)
+        elif(tipao == objeto.CAR):
+            poner(objeto.CAR)
+        elif(tipao == objeto.VOF):
+            poner(objeto.VOF)
+        elif(tipao == objeto.NUMARRA):
+            poner(objeto.NUMARRA)
+        elif(tipao == objeto.DECARRA):
+            poner(objeto.DECARRA)
+        elif(tipao == objeto.TEXTOARRA):
+            poner(objeto.TEXTOARRA)
+        elif(tipao == objeto.VOFARRA):
+            poner(objeto.VOFARRA)
+        else:
+            error(0)            
         obtoken()
     else:
         error(4)
+
+def declaracionvariable():
+    if(Lexico.token == Lexico.simbolo.vartok):
+        tipao = tipo()
+        obtoken()
+        agregarTipoAIdents(tipao)
+        while(Lexico.token == Lexico.simbolo.coma):
+            obtoken()
+            agregarTipoAIdents()
+        if(Lexico.token == Lexico.simbolo.puntoycoma):
+            obtoken()
+        else:
+            error(5)
     return
 
 def asignacion():
-    if(lexico.token == lexico.simbolo.ident):
+    if(Lexico.token == Lexico.simbolo.ident):
         obtoken()
         #Se va por el camino de una asignacion a variable
-        if(lexico.token == lexico.simbolo.igl):
+        if(Lexico.token == Lexico.simbolo.igl):
             obtoken()
-            if(lexico.token == lexico.simbolo.valortok):
+            if(Lexico.token == Lexico.simbolo.valortok):
                 obtoken()
-        #Se va por el camino del arreglo
-        elif (lexico.token == lexico.simbolo.corchab):
-            obtoken()
-            if(lexico.token == lexico.simbolo.numtok):
-                obtoken()
-                if(lexico.token == lexico.simbolo.corchcr):
+                valor()#hacer algo con el valor retornado por valor
+                while(Lexico.token == Lexico.simbolo.coma):
                     obtoken()
-                    if(lexico.token == lexico.simbolo.igl):
+                    asignacion()
+                if(Lexico.token == Lexico.simbolo.puntoycoma):
+                    obtoken()
+                else:
+                    error(5)
+        #Se va por el camino del arreglo
+        elif (Lexico.token == Lexico.simbolo.corchab):
+            obtoken()
+            if(Lexico.token == Lexico.simbolo.numtok):
+                obtoken()
+                if(Lexico.token == Lexico.simbolo.corchcr):
+                    obtoken()
+                    if(Lexico.token == Lexico.simbolo.igl):
                         obtoken()
-                        if(lexico.token == lexico.simbolo.valortok):
+                        if(Lexico.token == Lexico.simbolo.valortok):
                             obtoken()
+                            valor()
+                            while(Lexico.token == Lexico.simbolo.coma):
+                                obtoken()
+                                asignacion()
+                            if(Lexico.token == Lexico.simbolo.puntoycoma):
+                                obtoken()
+            else:
+                error(1)
         else:
-            error(1)
-    else:
-        error(3)
+            error(3)
 
 def delaracionfuncion():
     if(lexico.token == lexico.simbolo.funtok):
@@ -174,9 +203,9 @@ def cuerpoLlavesInstruccion():
             obtoken()
             return True
         else:
-            error(26)
+            error(27)
     else:
-        error(25)
+        error(26)
 
 def cuerposiosi():
     if(Lexico.token == Lexico.simbolo.parena):
@@ -189,7 +218,7 @@ def cuerposiosi():
         else:
             error(21)
     else:
-        error(24)
+        error(22)
 
 def VerificarParaIdents():
     if(Lexico.token != Lexico.simbolo.ident):
@@ -197,13 +226,13 @@ def VerificarParaIdents():
     else:
         i = posicion()
         if(i == -1):
-            error(11)
+            error(10)
         else:
             if(tabla[i].tipo == objeto.NUM):
                 obtoken()
                 return True
             else:
-                error(7)
+                error(6)
 
 def InstruccionMientras():
     if(Lexico.token == Lexico.simbolo.parena):
@@ -215,7 +244,7 @@ def InstruccionMientras():
         else:
             error(21)
     else:
-        error(24)
+        error(22)
 
 def instruccion():    
     #VERIFICANDO SI ES SITOK
@@ -256,9 +285,9 @@ def instruccion():
                     else:
                         error(4)
                 else:
-                    error(24)
+                    error(22)
             else:
-                error(6)
+                error(5)
         else:#Verificando si es MIENSTRASTOK
             if(Lexico.token == Lexico.simbolo.mientrastok):
                 obtoken()
@@ -274,6 +303,7 @@ def instruccion():
                         error(3)
                 else:
                     asignacion()
+                    declaracionvariable()
 
 def expresion():
     if(Lexico.token == Lexico.simbolo.mas or Lexico.token == Lexico.simbolo.menos):
