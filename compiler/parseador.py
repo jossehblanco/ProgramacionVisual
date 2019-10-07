@@ -58,46 +58,50 @@ def bloque():
          #   error(5)
     return
 
-#--------------------------------------------------------------------------------
-#Declaracion de variables--------------------------------------------------------
+def tipo():
+    if(Lexico.token == Lexico.simbolo.numtok):
+        return objeto.NUM
+    elif(Lexico.token == Lexico.simbolo.dectok):
+        return objecto.DEC
+    elif(Lexico.token == Lexico.simbolo.textok):
+        return objeto.TEXTO
+    elif(Lexico.token == Lexico.simbolo.cartok):
+        return objeto.CAR
+    elif(Lexico.token == Lexico.simbolo.voftok):
+        return objeto.VOF
+    elif(Lexico.token == Lexico.simbolo.numarra):
+        return objeto.NUMARRA
+    elif(Lexico.token == Lexico.simbolo.decarra):
+        return objeto.DECARRA
+    elif(Lexico.token == Lexico.simbolo.textoarra):
+        return objeto.TEXTOARRA
+    elif(Lexico.token == Lexico.simbolo.cararra):
+        return objeto.CARARRA
+    elif(Lexico.token == Lexico.simbolo.vofarra):
+        return objeto.VOFARRA
+    else:
+        error(0)
+
 def agregarTipoAIdents(tipao):
     if(Lexico.token == Lexico.simbolo.ident):
-        if(tipao == objeto.NUM):
-            poner(objeto.NUM)
-        elif(tipao == objeto.DEC):
-            poner(objeto.DEC)
-        elif(tipao == objeto.TEXTO):
-            poner(objeto.TEXTO)
-        elif(tipao == objeto.CAR):
-            poner(objeto.CAR)
-        elif(tipao == objeto.VOF):
-            poner(objeto.VOF)
-        elif(tipao == objeto.NUMARRA):
-            poner(objeto.NUMARRA)
-        elif(tipao == objeto.DECARRA):
-            poner(objeto.DECARRA)
-        elif(tipao == objeto.TEXTOARRA):
-            poner(objeto.TEXTOARRA)
-        elif(tipao == objeto.VOFARRA):
-            poner(objeto.VOFARRA)
-        else:
-            error(0)            
+        poner(tipao)
         obtoken()
     else:
         error(4)
 
+#--------------------------------------------------------------------------------
+#Declaracion de variables--------------------------------------------------------
 def declaracionvariable():
-    if(Lexico.token == Lexico.simbolo.vartok):
-        tipao = tipo()
+    tipao = tipo()
+    obtoken()
+    agregarTipoAIdents(tipao)
+    while(Lexico.token == Lexico.simbolo.coma):
         obtoken()
         agregarTipoAIdents(tipao)
-        while(Lexico.token == Lexico.simbolo.coma):
-            obtoken()
-            agregarTipoAIdents()
-        if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
-        else:
-            error(5)
+    if(Lexico.token == Lexico.simbolo.puntoycoma):
+        obtoken()
+    else:
+        error(5)
     return
 
 def VerificarIdentExist():
