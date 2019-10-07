@@ -100,43 +100,53 @@ def declaracionvariable():
             error(5)
     return
 
-def asignacion():
-    if(Lexico.token == Lexico.simbolo.ident):
-        obtoken()
-        #Se va por el camino de una asignacion a variable
-        if(Lexico.token == Lexico.simbolo.igl):
-            obtoken()
-            if(Lexico.token == Lexico.simbolo.valortok):
-                obtoken()
-                valor()#hacer algo con el valor retornado por valor
-                while(Lexico.token == Lexico.simbolo.coma):
-                    obtoken()
-                    asignacion()
-                if(Lexico.token == Lexico.simbolo.puntoycoma):
-                    obtoken()
-                else:
-                    error(5)
-        #Se va por el camino del arreglo
-        elif (Lexico.token == Lexico.simbolo.corchab):
-            obtoken()
-            if(Lexico.token == Lexico.simbolo.numtok):
-                obtoken()
-                if(Lexico.token == Lexico.simbolo.corchcr):
-                    obtoken()
-                    if(Lexico.token == Lexico.simbolo.igl):
-                        obtoken()
-                        if(Lexico.token == Lexico.simbolo.valortok):
-                            obtoken()
-                            valor()
-                            while(Lexico.token == Lexico.simbolo.coma):
-                                obtoken()
-                                asignacion()
-                            if(Lexico.token == Lexico.simbolo.puntoycoma):
-                                obtoken()
-            else:
-                error(1)
+def VerificarIdentExist():
+    if(Lexico.token != Lexico.simbolo.ident):
+            error(14)
+    else:
+        i = posicion()
+        if(i == -1):
+            error(10)
         else:
-            error(3)
+            obtoken()
+            return True
+
+def asignacion():
+    seguir = VerificarIdentExist()
+    #Se va por el camino de una asignacion a variable
+    if(seguir and Lexico.token == Lexico.simbolo.igl):
+        obtoken()
+        if(Lexico.token == Lexico.simbolo.valortok):
+            obtoken()
+            valor()#hacer algo con el valor retornado por valor
+            while(Lexico.token == Lexico.simbolo.coma):
+                obtoken()
+                asignacion()
+            if(Lexico.token == Lexico.simbolo.puntoycoma):
+                obtoken()
+            else:
+                error(5)
+    #Se va por el camino del arreglo
+    elif (seguir and Lexico.token == Lexico.simbolo.corchab):
+        obtoken()
+        if(Lexico.token == Lexico.simbolo.numtok):
+            obtoken()
+            if(Lexico.token == Lexico.simbolo.corchcr):
+                obtoken()
+                if(Lexico.token == Lexico.simbolo.igl):
+                    obtoken()
+                    if(Lexico.token == Lexico.simbolo.valortok):
+                        obtoken()
+                        valor()
+                        while(Lexico.token == Lexico.simbolo.coma):
+                            obtoken()
+                            asignacion()
+                        if(Lexico.token == Lexico.simbolo.puntoycoma):
+                            obtoken()
+        else:
+            error(1)
+    else:
+        error(3)
 
 def delaracionfuncion():
     if(lexico.token == lexico.simbolo.funtok):
@@ -220,7 +230,7 @@ def cuerposiosi():
     else:
         error(22)
 
-def VerificarParaIdents():
+def VerificarIdentsExistAndTypes(tipao):
     if(Lexico.token != Lexico.simbolo.ident):
             error(14)
     else:
@@ -228,7 +238,7 @@ def VerificarParaIdents():
         if(i == -1):
             error(10)
         else:
-            if(tabla[i].tipo == objeto.NUM):
+            if(tabla[i].tipo == tipao):
                 obtoken()
                 return True
             else:
@@ -263,15 +273,15 @@ def instruccion():
         if(Lexico.token == Lexico.simbolo.paratok):
             obtoken()
             #verificar ident y que sea tipo num
-            seguir = VerificarParaIdents()
+            seguir = VerificarIdentsExistAndTypes(objeto.NUM)
             if(seguir and Lexico.token == Lexico.simbolo.rangotok):        
                 obtoken()
                 if(Lexico.token == Lexico.simbolo.parena):
                     obtoken()
-                    seguir = VerificarParaIdents()
+                    seguir = VerificarIdentsExistAndTypes(objeto.NUM)
                     if(seguir and Lexico.token == Lexico.simbolo.coma):
                         obtoken()
-                        seguir = VerificarParaIdents()
+                        seguir = VerificarIdentsExistAndTypes(objeto.NUM)
                         if(seguir and Lexico.token == Lexico.simbolo.coma):
                             obtoken()
                             asignacion()
@@ -292,7 +302,7 @@ def instruccion():
             if(Lexico.token == Lexico.simbolo.mientrastok):
                 obtoken()
                 InstruccionMientras()
-            else:
+            else:#Verificando si es HASTOK
                 if(Lexico.token == Lexico.simbolo.hastok):
                     obtoken()
                     seguir = cuerpoLcuerpoLlavesInstruccion()

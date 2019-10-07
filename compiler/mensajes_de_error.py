@@ -1,7 +1,7 @@
 mensaje_de_error=[
     " no existe ese tipo de dato",#0
     " debe ir seguido de un numero",#1
-    " el identificador debe ir seguido de ' = ' ",#2
+    " el identificador debe ir seguido de ' = ' o un '['",#2
     " se esperaba la instruccion mientras",#3
     " falta una coma",#4
     " se esperaba un 'rango'",#5
