@@ -17,12 +17,16 @@ export class DiagramaComponent implements OnInit {
   //Declaracion de diagramas y paleta, empiezan como nulo y se inicializan luego
   public diagram : go.Diagram = null;
   public palette : go.Palette = null;
-
+  public beginNode : go.Node = null;
 
   //Declarando variables para alojar los templates
   public diagramTemplate :go.Map<string, go.Node>;
   public paletteTemplate : go.Map<string, go.Node>;
   public linkTemplate ;
+  public lastInstanceOfEndIf:go.Node
+  public lastInstanceOfEndFor : go.Node
+  public lastInstanceOfEndMientras : go.Node
+  public lastInstanceOfEndHasm : go.Node
   
   //Se define un objeto de tipo go.Model que se recibe mediante input (databinding) desde app-component.ts
   @Input()
@@ -39,6 +43,226 @@ export class DiagramaComponent implements OnInit {
     this.diagramTemplate = templates.diagramTemplateMap;
     this.paletteTemplate = templates.paletteTemplateMap;
     this.linkTemplate = templates.linkTemplate;
+  }
+  generar(event: Event) {
+    this.beginNode = this.diagram.findNodeForKey("inicionode")
+    if(this.beginNode != null){
+      console.log("Se cargó el nodo de inicio")
+      this.convert(this.beginNode)
+     }else{
+      console.log("Error: se debe especificar un inicio para el diagrama")
+    }
+  }
+
+  convert(currentNode :go.Node, endPoint : string = "fin", tab : string = ""){
+    const nodo = currentNode.data
+    if(nodo.category == "inicio"){
+      console.log(":v")
+    //Preparando para recursión
+    var nuevoNodo : go.Node
+    var newNodeIt = currentNode.findLinksOutOf()
+    while(newNodeIt.next()){
+      var link  = newNodeIt.value;
+      nuevoNodo = link.toNode
+    }
+    this.convert(nuevoNodo, endPoint, tab)
+    //Fin Recursion
+    }
+
+    else if(nodo.category == "proc"){
+      console.log(tab+nodo.representa + ";")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }else if(nodo.category == "if"){
+      console.log(tab +"si("+nodo.representa+"){")
+      var nodoif : go.Node
+      var nodoelse : go.Node
+      var count  = 0
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        if(count == 0){
+           nodoif = link.toNode
+           count++;
+        }else if(count == 1){
+          nodoelse = link.toNode
+        }
+      }
+      this.convert(nodoif, "fif", (tab+"\t"))
+      console.log(tab+"}\n")
+      console.log(tab+"sino{")
+      this.convert(nodoelse, "fif",(tab+ "\t"))
+      console.log(tab+"}")
+
+      var newNodeIt = this.lastInstanceOfEndIf.findLinksOutOf()
+      var nuevoNodo : go.Node
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+
+      //mando a llamar para seguir el programa
+      //Fin Recursion
+    }
+    else if(nodo.category == "for"){
+      console.log(tab +"para "+nodo.variable+" rango(" + nodo.desde + "," + nodo.hasta + "," + nodo.incremento + "){")
+      var nodofor : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nodofor = link.toNode
+      }
+      this.convert(nodofor, "efor", (tab+"\t"))
+      console.log(tab+"}\n")
+      var newNodeIt = this.lastInstanceOfEndFor.findLinksOutOf()
+      var nuevoNodo : go.Node
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //mando a llamar para seguir el programa
+      //Fin Recursion
+    }
+    else if(nodo.category == "mientras"){
+      console.log(tab +"mientras" + "(" + nodo.representa + "){")
+      var nodomientras : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nodomientras = link.toNode
+      }
+      this.convert(nodomientras, "emientras", (tab+"\t"))
+      console.log(tab+"}\n")
+      var newNodeIt = this.lastInstanceOfEndMientras.findLinksOutOf()
+      var nuevoNodo : go.Node
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //mando a llamar para seguir el programa
+      //Fin Recursion
+    }
+    else if(nodo.category == "hasm"){
+      console.log(tab +"has"+ "{")
+      var nodohasm : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nodohasm = link.toNode
+      }
+      this.convert(nodohasm, "ehasm", (tab+"\t"))
+      console.log(tab+"}mientras("+ nodo.representa +");")
+      var newNodeIt = this.lastInstanceOfEndHasm.findLinksOutOf()
+      var nuevoNodo : go.Node
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //mando a llamar para seguir el programa
+      //Fin Recursion
+    }
+    else if(nodo.category == "leer"){
+      console.log(tab+"leerstd(" + nodo.tipo + "," + nodo.guardar + ");")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }
+
+    else if(nodo.category == "imp"){
+      console.log(tab+"imp(" + nodo.representa + ");")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }
+
+    else if(nodo.category == "abrira"){
+      console.log(tab+nodo.guardar + "=abArch(" + nodo.url +","+nodo.modo +");")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }
+
+    else if(nodo.category == "leera"){
+      console.log(tab+"leerArch(" + nodo.tipo +","+nodo.guardar +");")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }
+
+    else if(nodo.category == "esca"){
+      console.log(tab+"escArch(" + nodo.representa + ");")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }
+
+    else if(nodo.category == "cerrara"){
+      console.log(tab+"cArch(" + nodo.representa + ");")
+      //Preparando para recursión
+      var nuevoNodo : go.Node
+      var newNodeIt = currentNode.findLinksOutOf()
+      while(newNodeIt.next()){
+        var link  = newNodeIt.value;
+        nuevoNodo = link.toNode
+      }
+      this.convert(nuevoNodo, endPoint, tab)
+      //Fin Recursion
+    }
+
+    else if(nodo.category == endPoint){
+      if(endPoint=="fin") console.log(">:v")
+      else if(endPoint == "fif"){
+        this.lastInstanceOfEndIf = currentNode
+        //codigo para if :v
+      }else if(endPoint == "efor"){
+        this.lastInstanceOfEndFor = currentNode;
+      }else if(endPoint == "emientras"){
+        this.lastInstanceOfEndMientras = currentNode;
+      }else if(endPoint == "ehasm"){
+        this.lastInstanceOfEndHasm = currentNode;
+      }
+    }
   }
 
   //Este metodo se llama al inicializar el compoennte. Por el momento no hay nada aqui.
@@ -60,7 +284,7 @@ export class DiagramaComponent implements OnInit {
     */
     this.diagram = $(go.Diagram, 'ideCanvas', {
       layout: $(go.TreeLayout,{ //Este layout se encarga de ordenarlos asi bien rikolino
-        isOngoing : false,
+        isOngoing : true,
         treeStyle : go.TreeLayout.StyleAlternating,
         arrangement: go.TreeLayout.ArrangementFixedRoots, //Esto nos permite arrastrar de la paleta sin que lo ordene automatico
         //Propiedades para el arbol
@@ -93,18 +317,19 @@ export class DiagramaComponent implements OnInit {
         { key: "inicionode", representa: "Inicio", color: "white", category : "inicio"},
         { key: "finnode", representa: "Fin", color: "white", category : "fin"},
         { key: "ifnode", representa: "condicion", color: "white", category : "if"},
-        { key: "fornode", representa: "para a rango", color: "white", category : "for"},
+        { key: "eifnode", representa: "fin condicion", color: "white", category : "fif"},
+        { key: "fornode", representa: "para a rango", variable: "variable", desde:"x", hasta: "y", incremento: "z", color: "white", category : "for"},
         { key: "endfornode", representa: "fin para a rango", color: "white", category: "efor"},
         { key: "procnode", representa: "proceso", color: "white" , category : "proc"},
         { key: "mientrasnode", representa: "mientras", color: "white", category : "mientras"},
         { key: "endmientrasnode", representa: "fin mientras", color: "white", category: "emientras"},
         { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"},
         { key: "endhasnode", representa: "fin has mientras", color: "white", category: "ehasm"},
-        { key: "leernode", representa: "leerstd", color: "white", category : "leer"},
+        { key: "leernode", representa: "leerstd", color: "white", category : "leer", tipo : "tipo", guardar : "variable"},
         { key: "impnode", representa: "imp", color: "white", category : "imp"},
-        { key: "abriranode", representa: "abrir archivo", color: "white", category : "abrira"},
+        { key: "abriranode", representa: "abrir archivo", color: "white", category : "abrira", url : "url", modo : "truncar/añadir", guardar : "variable"},
         { key: "cerraranode", representa: "cerrar archivo", color: "white", category : "cerrara"},
-        { key: "leeranode", representa: "leer archivo", color: "white", category : "leera"},
+        { key: "leeranode", representa: "leer archivo", color: "white", category : "leera", tipo : "tipo", guardar :"variable"},
         { key: "escanode", representa: "escribir archivo", color: "white", category : "esca"}
       ];
 
@@ -129,9 +354,11 @@ export class DiagramaComponent implements OnInit {
       //SI se da doble click, signifca que se debe editar el texto en e edittextblock
       //lo que causara que se modifica la propiedad representa que está bound a la propiedad texto
       this.diagram.addDiagramListener("ExternalObjectsDropped", (e) => {
+        
         console.log("se hizo!!!")
-        this.diagram.commandHandler.editTextBlock();
+        //this.diagram.commandHandler.editTextBlock();
       });
+
 
       /*
       Un listener que recibe un evento cada vez que se dibuja un ink entre dos nodos.
