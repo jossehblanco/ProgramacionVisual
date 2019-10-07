@@ -10,12 +10,13 @@ ch=" " #ultimo caracter leido
 lex=" " #ultimo lexema leido
 valor=0 #valor numero de un lexema correspondiente a un numero
 
-def getline(s,lim):
+def getline(lim):
     import cpiton
     global linea
     c = cpiton.fp.read(1)
+    s = ""
     for i in range(0,lim-1):
-        if(c == '\n' or i == lim):
+        if(c == '\n' or c=='' or i == lim):
             break
         s += c
         c = cpiton.fp.read(1)
@@ -36,7 +37,8 @@ def obtch():
     if(fin_archivo == 1):
         error(32)
     if(offset == ll-1):
-        ll = getline(linea,MAXLINEA)
+        ll = getline(MAXLINEA)
+        offset = -1
         if(ll == 0):
             fin_archivo = 1
             print(linea)
@@ -47,10 +49,10 @@ def obtch():
     if((fin_archivo == 1)):
         return ' '
     elif(actual == '\n'):
-        offset = 0
         contadorLineas += 1
+        return ' '
     else:
-        return(linea[offset].upper())
+        return(linea[contadorLineas][offset])
     #except IndexError:
     #    ll = getline(linea,MAXLINEA)
     #    actual = linea[offset]
@@ -59,7 +61,7 @@ def obtch():
     #    else:
     #        return(linea[offset].upper())
 
-def leerints(lexid, i, j, MAX):
+def leerints(lexid, i, j, MAX, checkDecimal):
     global ch
     while(1):
         try:
@@ -70,11 +72,12 @@ def leerints(lexid, i, j, MAX):
             j+=1
             ch = obtch()
         except ValueError:
-            if(i==1):
+            if(checkDecimal):
                 error(1)#si en la primera iteracion no viene un numero es como que pongan 2. y nada mas
             break
     if(j>MAX):
         error(30)
+    return
 
 def obtoken():
     from auxiliares import error
@@ -114,24 +117,24 @@ def obtoken():
             i=j=1
             ch = obtch()
             isDouble = False            
-            leerints(lexid, i,j,MAXDIGIT)
+            leerints(lexid, i,j,MAXDIGIT,False)
             #VERIFICANDO SI ES DECIMAL
             if(ch == '.'):
                 isDouble = true
                 lexid += ch
                 ch = obtch()
                 i=j=1
-                leerints(lexid,i,j, MAXDECIMAL)
+                leerints(lexid,i,j, MAXDECIMAL,True)
              
             if(isDouble):
                 Lexico.token = Lexico.simbolo.dectok
                 valor = float(lexid)
             else:
-                Lexico.token = Lexico.simbolo.numero
+                Lexico.token = Lexico.simbolo.numtok
                 valor = int(lexid)
         except ValueError:
             if(ch == ':'):
-                obtoken()
+                ch = obtch()
                 if(ch == 'v'):
                     Lexico.token = Lexico.simbolo.dputok
                     ch = obtch()
@@ -167,6 +170,13 @@ def obtoken():
                     ch = obtch()
                 else:
                     Lexico.token = Lexico.simbolo.asignacion
+            elif(ch == '!'):
+                ch = obtch()
+                if(ch == '='):
+                    Lexico.token = Lexico.simbolo.nig
+                    obtoken()
+                else:
+                    error(15)
             else:
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()

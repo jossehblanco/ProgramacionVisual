@@ -1,15 +1,4 @@
-var
-	n,i,facto,resultado;
-
-	begin
-	n:=5,facto:=1;
-	if n <> 0 then
-	begin
-	i:=1;
-	while i<=n do begin
-		facto := facto*i;
-		i:=i+1;
-		end;
-	end;
-	resultado:=facto
-	end.
+:v
+num b = 3;
+num a = 2;
+>:v

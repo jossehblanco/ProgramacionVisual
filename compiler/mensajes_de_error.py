@@ -3,7 +3,7 @@ mensaje_de_error=[
     " debe ir seguido de un numero",#1
     " el identificador debe ir seguido de ' = ' o un '['",#2
     " se esperaba la instruccion mientras",#3
-    " falta una coma",#4
+    " falta una ',' o ';'",#4
     " se esperaba un 'rango'",#5
     " el identificador debe ser tipo num",#6
     "simbolo incorrecto detras de las instrucciones de un bloque",#7
@@ -14,7 +14,7 @@ mensaje_de_error=[
     "se esperaba el operador de asignacion",#12
     "CALL debe de ir seguido de un identificador",#13
     "no tiene sentido llamar a una constante o a una variable",#14
-    "se espera un THEN",#15
+    "se espera un '='",#15
     "se espera un END o un punto y coma",#16
     "se espera un DO",#17
     "un simbolo incorrecto sigue a una instruccion",#18

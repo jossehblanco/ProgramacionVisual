@@ -17,7 +17,7 @@ def bloque():
     declaracionvariable();
 #-----------------------------------------------------------------------
 #------------Asignacion------------------------------------------------
-    asignacion()
+    asignacion(True)
 #-----------------------------------------------------------------------
 #-------------Declaracion de funciones----------------------------------
     if(Lexico.token == Lexico.simbolo.funtok):
@@ -108,7 +108,7 @@ def declaracionvariable():
     if(Lexico.token == Lexico.simbolo.puntoycoma):
         obtoken()
     else:
-        error(5)
+        asignacion(False)
     return
 
 def VerificarIdentExist():
@@ -122,21 +122,25 @@ def VerificarIdentExist():
             obtoken()
             return True
 
-def asignacion():
-    seguir = VerificarIdentExist()
+def asignacion(checkIdent):
+    seguir = False
+    if(checkIdent):
+        seguir = VerificarIdentExist()
+    else:
+        seguir = True
     #Se va por el camino de una asignacion a variable
-    if(seguir and Lexico.token == Lexico.simbolo.igl):
+    if(seguir and Lexico.token == Lexico.simbolo.asignacion):
         obtoken()
         if(Lexico.token == Lexico.simbolo.valortok):
             obtoken()
             valor()#hacer algo con el valor retornado por valor
             while(Lexico.token == Lexico.simbolo.coma):
                 obtoken()
-                asignacion()
+                asignacion(True)
             if(Lexico.token == Lexico.simbolo.puntoycoma):
                 obtoken()
             else:
-                error(5)
+                error(4)
     #Se va por el camino del arreglo
     elif (seguir and Lexico.token == Lexico.simbolo.corchab):
         obtoken()
@@ -151,13 +155,13 @@ def asignacion():
                         valor()
                         while(Lexico.token == Lexico.simbolo.coma):
                             obtoken()
-                            asignacion()
+                            asignacion(True)
                         if(Lexico.token == Lexico.simbolo.puntoycoma):
                             obtoken()
         else:
             error(1)
     else:
-        error(3)
+        return
 
 def delaracionfuncion():
     if(lexico.token == lexico.simbolo.funtok):
@@ -295,7 +299,7 @@ def instruccion():
                         seguir = VerificarIdentsExistAndTypes(objeto.NUM)
                         if(seguir and Lexico.token == Lexico.simbolo.coma):
                             obtoken()
-                            asignacion()
+                            asignacion(True)
                             if(Lexico.token == Lexico.simbolo.parenc):
                                 obtoken()
                                 cuerpoLlavesInstruccion()
@@ -323,7 +327,7 @@ def instruccion():
                     else:
                         error(3)
                 else:
-                    asignacion()
+                    asignacion(True)
                     declaracionvariable()
 
 def expresion():

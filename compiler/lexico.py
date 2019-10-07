@@ -1,8 +1,9 @@
 from enum import Enum
 from parametros import *
 
-lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret","fun","rango"]
-
+lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret","fun","rango","elev",
+        "raizc","abs","aproxar","log","euxp","cptexto","modulo","tamtxt","aproxab","leerstd","imp","abArch","cArch","leerArch",
+        "escArch"]
 class simbolo(Enum):
     nulo=0
     ident=1
@@ -26,24 +27,23 @@ class simbolo(Enum):
     asignacion=19
     dputok=20
     mdputok=21
-    sitok=22
-    sitok=23
-    sinotok=24
-    ositok=25
-    paratok=26
-    mientrastok=27
-    hastok=28
-    rettok=29
-    funtok=30
-    expretok=31
-    numtok=32
-    dectok=33
-    textok=34
-    cartok=35
-    voftok=36
-    numarra=37
-    decarra=38
-    textoarra=39
+    sitok=22    
+    sinotok=23
+    ositok=24
+    paratok=25
+    mientrastok=26
+    hastok=27
+    rettok=28
+    funtok=29
+    expretok=30
+    numtok=31
+    dectok=32
+    textok=33
+    cartok=34
+    voftok=35
+    numarra=36
+    decarra=37
+    textoarra=38
     cararra=70
     vofarra=71
     llaveatok=72
@@ -52,11 +52,30 @@ class simbolo(Enum):
     corchcr=75
     rangotok = 76
     parametok=77
-    retortok=78
+    #FUNCIONES DEL LENGUAJE
+    elev = 300
+    raizc = 301
+    abs = 302
+    aproxar = 303
+    log = 304
+    euxp = 305
+    cptexto = 306
+    modulo = 307
+    tamtxt = 308
+    aproxab = 309
+    leerstd = 400
+    imp = 401
+    abArch = 402
+    cArch = 403
+    leerArch = 404
+    escArch = 405
 
     
 
-tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.car, simbolo.voftok, simbolo.sitok, simbolo.sinotok, simbolo.ositok, simbolo.paratok,simbolo.mientrasttok,simbolo.hastok, simbolo.rettok, simbolo.funtok, simbolo.rangotok]
+tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.cartok, simbolo.voftok, simbolo.sitok,
+         simbolo.sinotok, simbolo.ositok, simbolo.paratok,simbolo.mientrastok,simbolo.hastok, simbolo.rettok, simbolo.funtok, simbolo.rangotok,
+         simbolo.elev, simbolo.raizc, simbolo.abs, simbolo.aproxar, simbolo.log, simbolo.euxp, simbolo.cptexto, simbolo.modulo, simbolo.tamtxt,
+         simbolo.aproxab, simbolo.leerstd, simbolo.imp, simbolo.abArch, simbolo.cArch, simbolo.leerArch, simbolo.escArch]
 
 token = simbolo.nulo
 

@@ -36,7 +36,7 @@ def poner(k):
         nuevo = registro(Scanner.lex,k)
         tabla.insert(it,nuevo)
 
-def posicion(array,item):
+def posicion(item):
     #implementando binary search
     #Scanner.lex tiene el ultimo lexema leido
 	i = it-1
