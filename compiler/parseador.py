@@ -115,6 +115,18 @@ def VerificarParaIdents():
             else:
                 error(7)
 
+def InstruccionMientras():
+    if(Lexico.token == Lexico.simbolo.parena):
+        obtoken()
+        condicion()
+        if(Lexico.token == Lexico.simbolo.parenc):
+            obtoken()
+            cuerpoLlavesInstruccion()
+        else:
+            error(21)
+    else:
+        error(24)
+
 def instruccion():    
     #VERIFICANDO SI ES SITOK
     if(Lexico.token == Lexico.simbolo.sitok):
@@ -157,75 +169,21 @@ def instruccion():
                     error(24)
             else:
                 error(6)
-        else:
+        else:#Verificando si es MIENSTRASTOK
             if(Lexico.token == Lexico.simbolo.mientrastok):
                 obtoken()
-                if(Lexico.token == Lexico.simbolo.parena):
-                    obtoken()
-                    condicion()
-                    if(Lexico.token == Lexico.simbolo.parenc):
-                        obtoken()
-
-                else:
-                    error(24)
-
-            
-                        
-
-        i = posicion()
-        if(i == -1):
-            error(11) #error 11: identificador no declarado 
-        else:
-            if(tabla[i].tipo != objeto.VARIABLE):
-                error(12) #error 12: no están permitidas las asignaciones a constantes o a procedimientos
-        obtoken()
-        if(Lexico.token == Lexico.simbolo.asignacion):
-            obtoken()
-        else:
-            error(13) #error 13: se esperaba el operador de asignación
-        expresion()
-    else:
-        if(Lexico.token == Lexico.simbolo.calltok):
-            obtoken()
-            if(Lexico.token != Lexico.simbolo.ident):
-                error(14) #error 14: "CALL" debe ir seguido de un identificador 
+                InstruccionMientras()
             else:
-                i = posicion()
-                if(i == -1):
-                    error(11) #error 11: Identificador no declarado 
-                else:
-                    if(tabla[i].tipo != objeto.PROCEDIMIENTO):
-                        error(15) #error 15 : No tiene sentido llamar a una constante o a una variable 
-                obtoken()
-        else:
-            if(Lexico.token == Lexico.simbolo.iftok):
-                obtoken()
-                condicion()
-                if(Lexico.token == Lexico.simbolo.thentok):
+                if(Lexico.token == Lexico.simbolo.hastok):
                     obtoken()
-                else:
-                    error(16) #error 16: Se esperaba un "THEN"
-                instruccion()
-            else:
-                if(Lexico.token == Lexico.simbolo.begintok):
-                    obtoken()
-                    instruccion()
-                    while (Lexico.token == Lexico.simbolo.puntoycoma or Lexico.token == Lexico.simbolo.coma):
+                    seguir = cuerpoLcuerpoLlavesInstruccion()
+                    if(seguir and Lexico.token == Lexico.simbolo.mientrastok):
                         obtoken()
-                        instruccion()
-                    if(Lexico.token == Lexico.simbolo.endtok):
-                        obtoken()
+                        InstruccionMientras()
                     else:
-                        error(17) #error 17: Se esperaba un "END" o un punto y coma 
+                        error(3)
                 else:
-                    if(Lexico.token == Lexico.simbolo.whiletok):
-                        obtoken()
-                        condicion()
-                        if(Lexico.token == Lexico.simbolo.dotok):
-                            obtoken()
-                        else:
-                            error(18) #error 18: Se esperaba un "DO"
-                        instruccion()
+                    asignacion()
 
 def expresion():
     if(Lexico.token == Lexico.simbolo.mas or Lexico.token == Lexico.simbolo.menos):

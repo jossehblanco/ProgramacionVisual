@@ -2,7 +2,7 @@ mensaje_de_error=[
         "1",
         " debe ir seguido de un numero",
         " el identificador debe ir seguido de ' = ' ",
-        " 4",
+        " se esperaba la instruccion mientras",
         " falta una coma",
         " se esperaba un 'rango'",
         " el identificador debe ser tipo num",
