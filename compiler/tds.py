@@ -11,6 +11,7 @@ class objeto(Enum):
     TEXTO = 2
     CAR = 3
     VOF = 4
+    FUNCION = 5
 
 class registro(object):
 	nombre=" "
