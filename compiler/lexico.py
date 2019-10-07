@@ -1,12 +1,12 @@
 from enum import Enum
 from parametros import *
 
-lexpal=["BEGIN","CALL","CONST","DO","END","IF","ODD","PROCEDURE","THEN","VAR","WHILE"]
+lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret"]
 
 class simbolo(Enum):
     nulo=0
     ident=1
-    numero=2
+    valortok=2
     mas=3
     menos=4
     por=5
@@ -24,18 +24,22 @@ class simbolo(Enum):
     puntoycoma=17
     punto=18
     asignacion=19
-    begintok=20
-    endtok=21
-    iftok=22
-    thentok=23
-    whiletok=24
-    dotok=25
-    calltok=26
-    consttok=27
-    vartok=28
-    proctok=29
+    dputok=20
+    mdputok=21
+    sitok=22
+    sitok=23
+    sinotok=24
+    ositok=25
+    paratok=26
+    mientrasttok=27
+    hastok=28
+    rettok=29
+    funtok=30
+    tipotok=31
+    expretok=32
+    
 
-tokpal = [simbolo.begintok, simbolo.calltok, simbolo.consttok, simbolo.dotok, simbolo.endtok, simbolo.iftok, simbolo.oddtok, simbolo.proctok, simbolo.thentok, simbolo.vartok, simbolo.whiletok]
+tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.sitok, simbolo.sinotok, simbolo.ositok, simbolo.paratok, simbolo.paratok, simbolo.mientrasttok, simbolo.hastok, simbolo.rettok, simbolo.funtok,simbolo.tipotok,simbolo.expretok]
 
 token = simbolo.nulo
 
