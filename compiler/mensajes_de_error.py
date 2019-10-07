@@ -6,8 +6,8 @@ mensaje_de_error=[
     " falta una ',' o ';'",#4
     " se esperaba un 'rango'",#5
     " el identificador debe ser tipo num",#6
-    "simbolo incorrecto detras de las instrucciones de un bloque",#7
-    "se espera un punto",#8
+    " no se pudo castear a float",#7
+    " se espera el cierre de comilla simple",#8
     "falta un punto y coma entre instrucciones",#9
     "identificador no declarado",#10
     "no estan permitidas las asignaciones a constantes o procedimientos",#11
@@ -29,8 +29,8 @@ mensaje_de_error=[
     " falta una llave de cierre '}'",#27
     " se esperaba 'v'",#28
     " se esperaba :v como inicio de programa",#29
-    "",#30
-    "",#31
+    " se esperaba comilla doble",#30
+    " se esperaba un caracter",#31
     "",#32
     "este numero es demasiado grande - trunc(5)",#33
     "se rebaso el tamaño de la Tabla de Simbolos",#34

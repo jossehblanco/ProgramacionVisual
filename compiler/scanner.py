@@ -120,7 +120,7 @@ def obtoken():
             leerints(lexid, i,j,MAXDIGIT,False)
             #VERIFICANDO SI ES DECIMAL
             if(ch == '.'):
-                isDouble = true
+                isDouble = True
                 lexid += ch
                 ch = obtch()
                 i=j=1

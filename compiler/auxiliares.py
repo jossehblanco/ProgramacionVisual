@@ -21,6 +21,7 @@ def inicializar_espec():
     for i in range (0,255):
         Lexico.espec.append(Lexico.simbolo.nulo)
     
+    Lexico.espec[34]=Lexico.simbolo.comilladoble
     Lexico.espec[43]=Lexico.simbolo.mas
     Lexico.espec[45]=Lexico.simbolo.menos
     Lexico.espec[42]=Lexico.simbolo.por

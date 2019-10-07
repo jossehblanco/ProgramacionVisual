@@ -65,6 +65,44 @@ def bloque():
          #   error(5)
     return
 
+def valor():
+    global lex
+    if(Lexico.token == Lexico.simbolo.comilladoble):
+        obtoken()
+        #Este token se castea a texto y deberia de ingresarse asi al hash
+        obtoken()
+        if(Lexico.token != Lexico.simbolo.comilladoble):
+            error(30)
+    elif(Lexico.token == Lexico.simbolo.comillasimple):
+        obtoken()
+        try:
+            ord(lex)
+        except TypeError:
+            error(31)
+        #Este token se castea a texto y deberia de ingresarse asi al hash
+        obtoken()
+        if(Lexico.token != Lexico.simbolo.comillasimple):
+            error(8)
+    elif(Lexico.token == Lexico.simbolo.parena):
+        obtoken()
+        expresion()
+        if(Lexico.token != Lexico.simbolo.parenc):
+            error(21)
+    elif(Lexico.token == Lexico.simbolo.llaveatok):
+        obtoken()
+        valor()
+        while(Lexico.token == Lexico.simbolo.coma):
+            obtoken()
+            valor()
+        if(Lexico.token != Lexico.simbolo.llavectok):
+            error(27)
+    else:
+        if(Lexico.token != Lexico.simbolo.numtok and Lexico.token != Lexico.simbolo.voftok and Lexico.token != Lexico.simbolo.ident):
+            expresion()
+    obtoken()
+    return
+
+
 def tipo():
     if(Lexico.token == Lexico.simbolo.numtok):
         return objeto.NUM
@@ -108,7 +146,7 @@ def declaracionvariable():
     if(Lexico.token == Lexico.simbolo.puntoycoma):
         obtoken()
     else:
-        asignacion(False)
+        asignacion(False)    
     return
 
 def VerificarIdentExist():
@@ -131,16 +169,14 @@ def asignacion(checkIdent):
     #Se va por el camino de una asignacion a variable
     if(seguir and Lexico.token == Lexico.simbolo.asignacion):
         obtoken()
-        if(Lexico.token == Lexico.simbolo.valortok):
+        valor()
+        while(Lexico.token == Lexico.simbolo.coma):
             obtoken()
-            valor()#hacer algo con el valor retornado por valor
-            while(Lexico.token == Lexico.simbolo.coma):
-                obtoken()
-                asignacion(True)
-            if(Lexico.token == Lexico.simbolo.puntoycoma):
-                obtoken()
-            else:
-                error(4)
+            asignacion(True)
+        if(Lexico.token == Lexico.simbolo.puntoycoma):
+            obtoken()
+        else:
+            error(4)
     #Se va por el camino del arreglo
     elif (seguir and Lexico.token == Lexico.simbolo.corchab):
         obtoken()
@@ -150,14 +186,12 @@ def asignacion(checkIdent):
                 obtoken()
                 if(Lexico.token == Lexico.simbolo.igl):
                     obtoken()
-                    if(Lexico.token == Lexico.simbolo.valortok):
+                    valor()
+                    while(Lexico.token == Lexico.simbolo.coma):
                         obtoken()
-                        valor()
-                        while(Lexico.token == Lexico.simbolo.coma):
-                            obtoken()
-                            asignacion(True)
-                        if(Lexico.token == Lexico.simbolo.puntoycoma):
-                            obtoken()
+                        asignacion(True)
+                    if(Lexico.token == Lexico.simbolo.puntoycoma):
+                        obtoken()
         else:
             error(1)
     else:
