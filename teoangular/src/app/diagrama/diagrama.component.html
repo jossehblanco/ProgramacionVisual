@@ -1,81 +1,25 @@
-<mat-drawer-container
-  [class.drawer-opened]="drawer.opened"
-  class="example-container">
-  <mat-drawer #drawer 
-    class="drawer" 
-    mode="side" 
-    opened="true">
-
-    <mat-toolbar class="header">
-      <div>Herramientas</div>
-      <mat-icon style= "margin-left: 16px; margin-top: 4px;"class="close"
-     (click)="drawer.close()">close</mat-icon>
-    </mat-toolbar>
-    <div class="contents">
-            <div style="height: 580px">
-                    <div id='paletteCanvas'></div>
-            </div>
+<div layout="row" flex style="min-height: 100vh;">
+    <div layout="column" flex style="min-height: 10vh">
+        <mat-toolbar  color="warm" style="min-height: 10vh; margin-bottom: 0; background-color: #f44336" >
+            <mat-toolbar-row>
+                <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
+                  <mat-icon aria-label="Side nav toggle icon" style="color:white;">menu</mat-icon>
+                </button>
+                <h2 style="color: white">IDE Cpitón</h2>
+              </mat-toolbar-row>
+        </mat-toolbar>
     </div>
-  </mat-drawer>
-  
-  <mat-toolbar class="main header">
-    <mat-icon style="margin-right: 8px;"
-      *ngIf="!drawer.opened"
-      (click)="drawer.toggle()">
-      menu
-    </mat-icon>
-    <div>CPitón IDE </div>
-  </mat-toolbar>
 
-  <div class="main contents">
-    <div style="height: 600px">
-            <div id='ideCanvas'> </div>
+    <div layout="column" flex style="min-height: 90vh; background-color: red">
+        <mat-sidenav-container style="min-height: 90vh;">
+            <mat-sidenav #drawer mode="side" opened role="navigation">    
+              <h4 style="text-align: center; margin-top: 16px">Paleta de Componentes</h4>
+              <hr>
+              <div id="paletteCanvas"> </div>
+            </mat-sidenav>
+            <mat-sidenav-content style="margin-top: 0px">
+                <div id="ideCanvas" style="min-height: 75vh; width: 99%;"> </div>
+            </mat-sidenav-content>
+          </mat-sidenav-container>
     </div>
   </div>
-
-
-</mat-drawer-container>
-
-
-<!--<mat-sidenav-container class="sidenav-container">
-        <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
-            [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-            [mode]="(isHandset$ | async) ? 'over' : 'side'"
-            [opened]="!(isHandset$ | async)">
-          <mat-toolbar>Herramientas</mat-toolbar>
-          
-        </mat-sidenav>
-        <mat-sidenav-content>
-          <mat-toolbar color="primary">
-            <button
-              type="button"
-              aria-label="Toggle sidenav"
-              mat-icon-button
-              (click)="drawer.toggle()"
-              *ngIf="isHandset$ | async">
-              <mat-icon aria-label="Side nav toggle icon">Herramientas</mat-icon>
-            </button>
-            <span>CPitón IDE</span>
-          </mat-toolbar>
-           Add Content Here 
-          
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    -->
-<!--
-<mat-sidenav-container>
-    <mat-sidenav mode="side" [opened] = "opened"> 
-        <div id="sidenavtitle"> 
-                <h3>Herramientas</h3>
-            </div>
-            <div id='paletteCanvas'></div>
-    </mat-sidenav>
-<mat-sidenav-content>
-        <div id='ideCanvas'> </div>
-        <button (click)="opened=!opened" id="toggle">
-            
-            Mostrar Herramientas</button>
-</mat-sidenav-content>
-</mat-sidenav-container>
-
--->

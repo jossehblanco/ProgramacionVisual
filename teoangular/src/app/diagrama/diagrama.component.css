@@ -8,7 +8,7 @@ mat-sidenav-container{
 }
 
 mat-sidenav, mat-sidenav-container{
-    padding: 16px;
+    padding: 8px;
 
 }
 mat-sidenav{
@@ -33,24 +33,4 @@ mat-sidenav{
     border: 2px solid rebeccapurple;
     background-color: transparent;
     outline: none;
-}
-#toggle{
-    margin-left: 8px;
-    margin-top:8px;
-}
-
-#sidenavtitle{
-    width: 299px;
-    height: 50px;
-    margin: 0;
-    padding-top: 8px;
-    background-color: #babdbe;
-    text-align: center; 
-
-}
-
-h3{
-    display: inline-block;
-    vertical-align: middle;
-    line-height: normal;
 }
