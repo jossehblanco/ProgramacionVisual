@@ -1,4 +1,4 @@
-from pl0 import main
+from cpiton import main
 
 #connection carlitox
 #main("/home/carlos/Documentos/TeoriaProyecto/TeoProyecto/compiler/ejemplo.txt")

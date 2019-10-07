@@ -6,9 +6,11 @@ tabla=[]
 it=0
 
 class objeto(Enum):
-    CONSTANTE = 0
-    VARIABLE = 1
-    PROCEDIMIENTO = 2
+    NUM = 0
+    DEC = 1
+    TEXTO = 2
+    CAR = 3
+    VOF = 4
 
 class registro(object):
 	nombre=" "
@@ -28,7 +30,10 @@ def poner(k):
         nuevo = registro(Scanner.lex,k)
         tabla.insert(it,nuevo)
 
-def posicion():
+def posicion(array,item):
+    #implementando binary search
+    
+
 	Scanner.lex = tabla[0].nombre[:]
 	i = it-1
 	while(tabla[i].nombre != Scanner.lex):

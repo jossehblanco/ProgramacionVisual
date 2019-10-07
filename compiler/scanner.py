@@ -10,14 +10,14 @@ lex=" " #ultimo lexema leido
 valor=0 #valor numero de un lexema correspondiente a un numero
 
 def getline(s,lim):
-    import pl0
+    import cpiton
     global linea
-    c = pl0.fp.read(1)
+    c = cpiton.fp.read(1)
     for i in range(0,lim-1):
         if(c == '\n' or i == lim):
             break
         s += c
-        c = pl0.fp.read(1)
+        c = cpiton.fp.read(1)
     if(c == '\n'):
         s += c
         i+=1

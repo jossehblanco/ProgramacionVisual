@@ -4,7 +4,7 @@ from mensajes_de_error import mensaje_de_error
 import sys
 
 def error(no):
-    from pl0 import fp
+    from cpiton import fp
     fp.closed
     print("\n^ error"+ mensaje_de_error[no]+"\n")
     sys.exit()

@@ -35,11 +35,20 @@ class simbolo(Enum):
     hastok=28
     rettok=29
     funtok=30
-    tipotok=31
-    expretok=32
+    expretok=31
+    numtok=32
+    dectok=33
+    textok=34
+    cartok=35
+    voftok=36
+    numarra=37
+    decarra=38
+    textoarra=39
+    cararra=70
+    vofarra=71
     
 
-tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.sitok, simbolo.sinotok, simbolo.ositok, simbolo.paratok, simbolo.paratok, simbolo.mientrasttok, simbolo.hastok, simbolo.rettok, simbolo.funtok,simbolo.tipotok,simbolo.expretok]
+tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.car, simbolo.voftok, simbolo.sitok, simbolo.sinotok, simbolo.ositok, simbolo.paratok,simbolo.mientrasttok,simbolo.hastok, simbolo.rettok]
 
 token = simbolo.nulo
 

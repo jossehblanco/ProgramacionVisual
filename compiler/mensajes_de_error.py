@@ -33,5 +33,5 @@ mensaje_de_error=[
         "el programa fuente esta incompleto",
         "el programa fuente es demasiado largo",
         "anidamiento demasiado profundo para los procedures",
-        "se rebasa el maximo entero de pl0--se asume cero"]
+        "se rebasa el maximo entero de cpiton--se asume cero"]
 

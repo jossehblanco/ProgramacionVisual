@@ -20,7 +20,7 @@ def main(argv):
             print("\nNo se encontro el programa fuente indicado")
         else:
             timer=datetime.datetime.today()
-            print("\n\nCompilador de pl0 version 3.0/parser1 --- abril de 2011 --- A2\n")
+            print("\n\nCompilador de cpiton version 3.0/parser1 --- abril de 2011 --- A2\n")
             print(timer)
             
             from auxiliares import inicializar_espec
