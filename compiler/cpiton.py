@@ -20,7 +20,7 @@ def main(argv):
             print("\nNo se encontro el programa fuente indicado")
         else:
             timer=datetime.datetime.today()
-            print("\n\nCompilador de cpiton version 3.0/parser1 --- abril de 2011 --- A2\n")
+            print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
             print(timer)
             
             from auxiliares import inicializar_espec
@@ -35,11 +35,11 @@ def main(argv):
             
             tds.it=0
             
-            parseador.bloque()
+            parseador.inicio()
             
             global token
             from auxiliares import error
-            if lexico.token!=lexico.simbolo.punto:
+            if lexico.token!=lexico.simbolo.mdputok:
                 error(9)
             
             from auxiliares import estadisticas

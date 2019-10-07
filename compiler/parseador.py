@@ -3,6 +3,13 @@ from auxiliares import *
 import lexico as Lexico
 from scanner import *
 
+def inicio():
+    if(Lexico.token == Lexico.simbolo.dputok):
+        obtoken()
+        bloque()
+    else:
+        error(29)
+
 def bloque():
     temp = None
 #-------------Declaracion de variable----------------------------------    

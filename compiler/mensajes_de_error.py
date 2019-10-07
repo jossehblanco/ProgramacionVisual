@@ -27,8 +27,8 @@ mensaje_de_error=[
     " debe ir seguido de un '('",#25
     " debe ir seguido de una '{'",#26
     " falta una llave de cierre '}'",#27
-    "",#28
-    "",#29
+    " se esperaba 'v'",#28
+    " se esperaba :v como inicio de programa",#29
     "",#30
     "",#31
     "",#32

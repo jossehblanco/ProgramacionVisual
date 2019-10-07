@@ -1,7 +1,8 @@
 from parametros import *
 import lexico as Lexico
 
-linea=" " #buffer de lineas
+linea=[] #buffer de lineas
+contadorLineas = 0
 ll=0 #contador de caracters
 offset=0 #corrimiento en la lectura de los caracteres del programa fuente
 fin_archivo=0 #bandera de fin
@@ -21,8 +22,7 @@ def getline(s,lim):
     if(c == '\n'):
         s += c
         i+=1
-    s += '\0'
-    linea = s
+    linea.append(s)
     return i
 
 def obtch():
@@ -32,6 +32,7 @@ def obtch():
     global ll
     global linea
     global MAXLINEA
+    global contadorLineas
     if(fin_archivo == 1):
         error(32)
     if(offset == ll-1):
@@ -41,19 +42,39 @@ def obtch():
             print(linea)
             offset-=1
     offset += 1
-    try:
-        actual = linea[offset]
-        if( (actual == '\0') or (actual == '\n') or (fin_archivo == 1)):
-            return ' '
-        else:
-            return(linea[offset].upper())
-    except IndexError:
-        ll = getline(linea,MAXLINEA)
-        actual = linea[offset]
-        if( (actual == '\0') or (actual == '\n') or (fin_archivo == 1)):
-            return ' '
-        else:
-            return(linea[offset].upper())
+    #
+    actual = linea[contadorLineas][offset]
+    if((fin_archivo == 1)):
+        return ' '
+    elif(actual == '\n'):
+        offset = 0
+        contadorLineas += 1
+    else:
+        return(linea[offset].upper())
+    #except IndexError:
+    #    ll = getline(linea,MAXLINEA)
+    #    actual = linea[offset]
+    #    if( (actual == '\0') or (actual == '\n') or (fin_archivo == 1)):
+    #        return ' '
+    #    else:
+    #        return(linea[offset].upper())
+
+def leerints(lexid, i, j, MAX):
+    global ch
+    while(1):
+        try:
+            prueba = int(ch)
+            if(i<MAX):
+                i+=1
+                lexid += ch
+            j+=1
+            ch = obtch()
+        except ValueError:
+            if(i==1):
+                error(1)#si en la primera iteracion no viene un numero es como que pongan 2. y nada mas
+            break
+    if(j>MAX):
+        error(30)
 
 def obtoken():
     from auxiliares import error
@@ -68,12 +89,11 @@ def obtoken():
         lexid = ch
         i = 1
         ch = obtch()
-        while( ch.isalpha() or isinstance(ch,int)):
+        while( ch.isalpha()):
             if(i < MAXID):
                 i+=1
                 lexid += ch
             ch = obtch()
-        #lexid += '\0'
 
         for j in range(0,MAXPAL):
             if(lexid == Lexico.lexpal[j]):
@@ -87,67 +107,66 @@ def obtoken():
 
         lex = lexid
 
-    else:
-        #if(isinstance(ch,int)):
+    else:        
         try:
             prueba = int(ch)
             lexid = ch
             i=j=1
             ch = obtch()
-            #while ( isinstance(ch,int)):
-            while(1):
-                try:
-                    prueba = int(ch)
-                    if(i<MAXDIGIT):
-                        i+=1
-                        lexid += ch
-                    j+=1
-                    ch = obtch()
-                except ValueError:
-                    break
-            if(j>MAXDIGIT):
-                auxiliares.error(30)
-            Lexico.token = Lexico.simbolo.numero
-            valor = int(lexid)
-            lexid += '\0'
+            isDouble = False            
+            leerints(lexid, i,j,MAXDIGIT)
+            #VERIFICANDO SI ES DECIMAL
+            if(ch == '.'):
+                isDouble = true
+                lexid += ch
+                ch = obtch()
+                i=j=1
+                leerints(lexid,i,j, MAXDECIMAL)
+             
+            if(isDouble):
+                Lexico.token = Lexico.simbolo.dectok
+                valor = float(lexid)
+            else:
+                Lexico.token = Lexico.simbolo.numero
+                valor = int(lexid)
         except ValueError:
-            if(ch == '<'):
+            if(ch == ':'):
+                obtoken()
+                if(ch == 'v'):
+                    Lexico.token = Lexico.simbolo.dputok
+                    ch = obtch()
+                else:
+                    error(28)
+            elif(ch == '<'):
                 ch=obtch()
                 if(ch == '='):
                     Lexico.token = Lexico.simbolo.mei
                     ch = obtch()
                 else:
-                    if(ch == '>'):
-                        Lexico.token = Lexico.simbolo.nig
-                        ch = obtch()
-                    else:
-                        Lexico.token = Lexico.simbolo.mnr
+                    Lexico.token = Lexico.simbolo.mnr
             elif(ch == '>'):
                 ch = obtch()
                 if(ch == '='):
                     Lexico.token = Lexico.simbolo.mai
                     ch = obtch()
-                #elif(ch == ':'):
-                    #ch = obtch()
-                    #if(ch == 'v'):
-                        #token = fin
-                        #ch = obtch()
+                elif(ch == ':'):
+                    ch = obtch()
+                    if(ch == 'v'):
+                        Lexico.token = Lexico.simbolo.mdputok
+                        ch = obtch()
+                    else:
+                        Lexico.token = Lexico.simbolo.nulo
+                        ch = obtch()
+                        error(28)
                 else:
                     Lexico.token = Lexico.simbolo.myr
-            elif(ch == ':'):
+            elif(ch == '='):
                 ch = obtch()
                 if(ch == '='):
-                    Lexico.token = Lexico.simbolo.asignacion
+                    Lexico.token = Lexico.simbolo.igl
                     ch = obtch()
                 else:
-                    Lexico.token = Lexico.simbolo.nulo
-            #elif(ch == '='):
-            #    ch = obtch()
-            #    if(ch == '='):
-            #        Lexico.token = Lexico.simbolo.igl
-            #        ch = obtch()
-            #    else:
-            #        Lexico.token = Lexico.simbolo.asignacion
+                    Lexico.token = Lexico.simbolo.asignacion
             else:
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()
