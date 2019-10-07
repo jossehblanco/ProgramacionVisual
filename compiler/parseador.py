@@ -5,52 +5,142 @@ from scanner import *
 
 def bloque():
     temp = None
-    if(Lexico.token == Lexico.simbolo.consttok):
-        obtoken()
-        declaracionconst()
-
-        while (Lexico.token == Lexico.simbolo.coma):
-            obtoken()
-            declaracionconst()
-        
-        if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
-        else:
-            error(5)
-
+#-------------Declaracion de variable----------------------------------    
     if(Lexico.token == Lexico.simbolo.vartok):
         obtoken();
-        declaracionvar();
+        declaracionvariable();
 
         while(Lexico.token == Lexico.simbolo.coma):
             obtoken()
-            declaracionvar()
+            declaracionvariable()
         if(Lexico.token == Lexico.simbolo.puntoycoma):
             obtoken()
         else:
             error(5)
-
-    while(Lexico.token == Lexico.simbolo.proctok):
+#-----------------------------------------------------------------------
+#------------Asignacion------------------------------------------------
+    if(Lexico.token == lexico.simbolo.ident):
+        asignacion()
+        while(Lexico.token == Lexico.simbolo.coma):
+            obtoken()
+            asignacion()
+        if(Lexico.token == Lexico.simbolo.puntoycoma):
+            obtoken()
+        else:
+            error(5)
+#-----------------------------------------------------------------------
+#-------------Declaracion de funciones----------------------------------
+    if(Lexico.token == Lexico.simbolo.funtok):
         obtoken()
-        if(Lexico.token == Lexico.simbolo.ident):
-            poner(objeto.PROCEDIMIENTO)
-            obtoken()
-        else:
-            error(4)
-        if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
-        else:
-            error(5)
-        temp = it
-        bloque()
-        it = temp
+        delaracionfuncion()
+        obtoken()
+#-----------------------------------------------------------------------
+#-------------Instruccion-----------------------------------------------
+    #instruccion()
+    
 
-        if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
-        else:
-            error(5)
+#-----------------------------------------------------------------------
+    #if(Lexico.token == Lexico.simbolo)
+    #if(Lexico.token == Lexico.simbolo.consttok):
+        #obtoken()
+        #declaracionconst()
 
-    instruccion()
+        #while (Lexico.token == Lexico.simbolo.coma):
+         #   obtoken()
+          #  declaracionconst()
+        
+        #if(Lexico.token == Lexico.simbolo.puntoycoma):
+         #   obtoken()
+        #else:
+         #   error(5)
+
+    #while(Lexico.token == Lexico.simbolo.proctok):
+     #   obtoken()
+      #  if(Lexico.token == Lexico.simbolo.ident):
+       #     poner(objeto.PROCEDIMIENTO)
+        #    obtoken()
+        #else:
+         #   error(4)
+        #if(Lexico.token == Lexico.simbolo.puntoycoma):
+         #   obtoken()
+        #else:
+         #   error(5)
+        #temp = it
+        #bloque()
+        #it = temp
+
+        #if(Lexico.token == Lexico.simbolo.puntoycoma):
+         #   obtoken()
+        #else:
+         #   error(5)
+    return
+
+#--------------------------------------------------------------------------------
+#Declaracion de variables--------------------------------------------------------
+def declaracionvariable():
+    if(lexico.token == lexico.simbolo.ident):
+        poner(objeto.VARIABLE)
+        obtoken()
+    else:
+        error(4)
+    return
+
+def asignacion():
+    if(lexico.token == lexico.simbolo.ident):
+        obtoken()
+        #Se va por el camino de una asignacion a variable
+        if(lexico.token == lexico.simbolo.igl):
+            obtoken()
+            if(lexico.token == lexico.simbolo.valortok):
+                obtoken()
+        #Se va por el camino del arreglo
+        elif (lexico.token == lexico.simbolo.corchab):
+            obtoken()
+            if(lexico.token == lexico.simbolo.numtok):
+                obtoken()
+                if(lexico.token == lexico.simbolo.corchcr):
+                    obtoken()
+                    if(lexico.token == lexico.simbolo.igl):
+                        obtoken()
+                        if(lexico.token == lexico.simbolo.valortok):
+                            obtoken()
+        else:
+            error(1)
+    else:
+        error(3)
+
+def delaracionfuncion():
+    if(lexico.token == lexico.simbolo.funtok):
+        obtoken()
+        if(lexico.token == lexico.simbolo.parena):
+            obtoken()
+            if(lexico.token == lexico.simbolo.parametok):
+                obtoken()
+                if(lexico.token == lexico.simbolo.parenc):
+                    obtoken()
+                    if(lexico.token == lexico.simbolo.retortok):
+                        obtoken()
+                        if(lexico.token == lexico.simbolo.vartok):
+                            obtoken()
+                            if(lexico.token == lexico.simbolo.llaveatok):
+                                bloque()
+                                obtoken()
+                                if(lexico.token == lexico.simbolo.rettok):
+                                    obtoken()
+                                    if(lexico.token == lexico.simbolo.ident):
+                                        obtoken()
+                                        if(lexico.token == lexico.simbolo.puntoycoma):
+                                            obtoken()
+                                            if(lexico.token == lexico.simbolo.llavectok):
+                                                obtoken
+                                                return
+                                            else:
+                                                error(1)
+                                        else:
+                                            error(1)
+        else:
+            error(23)
+    return
 
 def declaracionconst():
     if(Lexico.token == Lexico.simbolo.ident):

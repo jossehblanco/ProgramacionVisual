@@ -1,7 +1,7 @@
 from enum import Enum
 from parametros import *
 
-lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret"]
+lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret","fun","retorna"]
 
 class simbolo(Enum):
     nulo=0
@@ -46,6 +46,13 @@ class simbolo(Enum):
     textoarra=39
     cararra=70
     vofarra=71
+    
+    
+    corchab=74
+    corchcr=75
+    parametok=76
+    retortok=77
+
     
 
 tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.car, simbolo.voftok, simbolo.sitok, simbolo.sinotok, simbolo.ositok, simbolo.paratok,simbolo.mientrasttok,simbolo.hastok, simbolo.rettok]
