@@ -165,8 +165,103 @@ def declaracionvar():
     else:
         error(4)#error 4: Const, Var y Procedure deben ir seguidos de un identificador
 
+
+def cuerpoLlavesInstruccion():
+    if(Lexico.token == Lexico.simbolo.llaveatok):
+        obtoken()
+        instruccion()
+        if(Lexico.token == Lexico.simbolo.llavectok):
+            obtoken()
+            return True
+        else:
+            error(26)
+    else:
+        error(25)
+
+def cuerposiosi():
+    if(Lexico.token == Lexico.simbolo.parena):
+        obtoken()
+        condicion()
+        if(Lexico.token == Lexico.simbolo.parenc):
+            obtoken()
+            val = cuerpoLlavesInstruccion()
+            return val
+        else:
+            error(21)
+    else:
+        error(24)
+
+def VerificarParaIdents():
+    if(Lexico.token != Lexico.simbolo.ident):
+            error(14)
+    else:
+        i = posicion()
+        if(i == -1):
+            error(11)
+        else:
+            if(tabla[i].tipo == objeto.NUM):
+                obtoken()
+                return True
+            else:
+                error(7)
+
 def instruccion():    
-    if(Lexico.token == Lexico.simbolo.ident):
+    #VERIFICANDO SI ES SITOK
+    if(Lexico.token == Lexico.simbolo.sitok):
+        obtoken()
+        cuerpoestabien = cuerposiosi()
+        while(cuerpoestabien):
+            if(Lexico.token == Lexico.simbolo.ositok):
+                cuerpoestabien = cuerposiosi()
+            else:
+                break
+        if(Lexico.token == Lexico.simbolo.sinotok):
+            obtoken()
+            cuerpoLlavesInstruccion()
+    else:#Verificando si es PARATOK
+        if(Lexico.token == Lexico.simbolo.paratok):
+            obtoken()
+            #verificar ident y que sea tipo num
+            seguir = VerificarParaIdents()
+            if(seguir and Lexico.token == Lexico.simbolo.rangotok):        
+                obtoken()
+                if(Lexico.token == Lexico.simbolo.parena):
+                    obtoken()
+                    seguir = VerificarParaIdents()
+                    if(seguir and Lexico.token == Lexico.simbolo.coma):
+                        obtoken()
+                        seguir = VerificarParaIdents()
+                        if(seguir and Lexico.token == Lexico.simbolo.coma):
+                            obtoken()
+                            asignacion()
+                            if(Lexico.token == Lexico.simbolo.parenc):
+                                obtoken()
+                                cuerpoLlavesInstruccion()
+                            else:
+                                error(21)
+                        else:
+                            error(4)
+                    else:
+                        error(4)
+                else:
+                    error(24)
+            else:
+                error(6)
+        else:
+            if(Lexico.token == Lexico.simbolo.mientrastok):
+                obtoken()
+                if(Lexico.token == Lexico.simbolo.parena):
+                    obtoken()
+                    condicion()
+                    if(Lexico.token == Lexico.simbolo.parenc):
+                        obtoken()
+
+                else:
+                    error(24)
+
+            
+                        
+
         i = posicion()
         if(i == -1):
             error(11) #error 11: identificador no declarado 

@@ -24,6 +24,9 @@ mensaje_de_error=[
         "falta un parentesis de apertura",#23
         "el factor anterior no puede ir seguido de este simbolo o falta un punto y coma",#24
         "una expresion no puede empezar con este simbolo",#25
+        " debe ir seguido de un '('",
+        " debe ir seguido de una '{'",
+        " falta una llave de cierre '}'",
         "",#26
         "",#27
         "",#28
@@ -35,4 +38,5 @@ mensaje_de_error=[
         "el programa fuente es demasiado largo",#34
         "anidamiento demasiado profundo para los procedures",#35
         "se rebasa el maximo entero de cpiton--se asume cero"#36]
+
 

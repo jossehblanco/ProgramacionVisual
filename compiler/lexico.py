@@ -31,7 +31,7 @@ class simbolo(Enum):
     sinotok=24
     ositok=25
     paratok=26
-    mientrasttok=27
+    mientrastok=27
     hastok=28
     rettok=29
     funtok=30
@@ -46,6 +46,10 @@ class simbolo(Enum):
     textoarra=39
     cararra=70
     vofarra=71
+    llaveatok=72
+    llavectok=73
+    rangotok = 76
+    
     
     
     corchab=74
