@@ -39,7 +39,9 @@ def poner(k):
 def posicion(item):
     #implementando binary search
     #Scanner.lex tiene el ultimo lexema leido
+    #print(str(Scanner.lex))
+    
 	i = it-1
-	while(tabla[i].nombre != Scanner.lex):
+	while(tabla[i].nombre != item):
 		i-=1
 	return i;		

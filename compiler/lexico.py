@@ -71,7 +71,8 @@ class simbolo(Enum):
     cArch = 403
     leerArch = 404
     escArch = 405
-
+    intok = 406
+    decimaltok = 407
     
 
 tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.cartok, simbolo.voftok, simbolo.sitok,

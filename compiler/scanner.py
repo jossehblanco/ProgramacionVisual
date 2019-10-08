@@ -9,6 +9,7 @@ fin_archivo=0 #bandera de fin
 ch=" " #ultimo caracter leido
 lex=" " #ultimo lexema leido
 valor=0 #valor numero de un lexema correspondiente a un numero
+lextoken = ""
 
 def getline(lim):
     import cpiton
@@ -80,6 +81,7 @@ def leerints(lexid, i, j, MAX, checkDecimal):
     return
 
 def obtoken():
+    global lextoken
     from auxiliares import error
     lexid = None
     global lex
@@ -180,6 +182,9 @@ def obtoken():
             else:
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()
+
+    lextoken = Lexico.token
+    print(lextoken)
 
 
 

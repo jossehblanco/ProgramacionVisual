@@ -31,7 +31,7 @@ mensaje_de_error=[
     " se esperaba :v como inicio de programa",#29
     " se esperaba comilla doble",#30
     " se esperaba un caracter",#31
-    "",#32
+    "se esperaba un >:v",#32
     "este numero es demasiado grande - trunc(5)",#33
     "se rebaso el tamaño de la Tabla de Simbolos",#34
     "el programa fuente esta incompleto",#35

@@ -11,6 +11,8 @@ def inicio():
         error(29)
 
 def bloque():
+    if(Lexico.token == Lexico.simbolo.mdputok):
+        return
     temp = None
 #-------------Declaracion de variable----------------------------------    
     
@@ -24,9 +26,11 @@ def bloque():
         obtoken()
         delaracionfuncion()
         obtoken()
+    
 #-----------------------------------------------------------------------
 #-------------Instruccion-----------------------------------------------
-    #instruccion()
+    instruccion()
+    bloque()
     
 
 #-----------------------------------------------------------------------
@@ -146,14 +150,15 @@ def declaracionvariable():
     if(Lexico.token == Lexico.simbolo.puntoycoma):
         obtoken()
     else:
-        asignacion(False)    
+        asignacion(False)  
+    #bloque()  
     return
 
 def VerificarIdentExist():
     if(Lexico.token != Lexico.simbolo.ident):
-            error(14)
+            return
     else:
-        i = posicion()
+        i = posicion(lexlex)
         if(i == -1):
             error(10)
         else:
@@ -283,7 +288,7 @@ def VerificarIdentsExistAndTypes(tipao):
     if(Lexico.token != Lexico.simbolo.ident):
             error(14)
     else:
-        i = posicion()
+        i = posicion(lex)
         if(i == -1):
             error(10)
         else:
@@ -382,7 +387,9 @@ def termino():
 
 def factor():
     if(Lexico.token == Lexico.simbolo.ident):
-        i = posicion()
+        i = posicion(lex
+
+        )
         if(i == -1):
             error(11) #error 11: Identificador no declarado
         else:

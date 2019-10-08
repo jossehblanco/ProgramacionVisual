@@ -1,4 +1,4 @@
 :v
 num b = 3;
-num a = 2;
+num a = 4;
 >:v

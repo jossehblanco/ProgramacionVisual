@@ -40,7 +40,7 @@ def main(argv):
             global token
             from auxiliares import error
             if lexico.token!=lexico.simbolo.mdputok:
-                error(9)
+                error(32)
             
             from auxiliares import estadisticas
             estadisticas()
