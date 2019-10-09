@@ -34,3 +34,14 @@ mat-sidenav{
     background-color: transparent;
     outline: none;
 }
+
+
+.bgdialog {
+    background: rgba(0,0,0,0.5);
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  
+    /* Full height */
+    height: 100%;
+  }
