@@ -274,7 +274,7 @@ export class Templates{
     var inicioTemplate2 =
     $(go.Node, "Vertical",
       $(go.Shape, "Circle",
-        { width: 60, height: 60, fill: "white", stroke: "grey", strokeWidth: 3 },
+        { fill: "white", stroke: "grey", strokeWidth: 3 },
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5 , editable : false},
         new go.Binding("text", "representa").makeTwoWay())
@@ -284,7 +284,7 @@ export class Templates{
     var finTemplate2 =
     $(go.Node, "Vertical",
       $(go.Shape, "Circle",
-        { width: 60, height: 60, fill: "white", stroke: "black", strokeWidth: 3 },
+        {  fill: "white", stroke: "black", strokeWidth: 3 },
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5 , editable : false},
         new go.Binding("text", "representa").makeTwoWay())
