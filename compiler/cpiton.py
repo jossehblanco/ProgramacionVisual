@@ -22,6 +22,7 @@ def main(argv):
             timer=datetime.datetime.today()
             print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
             print(timer)
+            print("\nLexema                  Token\n")
             
             from auxiliares import inicializar_espec
             #print(auxiliares.hola)

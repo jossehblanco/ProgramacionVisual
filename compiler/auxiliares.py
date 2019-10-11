@@ -32,4 +32,6 @@ def inicializar_espec():
     Lexico.espec[46]=Lexico.simbolo.punto
     Lexico.espec[44]=Lexico.simbolo.coma
     Lexico.espec[59]=Lexico.simbolo.puntoycoma
+    Lexico.espec[91]=Lexico.simbolo.corchab
+    Lexico.espec[93]=Lexico.simbolo.corchcr
 
