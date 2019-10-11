@@ -19,19 +19,17 @@ const $ = go.GraphObject.make;
 export class DiagramaComponent implements OnInit {
   opened= false;
   //Declaracion de diagramas y paleta, empiezan como nulo y se inicializan luego
-  public diagram : go.Diagram = null;
-  public palette : go.Palette = null;
-  public beginNode : go.Node = null;
+  private diagram : go.Diagram = null;
+  private palette : go.Palette = null;
+  private beginNode : go.Node = null;
 
   //Declarando variables para alojar los templates
-  public diagramTemplate :go.Map<string, go.Node>;
-  public paletteTemplate : go.Map<string, go.Node>;
-  public linkTemplate ;
-  public lastInstanceOfEndIf:go.Node
-  public lastInstanceOfEndFor : go.Node
-  public lastInstanceOfEndMientras : go.Node
-  public lastInstanceOfEndHasm : go.Node
-  public textogenerado = ""
+  private diagramTemplate :go.Map<string, go.Node>;
+  private paletteTemplate : go.Map<string, go.Node>;
+  private linkTemplate ;
+  private textogenerado : string
+  private nombrearchivo : string = "";
+  private conversordecodigo: Codigo;
   //Se define un objeto de tipo go.Model que se recibe mediante input (databinding) desde app-component.ts
   @Input()
   public model : go.Model
@@ -40,16 +38,17 @@ export class DiagramaComponent implements OnInit {
   Obtengo la instancia de la clase que hize de Templates.ts en shared/templates.ts
   por medio de inyecciónd e dependencias.
   */
-  constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog , public conversordecodigo: Codigo) { 
+  constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog, private cc : Codigo) { 
 
     //Asignando a las variables que hice mas arriba el valor de los templates que están en
     //la instancia de Templates para despues poderlas ocupar en este contexto.
     this.diagramTemplate = templates.diagramTemplateMap;
     this.paletteTemplate = templates.paletteTemplateMap;
     this.linkTemplate = templates.linkTemplate;
+    this.textogenerado = ""
+    this.conversordecodigo = cc;
   }
-  public nombrearchivo : string = "";
-
+  
 
   openDialog() : void {
     this.nombrearchivo = ""
@@ -58,7 +57,6 @@ export class DiagramaComponent implements OnInit {
       disableClose : true,
       data: {nombrearchivo  : this.nombrearchivo}
     });
-
     var checkfalse : boolean 
     dialogRef.afterClosed().subscribe(result => {
       if(result != false){
@@ -68,7 +66,7 @@ export class DiagramaComponent implements OnInit {
     this.beginNode = this.diagram.findNodeForKey("inicionode")
     if(this.beginNode != null){
       console.log("Se cargó el nodo de inicio")
-      this.textogenerado = this.conversordecodigo.convert(this.beginNode,"fin", "")
+      this.textogenerado = this.conversordecodigo.convertircodigo(this.beginNode,"fin", "")
      }else{
       console.log("Error: se debe especificar un inicio para el diagrama")
     }
@@ -84,12 +82,13 @@ export class DiagramaComponent implements OnInit {
   verAyuda(){
     window.open('../assets/ayuda.pdf', '_blank')
   }
+
+
   //Creando archivo de texto para descargar
   guardarTxt(){
     var blob = new Blob([this.textogenerado], {type : "text/plain;charset=utf-8"});
     saveAs(blob, this.nombrearchivo +".cpit");
   }
-
 
   generar(event: Event) {
     this.openDialog();
@@ -99,6 +98,7 @@ export class DiagramaComponent implements OnInit {
 
   //Este metodo se llama al inicializar el compoennte. Por el momento no hay nada aqui.
   ngOnInit() {
+  
   }
 
   /*Todo el codigo para el diagrama se hace en el metodo ngAfterViewInit
@@ -127,9 +127,7 @@ export class DiagramaComponent implements OnInit {
     );
 
       //Inicializo mi objeto this.pallete como un tipo go.Palette que sera contenido en un div con id paletteCanvas 
-      this.palette = $(go.Palette, "paletteCanvas");
-      
-      
+      this.palette = $(go.Palette, "paletteCanvas");      
       //Asignando Templates
       this.diagram.nodeTemplateMap = this.diagramTemplate;
       this.palette.nodeTemplateMap = this.paletteTemplate;
@@ -173,25 +171,19 @@ export class DiagramaComponent implements OnInit {
       //Inicializando el controlador para dar deshacer
       this.diagram.undoManager.isEnabled = true;
 
-
       //Un listener para ver si doy doble click sobre un nodo. 
       //SI se da doble click, signifca que se debe editar el texto en e edittextblock
       //lo que causara que se modifica la propiedad representa que está bound a la propiedad texto
       this.diagram.addDiagramListener("ObjectDoubleClicked", (e) => {
-        console.log("se hizo!!!")
         this.diagram.commandHandler.editTextBlock();
       });
 
       //Un listener para ver si doy doble click sobre un nodo. 
       //SI se da doble click, signifca que se debe editar el texto en e edittextblock
       //lo que causara que se modifica la propiedad representa que está bound a la propiedad texto
-      this.diagram.addDiagramListener("ExternalObjectsDropped", (e) => {
-        
-        console.log("se hizo!!!")
+      /*this.diagram.addDiagramListener("ExternalObjectsDropped", (e) => {
         //this.diagram.commandHandler.editTextBlock();
-      });
-
-
+      });*/
       /*
       Un listener que recibe un evento cada vez que se dibuja un ink entre dos nodos.
       ---Notas: esto se llama cuando el link ya está hecho.----
@@ -224,9 +216,7 @@ export class DiagramaComponent implements OnInit {
                 //sino es 1, entonces será "falso" que viene siendo practicamente el else
                 this.diagram.model.setDataProperty(
                   link.data, "texto", "falso");
-            }
-          }
-        }
-      );
+            }}}
+        );
   }
 }

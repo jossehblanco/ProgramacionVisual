@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core'
 
-@Injectable(
-    {providedIn: 'root'}    
-)
+@Injectable({
+  providedIn: 'root'
+})
 export class Codigo{
 
-    textogenerado: string = ""
+    textogenerado: string
     lastInstanceOfEndIf: go.Node
     lastInstanceOfEndFor: go.Node
     lastInstanceOfEndMientras: go.Node
     lastInstanceOfEndHasm: go.Node
 
-    convert(currentNode :go.Node, endPoint : string = "fin", tab : string = ""): string{
-        const nodo = currentNode.data
+    constructor(){
+      this.textogenerado= "";
+
+    }
+    convertircodigo(currentNode :go.Node, endPoint : string = "fin", tab : string = ""){
+      this.textogenerado = "";
+      return this.convert(currentNode, endPoint, tab)
+    }
+    convert (currentNode :go.Node, endPoint : string = "fin", tab : string = "") : string{
+      
+      const nodo = currentNode.data
         if(nodo.category == "inicio"){
           this.textogenerado += ":v\n"
-          console.log(":v")
         //Preparando para recursión
         var nuevoNodo : go.Node
         var newNodeIt = currentNode.findLinksOutOf()
@@ -28,8 +36,9 @@ export class Codigo{
         }
     
         else if(nodo.category == "proc"){
-          console.log(tab+nodo.representa + ";")
+        
           this.textogenerado += (tab + nodo.representa + ";\n")
+          
           //Preparando para recursión
           var nuevoNodo : go.Node
           var newNodeIt = currentNode.findLinksOutOf()
@@ -40,8 +49,8 @@ export class Codigo{
           this.convert(nuevoNodo, endPoint, tab)
           //Fin Recursion
         }else if(nodo.category == "if"){
-          console.log(tab +"si("+nodo.representa+"){")
-          this.textogenerado += (tab + "si(" +nodo.representa+"){")
+          
+          this.textogenerado += (tab + "si(" +nodo.representa+"){\n")
           var nodoif : go.Node
           var nodoelse : go.Node
           var count  = 0
@@ -56,11 +65,12 @@ export class Codigo{
             }
           }
           this.convert(nodoif, "fif", (tab+"\t"))
-          console.log(tab+"}\n")
-          console.log(tab+"sino{")
+          this.textogenerado += (tab+"}\n")
+          this.textogenerado += (tab+"sino{\n")
           this.convert(nodoelse, "fif",(tab+ "\t"))
-          console.log(tab+"}")
-    
+          this.textogenerado += (tab+"}")
+          
+          
           var newNodeIt = this.lastInstanceOfEndIf.findLinksOutOf()
           var nuevoNodo : go.Node
           while(newNodeIt.next()){
@@ -73,7 +83,7 @@ export class Codigo{
           //Fin Recursion
         }
         else if(nodo.category == "for"){
-          console.log(tab +"para "+nodo.variable+" rango(" + nodo.desde + "," + nodo.hasta + "," + nodo.incremento + "){")
+          
           this.textogenerado += (tab + "para " +nodo.variable + " rango(" +nodo.desde + "," + nodo.hasta + ","+ nodo.incremento + "){\n")
           var nodofor : go.Node
           var newNodeIt = currentNode.findLinksOutOf()
@@ -82,7 +92,7 @@ export class Codigo{
             nodofor = link.toNode
           }
           this.convert(nodofor, "efor", (tab+"\t"))
-          console.log(tab+"}\n")
+          
           this.textogenerado += (tab + "}\n")
           var newNodeIt = this.lastInstanceOfEndFor.findLinksOutOf()
           var nuevoNodo : go.Node
@@ -95,7 +105,7 @@ export class Codigo{
           //Fin Recursion
         }
         else if(nodo.category == "mientras"){
-          console.log(tab +"mientras" + "(" + nodo.representa + "){")
+          
           this.textogenerado += (tab +"mientras" + "(" + nodo.representa + "){\n")
           var nodomientras : go.Node
           var newNodeIt = currentNode.findLinksOutOf()
@@ -104,7 +114,7 @@ export class Codigo{
             nodomientras = link.toNode
           }
           this.convert(nodomientras, "emientras", (tab+"\t"))
-          console.log(tab+"}\n")
+          
           this.textogenerado +=(tab + "}\n")
           var newNodeIt = this.lastInstanceOfEndMientras.findLinksOutOf()
           var nuevoNodo : go.Node
@@ -117,7 +127,7 @@ export class Codigo{
           //Fin Recursion
         }
         else if(nodo.category == "hasm"){
-          console.log(tab +"has"+ "{")
+          
           this.textogenerado += (tab +"has"+ "{\n")
           var nodohasm : go.Node
           var newNodeIt = currentNode.findLinksOutOf()
@@ -126,7 +136,6 @@ export class Codigo{
             nodohasm = link.toNode
           }
           this.convert(nodohasm, "ehasm", (tab+"\t"))
-          console.log(tab+"}mientras("+ nodo.representa +");")
           this.textogenerado += (tab+"}mientras("+ nodo.representa +");\n")
           var newNodeIt = this.lastInstanceOfEndHasm.findLinksOutOf()
           var nuevoNodo : go.Node
@@ -139,7 +148,7 @@ export class Codigo{
           //Fin Recursion
         }
         else if(nodo.category == "leer"){
-          console.log(tab+"leerstd(" + nodo.tipo + "," + nodo.guardar + ");")
+          
           this.textogenerado += (tab+"leerstd(" + nodo.tipo + "," + nodo.guardar + ");\n")
           //Preparando para recursión
           var nuevoNodo : go.Node
@@ -153,7 +162,7 @@ export class Codigo{
         }
     
         else if(nodo.category == "imp"){
-          console.log(tab+"imp(" + nodo.representa + ");")
+          
           this.textogenerado += (tab+"imp(" + nodo.representa + ");\n")
           //Preparando para recursión
           var nuevoNodo : go.Node
@@ -167,7 +176,7 @@ export class Codigo{
         }
     
         else if(nodo.category == "abrira"){
-          console.log(tab+nodo.guardar + "=abArch(" + nodo.url +","+nodo.modo +");")
+          
           this.textogenerado += (tab+nodo.guardar + "=abArch(" + nodo.url +","+nodo.modo +");\n")
           //Preparando para recursión
           var nuevoNodo : go.Node
@@ -181,8 +190,8 @@ export class Codigo{
         }
     
         else if(nodo.category == "leera"){
-          console.log(tab+"leerArch(" + nodo.tipo +","+nodo.guardar +");")
-          this.textogenerado += console.log(tab+"leerArch(" + nodo.tipo +","+nodo.guardar +");\n")
+          
+          this.textogenerado += (tab+"leerArch(" + nodo.tipo +","+nodo.guardar +");\n")
           //Preparando para recursión
           var nuevoNodo : go.Node
           var newNodeIt = currentNode.findLinksOutOf()
@@ -195,7 +204,7 @@ export class Codigo{
         }
     
         else if(nodo.category == "esca"){
-          console.log(tab+"escArch(" + nodo.representa + ");")
+          
           this.textogenerado += (tab+"escArch(" + nodo.representa + ");\n")
           //Preparando para recursión
           var nuevoNodo : go.Node
@@ -209,7 +218,7 @@ export class Codigo{
         }
     
         else if(nodo.category == "cerrara"){
-          console.log(tab+"cArch(" + nodo.representa + ");")
+          
           this.textogenerado += (tab+"cArch(" + nodo.representa + ");\n")
           //Preparando para recursión
           var nuevoNodo : go.Node
@@ -225,7 +234,6 @@ export class Codigo{
         else if(nodo.category == endPoint){
           if(endPoint=="fin"){
             this.textogenerado += ">:v\n"
-            return this.textogenerado
           }
           else if(endPoint == "fif"){
             this.lastInstanceOfEndIf = currentNode
@@ -238,6 +246,7 @@ export class Codigo{
             this.lastInstanceOfEndHasm = currentNode;
           }
         }
+        return this.textogenerado
       }
 
 }
