@@ -46,6 +46,8 @@ def obtch():
             offset-=1
     offset += 1
     #
+    if(offset == -1):
+        return ' '
     actual = linea[contadorLineas][offset]
     if((fin_archivo == 1)):
         return ' '

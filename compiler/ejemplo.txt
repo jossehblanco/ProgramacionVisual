@@ -1,4 +1,9 @@
 :v
 num b = 3;
 num a = 4;
+si( b > 4){
+	para c rango(t,y,u){
+		imp("2");
+	}
+}
 >:v
