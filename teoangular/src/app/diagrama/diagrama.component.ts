@@ -5,6 +5,7 @@ import { Templates } from '../shared/templates';
 import {saveAs} from 'file-saver'
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { MatDialogCComponent } from '../mat-dialog-c/mat-dialog-c.component';
+import { Codigo } from './codigo';
 
 //Se declara la constante $ ya que go.GraphObject.make se utiliza bastante
 const $ = go.GraphObject.make;
@@ -39,7 +40,7 @@ export class DiagramaComponent implements OnInit {
   Obtengo la instancia de la clase que hize de Templates.ts en shared/templates.ts
   por medio de inyecciónd e dependencias.
   */
-  constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog) { 
+  constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog , public conversordecodigo: Codigo) { 
 
     //Asignando a las variables que hice mas arriba el valor de los templates que están en
     //la instancia de Templates para despues poderlas ocupar en este contexto.
@@ -67,7 +68,7 @@ export class DiagramaComponent implements OnInit {
     this.beginNode = this.diagram.findNodeForKey("inicionode")
     if(this.beginNode != null){
       console.log("Se cargó el nodo de inicio")
-      this.convert(this.beginNode,"fin", "",this.textogenerado)
+      this.textogenerado = this.conversordecodigo.convert(this.beginNode,"fin", "")
      }else{
       console.log("Error: se debe especificar un inicio para el diagrama")
     }
@@ -94,233 +95,7 @@ export class DiagramaComponent implements OnInit {
     this.openDialog();
   }
 
-  convert(currentNode :go.Node, endPoint : string = "fin", tab : string = "", output : string){
-    const nodo = currentNode.data
-    if(nodo.category == "inicio"){
-      this.textogenerado += ":v\n"
-      console.log(":v")
-    //Preparando para recursión
-    var nuevoNodo : go.Node
-    var newNodeIt = currentNode.findLinksOutOf()
-    while(newNodeIt.next()){
-      var link  = newNodeIt.value;
-      nuevoNodo = link.toNode
-    }
-    this.convert(nuevoNodo, endPoint, tab, output)
-    //Fin Recursion
-    }
-
-    else if(nodo.category == "proc"){
-      console.log(tab+nodo.representa + ";")
-      this.textogenerado += (tab + nodo.representa + ";\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //Fin Recursion
-    }else if(nodo.category == "if"){
-      console.log(tab +"si("+nodo.representa+"){")
-      this.textogenerado += (tab + "si(" +nodo.representa+"){")
-      var nodoif : go.Node
-      var nodoelse : go.Node
-      var count  = 0
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        if(count == 0){
-           nodoif = link.toNode
-           count++;
-        }else if(count == 1){
-          nodoelse = link.toNode
-        }
-      }
-      this.convert(nodoif, "fif", (tab+"\t"), output)
-      console.log(tab+"}\n")
-      console.log(tab+"sino{")
-      this.convert(nodoelse, "fif",(tab+ "\t"), output)
-      console.log(tab+"}")
-
-      var newNodeIt = this.lastInstanceOfEndIf.findLinksOutOf()
-      var nuevoNodo : go.Node
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-
-      //mando a llamar para seguir el programa
-      //Fin Recursion
-    }
-    else if(nodo.category == "for"){
-      console.log(tab +"para "+nodo.variable+" rango(" + nodo.desde + "," + nodo.hasta + "," + nodo.incremento + "){")
-      this.textogenerado += (tab + "para " +nodo.variable + " rango(" +nodo.desde + "," + nodo.hasta + ","+ nodo.incremento + "){\n")
-      var nodofor : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nodofor = link.toNode
-      }
-      this.convert(nodofor, "efor", (tab+"\t"), output)
-      console.log(tab+"}\n")
-      this.textogenerado += (tab + "}\n")
-      var newNodeIt = this.lastInstanceOfEndFor.findLinksOutOf()
-      var nuevoNodo : go.Node
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //mando a llamar para seguir el programa
-      //Fin Recursion
-    }
-    else if(nodo.category == "mientras"){
-      console.log(tab +"mientras" + "(" + nodo.representa + "){")
-      this.textogenerado += (tab +"mientras" + "(" + nodo.representa + "){\n")
-      var nodomientras : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nodomientras = link.toNode
-      }
-      this.convert(nodomientras, "emientras", (tab+"\t"), output)
-      console.log(tab+"}\n")
-      this.textogenerado +=(tab + "}\n")
-      var newNodeIt = this.lastInstanceOfEndMientras.findLinksOutOf()
-      var nuevoNodo : go.Node
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //mando a llamar para seguir el programa
-      //Fin Recursion
-    }
-    else if(nodo.category == "hasm"){
-      console.log(tab +"has"+ "{")
-      this.textogenerado += (tab +"has"+ "{\n")
-      var nodohasm : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nodohasm = link.toNode
-      }
-      this.convert(nodohasm, "ehasm", (tab+"\t"), output)
-      console.log(tab+"}mientras("+ nodo.representa +");")
-      this.textogenerado += (tab+"}mientras("+ nodo.representa +");\n")
-      var newNodeIt = this.lastInstanceOfEndHasm.findLinksOutOf()
-      var nuevoNodo : go.Node
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //mando a llamar para seguir el programa
-      //Fin Recursion
-    }
-    else if(nodo.category == "leer"){
-      console.log(tab+"leerstd(" + nodo.tipo + "," + nodo.guardar + ");")
-      this.textogenerado += (tab+"leerstd(" + nodo.tipo + "," + nodo.guardar + ");\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //Fin Recursion
-    }
-
-    else if(nodo.category == "imp"){
-      console.log(tab+"imp(" + nodo.representa + ");")
-      this.textogenerado += (tab+"imp(" + nodo.representa + ");\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab,output)
-      //Fin Recursion
-    }
-
-    else if(nodo.category == "abrira"){
-      console.log(tab+nodo.guardar + "=abArch(" + nodo.url +","+nodo.modo +");")
-      this.textogenerado += (tab+nodo.guardar + "=abArch(" + nodo.url +","+nodo.modo +");\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //Fin Recursion
-    }
-
-    else if(nodo.category == "leera"){
-      console.log(tab+"leerArch(" + nodo.tipo +","+nodo.guardar +");")
-      this.textogenerado += console.log(tab+"leerArch(" + nodo.tipo +","+nodo.guardar +");\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab,output)
-      //Fin Recursion
-    }
-
-    else if(nodo.category == "esca"){
-      console.log(tab+"escArch(" + nodo.representa + ");")
-      this.textogenerado += (tab+"escArch(" + nodo.representa + ");\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //Fin Recursion
-    }
-
-    else if(nodo.category == "cerrara"){
-      console.log(tab+"cArch(" + nodo.representa + ");")
-      this.textogenerado += (tab+"cArch(" + nodo.representa + ");\n")
-      //Preparando para recursión
-      var nuevoNodo : go.Node
-      var newNodeIt = currentNode.findLinksOutOf()
-      while(newNodeIt.next()){
-        var link  = newNodeIt.value;
-        nuevoNodo = link.toNode
-      }
-      this.convert(nuevoNodo, endPoint, tab, output)
-      //Fin Recursion
-    }
-
-    else if(nodo.category == endPoint){
-      if(endPoint=="fin"){
-        this.textogenerado += ">:v\n"
-      }
-      else if(endPoint == "fif"){
-        this.lastInstanceOfEndIf = currentNode
-        //codigo para if :v
-      }else if(endPoint == "efor"){
-        this.lastInstanceOfEndFor = currentNode;
-      }else if(endPoint == "emientras"){
-        this.lastInstanceOfEndMientras = currentNode;
-      }else if(endPoint == "ehasm"){
-        this.lastInstanceOfEndHasm = currentNode;
-      }
-    }
-  }
+  
 
   //Este metodo se llama al inicializar el compoennte. Por el momento no hay nada aqui.
   ngOnInit() {
