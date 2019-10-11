@@ -50,8 +50,8 @@ class simbolo(Enum):
     vofarra=71
     llaveatok=72
     llavectok=73
-    corchab=74
-    corchcr=75
+    corchab=91
+    corchcr=93
     rangotok = 76
     parametok=77
     #FUNCIONES DEL LENGUAJE

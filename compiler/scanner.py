@@ -10,6 +10,7 @@ ch=" " #ultimo caracter leido
 lex=" " #ultimo lexema leido
 valor=0 #valor numero de un lexema correspondiente a un numero
 lextoken = ""
+caracteres = ""
 
 def getline(lim):
     import cpiton
@@ -84,6 +85,7 @@ def leerints(lexid, i, j, MAX, checkDecimal):
 
 def obtoken():
     global lextoken
+    global caracteres
     from auxiliares import error
     lexid = None
     global lex
@@ -138,27 +140,35 @@ def obtoken():
                 valor = int(lexid)
         except ValueError:
             if(ch == ':'):
+                caracteres = ch
                 ch = obtch()
                 if(ch == 'v'):
+                    caracteres += ch
                     Lexico.token = Lexico.simbolo.dputok
                     ch = obtch()
                 else:
                     error(28)
             elif(ch == '<'):
+                caracteres = ch
                 ch=obtch()
                 if(ch == '='):
+                    caracteres += ch
                     Lexico.token = Lexico.simbolo.mei
                     ch = obtch()
                 else:
                     Lexico.token = Lexico.simbolo.mnr
             elif(ch == '>'):
+                caracteres = ch
                 ch = obtch()
                 if(ch == '='):
+                    caracteres += ch
                     Lexico.token = Lexico.simbolo.mai
                     ch = obtch()
                 elif(ch == ':'):
+                    caracteres += ch
                     ch = obtch()
                     if(ch == 'v'):
+                        caracteres += ch
                         Lexico.token = Lexico.simbolo.mdputok
                         ch = obtch()
                     else:
@@ -168,25 +178,34 @@ def obtoken():
                 else:
                     Lexico.token = Lexico.simbolo.myr
             elif(ch == '='):
+                caracteres = ch
                 ch = obtch()
                 if(ch == '='):
+                    caracteres += ch
                     Lexico.token = Lexico.simbolo.igl
                     ch = obtch()
                 else:
                     Lexico.token = Lexico.simbolo.asignacion
             elif(ch == '!'):
+                caracteres = ch
                 ch = obtch()
                 if(ch == '='):
+                    caracteres += ch
                     Lexico.token = Lexico.simbolo.nig
                     obtoken()
                 else:
                     error(15)
             else:
+                caracteres = ch
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()
 
-    lextoken = Lexico.token
+    #lextoken = Lexico.token
+    if(lexid is None):
+        lexid = caracteres
+    lextoken = lexid + "                    " + str(Lexico.token)
     print(lextoken)
+    print("\n")
 
 
 
