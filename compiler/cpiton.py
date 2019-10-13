@@ -20,13 +20,18 @@ def main(argv):
             print("\nNo se encontro el programa fuente indicado")
         else:
             timer=datetime.datetime.today()
-            print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
-            print(timer)
-            print("\nLexema                  Token\n")
+            
+            #print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
+            #print(timer)
+            #print("\nLexema                  Token\n")
             
             from auxiliares import inicializar_espec
             #print(auxiliares.hola)
             inicializar_espec()
+            
+            scanner.consolef.write("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
+            scanner.consolef.write(timer.strftime('%d/%m/%Y'))
+            scanner.consolef.write("\nLexema                  Token\n")
             
             scanner.ch=' '
             scanner.fin_de_archivo=0
@@ -50,7 +55,7 @@ def main(argv):
             
             from auxiliares import estadisticas
             estadisticas()
-            
+            scanner.consolef.close()
             fp.close
             
     return 0

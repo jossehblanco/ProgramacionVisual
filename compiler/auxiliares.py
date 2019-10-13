@@ -5,8 +5,10 @@ import sys
 
 def error(no):
     from cpiton import fp
+    from scanner import consolef
     fp.closed
-    print("\n^ error"+ mensaje_de_error[no]+"\n")
+    #print("\n^ error"+ mensaje_de_error[no]+"\n")
+    consolef.write("\n^ error"+ mensaje_de_error[no]+"\n")
     sys.exit()
     return
     
