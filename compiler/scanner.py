@@ -88,12 +88,12 @@ def leerints(lexid, i, j, MAX, checkDecimal):
             ch = obtch()
         except ValueError:
             if(checkDecimal):
-                if(ch != ';' or (j == 1 and ch == ';')):
+                if(j == 1 and ch == ';'):
                     error(1)#si en la primera iteracion no viene un numero es como que pongan 2. y nada mas
             break
     if(j>MAX):
         error(33)
-    return
+    return lexid
 
 def obtoken():
     global lextoken
@@ -136,14 +136,14 @@ def obtoken():
             i=j=1
             ch = obtch()
             isDouble = False            
-            leerints(lexid, i,j,MAXDIGIT,False)
+            lexid = leerints(lexid, i,j,MAXDIGIT,False)
             #VERIFICANDO SI ES DECIMAL
             if(ch == '.'):
                 isDouble = True
                 lexid += ch
                 ch = obtch()
                 i=j=1
-                leerints(lexid,i,j, MAXDECIMAL,True)
+                lexid = leerints(lexid,i,j, MAXDECIMAL,True)
              
             if(isDouble):
                 Lexico.token = Lexico.simbolo.decimal
@@ -235,10 +235,10 @@ def obtoken():
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()
 
-    lextoken = Lexico.token
     if(lexid is None):
         lexid = caracteres
-    print("\n")
+    lextoken = lexid + "                  " + str(Lexico.token) + "\n"
+    consolef.write(lextoken)    
     if(Lexico.token == Lexico.simbolo.linecomment):
         #para que no vuelva a entrar al if de la funcion obtch()
         Lexico.token = Lexico.simbolo.nulo

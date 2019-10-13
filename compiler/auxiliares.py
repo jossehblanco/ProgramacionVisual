@@ -6,9 +6,12 @@ import sys
 def error(no):
     from cpiton import fp
     from scanner import consolef
+    from scanner import contadorLineas
     fp.closed
     #print("\n^ error"+ mensaje_de_error[no]+"\n")
-    consolef.write("\n^ error"+ mensaje_de_error[no]+"\n")
+    contadorLineas += 1
+    consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    consolef.close()
     sys.exit()
     return
     
