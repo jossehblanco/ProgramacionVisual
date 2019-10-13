@@ -13,6 +13,12 @@ valor=0 #valor numero de un lexema correspondiente a un numero
 lextoken = ""
 caracteres = ""
 
+try:
+    consolef= open("console.txt","w")
+
+except Exception as ex:
+    print("Archivo no encontrado "+ex)
+
 def getline(lim):
     import cpiton
     global linea
@@ -47,7 +53,8 @@ def obtch():
         offset = -1
         if(ll == 0):
             fin_archivo = 1
-            print(linea)
+            consolef.write(linea)
+            #print(linea)
             offset-=1
     offset += 1
     #
@@ -243,8 +250,6 @@ def obtoken():
             ch = obtch()
             obtoken()
         obtoken()
-    
-
 
 
 

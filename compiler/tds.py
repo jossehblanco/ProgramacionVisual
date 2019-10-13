@@ -35,13 +35,63 @@ def poner(k):
     else:
         nuevo = registro(Scanner.lex,k)
         tabla.insert(it,nuevo)
-
+        mergeSort(tabla)
+        #for i in tabla:
+         #   print(i.nombre)
+        #print("\n-------------\n")
 def posicion(item):
     #implementando binary search
     #Scanner.lex tiene el ultimo lexema leido
     #print(str(Scanner.lex))
+    #i = it-1
+    #while(tabla[i].nombre != item and i>=0):
+        #i-=1
+    return binarySearch(tabla, 0, len(tabla)-1, item)
 
-    i = it-1
-    while(tabla[i].nombre != item and i>=0):
-        i-=1
-    return i   		
+def mergeSort(arr): 
+    if len(arr) >1: 
+        mid = len(arr)//2 
+        L = arr[:mid]  
+        R = arr[mid:] 
+  
+        mergeSort(L) 
+        mergeSort(R) 
+  
+        i = j = k = 0
+          
+        while i < len(L) and j < len(R): 
+            if L[i].nombre < R[j].nombre: 
+                arr[k] = L[i] 
+                i+=1
+            else: 
+                arr[k] = R[j]
+                j+=1
+            k+=1
+          
+        while i < len(L): 
+            arr[k] = L[i]
+            i+=1
+            k+=1
+          
+        while j < len(R): 
+            arr[k] = R[j]
+            j+=1
+            k+=1
+            
+def binarySearch (arr, l, r, x): 
+    #print("r=  "+ str(r))
+    if r >= l: 
+        mid = int (l + (r - l)/2)
+        
+        if arr[mid].nombre == x: 
+            return mid 
+          
+        elif arr[mid].nombre > x: 
+            return binarySearch(arr, l, mid-1, x) 
+
+        else: 
+            return binarySearch(arr, mid + 1, r, x) 
+  
+    else: 
+        return -1
+  
