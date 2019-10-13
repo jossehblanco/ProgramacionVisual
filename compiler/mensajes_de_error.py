@@ -19,7 +19,7 @@ mensaje_de_error=[
     "se espera un DO",#17
     "un simbolo incorrecto sigue a una instruccion",#18
     "se esperaba un operador relacional",#19
-    "una expresion no debe de contener un identificador de procedimiento",#20
+    " una expresion no debe de contener un identificador de procedimiento",#20
     " falta un parentesis de cierre",#21
     " falta un parentesis de apertura",#22
     "el factor anterior no puede ir seguido de este simbolo o falta un punto y coma",#23

@@ -36,17 +36,17 @@ def main(argv):
             
             
             tds.it=0
-            global token
-            token = scanner.obtoken()
-            while(token != lexico.simbolo.mdputok):
-                token = scanner.obtoken()
+            #global token
+            #token = scanner.obtoken()
+            #while(token != lexico.simbolo.mdputok):
+            #    token = scanner.obtoken()
 
-            #parseador.inicio()
+            parseador.inicio()
             
             
             from auxiliares import error
-            #if lexico.token!=lexico.simbolo.mdputok:
-            #    error(32)
+            if lexico.token!=lexico.simbolo.mdputok:
+                error(32)
             
             from auxiliares import estadisticas
             estadisticas()

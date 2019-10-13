@@ -22,6 +22,7 @@ def inicializar_espec():
         Lexico.espec.append(Lexico.simbolo.nulo)
     
     Lexico.espec[34]=Lexico.simbolo.comilladoble
+    Lexico.espec[39]=Lexico.simbolo.comillasimple
     Lexico.espec[43]=Lexico.simbolo.mas
     Lexico.espec[45]=Lexico.simbolo.menos
     Lexico.espec[42]=Lexico.simbolo.por
@@ -34,4 +35,6 @@ def inicializar_espec():
     Lexico.espec[59]=Lexico.simbolo.puntoycoma
     Lexico.espec[91]=Lexico.simbolo.corchab
     Lexico.espec[93]=Lexico.simbolo.corchcr
+    Lexico.espec[123]=Lexico.simbolo.llaveatok
+    Lexico.espec[125]=Lexico.simbolo.llavectok
 

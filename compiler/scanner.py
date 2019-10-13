@@ -98,7 +98,7 @@ def obtoken():
         lexid = ch
         i = 1
         ch = obtch()
-        while( ch.isalpha()):
+        while( ch.isalnum() or ord(ch) == '95'):
             if(i < MAXID):
                 i+=1
                 lexid += ch
@@ -114,7 +114,7 @@ def obtoken():
         else:
             Lexico.token = Lexico.simbolo.ident
 
-        lex = lexid
+        lex = lexid[:]
 
     else:        
         try:
@@ -133,10 +133,10 @@ def obtoken():
                 leerints(lexid,i,j, MAXDECIMAL,True)
              
             if(isDouble):
-                Lexico.token = Lexico.simbolo.dectok
+                Lexico.token = Lexico.simbolo.decimal
                 valor = float(lexid)
             else:
-                Lexico.token = Lexico.simbolo.numtok
+                Lexico.token = Lexico.simbolo.numero
                 valor = int(lexid)
         except ValueError:
             if(ch == ':'):

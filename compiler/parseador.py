@@ -1,11 +1,11 @@
 from tds import *
 from auxiliares import *
 import lexico as Lexico
-from scanner import *
+import scanner as Scanner
 
 def inicio():
     if(Lexico.token == Lexico.simbolo.dputok):
-        obtoken()
+        Scanner.obtoken()
         bloque()
     else:
         error(29)
@@ -19,13 +19,11 @@ def bloque():
     declaracionvariable();
 #-----------------------------------------------------------------------
 #------------Asignacion------------------------------------------------
-    asignacion(True)
+    asignacion(True,None)
 #-----------------------------------------------------------------------
 #-------------Declaracion de funciones----------------------------------
-    if(Lexico.token == Lexico.simbolo.funtok):
-        obtoken()
-        delaracionfuncion()
-        obtoken()
+    
+    delaracionfuncion()
     
 #-----------------------------------------------------------------------
 #-------------Instruccion-----------------------------------------------
@@ -36,27 +34,27 @@ def bloque():
 #-----------------------------------------------------------------------
     #if(Lexico.token == Lexico.simbolo)
     #if(Lexico.token == Lexico.simbolo.consttok):
-        #obtoken()
+        #Scanner.Scanner.obtoken()
         #declaracionconst()
 
         #while (Lexico.token == Lexico.simbolo.coma):
-         #   obtoken()
+         #   Scanner.Scanner.obtoken()
           #  declaracionconst()
         
         #if(Lexico.token == Lexico.simbolo.puntoycoma):
-         #   obtoken()
+         #   Scanner.obtoken()
         #else:
          #   error(5)
 
     #while(Lexico.token == Lexico.simbolo.proctok):
-     #   obtoken()
+     #   Scanner.obtoken()
       #  if(Lexico.token == Lexico.simbolo.ident):
        #     poner(objeto.PROCEDIMIENTO)
-        #    obtoken()
+        #    Scanner.obtoken()
         #else:
          #   error(4)
         #if(Lexico.token == Lexico.simbolo.puntoycoma):
-         #   obtoken()
+         #   Scanner.obtoken()
         #else:
          #   error(5)
         #temp = it
@@ -64,46 +62,65 @@ def bloque():
         #it = temp
 
         #if(Lexico.token == Lexico.simbolo.puntoycoma):
-         #   obtoken()
+         #   Scanner.obtoken()
         #else:
          #   error(5)
     return
 
+def verificarIdent():    
+    if(Lexico.token == Lexico.simbolo.ident):
+        i = posicion(Scanner.lex)
+        if(i == -1):
+            error(10)
+        else:
+            if(tabla[i].tipo == objeto.FUNCION):
+                error(20)
+            else:
+                Scanner.obtoken()
+                return True
+    else:        
+        return False
+
 def valor():
-    global lex
+    global lextoken
     if(Lexico.token == Lexico.simbolo.comilladoble):
-        obtoken()
+        Scanner.obtoken()
+        
         #Este token se castea a texto y deberia de ingresarse asi al hash
-        obtoken()
+        Scanner.obtoken()
         if(Lexico.token != Lexico.simbolo.comilladoble):
             error(30)
+        else:
+            Lexico.token = Lexico.simbolo.texto
     elif(Lexico.token == Lexico.simbolo.comillasimple):
-        obtoken()
+        Scanner.obtoken()
         try:
-            ord(lex)
+            ord(lextoken)
         except TypeError:
             error(31)
         #Este token se castea a texto y deberia de ingresarse asi al hash
-        obtoken()
+        Scanner.obtoken()
         if(Lexico.token != Lexico.simbolo.comillasimple):
             error(8)
+        else:
+            Lexico.token = Lexico.simbolo.caracter
     elif(Lexico.token == Lexico.simbolo.parena):
-        obtoken()
+        Scanner.obtoken()
         expresion()
         if(Lexico.token != Lexico.simbolo.parenc):
             error(21)
     elif(Lexico.token == Lexico.simbolo.llaveatok):
-        obtoken()
+        Scanner.obtoken()
         valor()
         while(Lexico.token == Lexico.simbolo.coma):
-            obtoken()
+            Scanner.obtoken()
             valor()
         if(Lexico.token != Lexico.simbolo.llavectok):
             error(27)
     else:
-        if(Lexico.token != Lexico.simbolo.numtok and Lexico.token != Lexico.simbolo.voftok and Lexico.token != Lexico.simbolo.ident):
+        if(Lexico.token != Lexico.simbolo.numero and Lexico.token != Lexico.simbolo.truetok and Lexico.token != Lexico.simbolo.ident and Lexico.token != Lexico.simbolo.falsetok and Lexico.token != Lexico.simbolo.decimal):
             expresion()
-    obtoken()
+    Scanner.obtoken()
     return
 
 
@@ -129,12 +146,12 @@ def tipo():
     elif(Lexico.token == Lexico.simbolo.vofarra):
         return objeto.VOFARRA
     else:
-        error(0)
+        return
 
 def agregarTipoAIdents(tipao):
     if(Lexico.token == Lexico.simbolo.ident):
         poner(tipao)
-        obtoken()
+        Scanner.obtoken()
     else:
         error(4)
 
@@ -142,90 +159,103 @@ def agregarTipoAIdents(tipao):
 #Declaracion de variables--------------------------------------------------------
 def declaracionvariable():
     tipao = tipo()
-    obtoken()
+    if(tipao is None):
+        return
+    Scanner.obtoken()
     agregarTipoAIdents(tipao)
     while(Lexico.token == Lexico.simbolo.coma):
-        obtoken()
+        Scanner.obtoken()
         agregarTipoAIdents(tipao)
     if(Lexico.token == Lexico.simbolo.puntoycoma):
-        obtoken()
+        Scanner.obtoken()
     else:
-        asignacion(False)  
+        asignacion(False,tipao)  
     #bloque()  
     return
 
-def VerificarIdentExist():
+def VerificarIdentExist(checkInTDS,tipao):    
     if(Lexico.token != Lexico.simbolo.ident):
             return
     else:
-        i = posicion(lexlex)
-        if(i == -1):
-            error(10)
+        if(checkInTDS):
+            i = posicion(Scanner.lex)
+            if(i == -1):
+                error(10)
+            else:
+                Scanner.obtoken()
+                return True
         else:
-            obtoken()
-            return True
+            agregarTipoAIdents(tipao)
+            return True;
 
-def asignacion(checkIdent):
-    seguir = False
-    if(checkIdent):
-        seguir = VerificarIdentExist()
-    else:
-        seguir = True
+def asignacion(checkIdent,tipao):
+    fin = -1
+    seguir = VerificarIdentExist(checkIdent,tipao)
+    seguir = True if seguir is None else seguir
     #Se va por el camino de una asignacion a variable
     if(seguir and Lexico.token == Lexico.simbolo.asignacion):
-        obtoken()
+        Scanner.obtoken()
         valor()
-        while(Lexico.token == Lexico.simbolo.coma):
-            obtoken()
-            asignacion(True)
+        if(Lexico.token == Lexico.simbolo.coma):
+            Scanner.obtoken()
+            #Si checkident es False significa que viene declaracion variable
+            #Por tanto le debo de pasar el tipo de dato para instancearlo.
+            fin = asignacion(checkIdent,tipao)
+        #Lo valido antes pues la ultima ejecucion ya habra leido el punto y coma
+        #por ende cuando la recursion regrese solo tendre que salir del bucle
+        if(fin == 0):
+            return 0;
         if(Lexico.token == Lexico.simbolo.puntoycoma):
-            obtoken()
+            Scanner.obtoken()
+            return 0
         else:
             error(4)
     #Se va por el camino del arreglo
     elif (seguir and Lexico.token == Lexico.simbolo.corchab):
-        obtoken()
+        Scanner.obtoken()
         if(Lexico.token == Lexico.simbolo.numtok):
-            obtoken()
+            Scanner.obtoken()
             if(Lexico.token == Lexico.simbolo.corchcr):
-                obtoken()
+                Scanner.obtoken()
                 if(Lexico.token == Lexico.simbolo.igl):
-                    obtoken()
+                    Scanner.obtoken()
                     valor()
-                    while(Lexico.token == Lexico.simbolo.coma):
-                        obtoken()
-                        asignacion(True)
+                    if(Lexico.token == Lexico.simbolo.coma):
+                        Scanner.obtoken()
+                        fin = asignacion(checkIdent,tipao)
+                    if(fin == 0):
+                        return 0;
                     if(Lexico.token == Lexico.simbolo.puntoycoma):
-                        obtoken()
+                        Scanner.obtoken()
         else:
             error(1)
     else:
         return
 
 def delaracionfuncion():
-    if(lexico.token == lexico.simbolo.funtok):
-        obtoken()
-        if(lexico.token == lexico.simbolo.parena):
-            obtoken()
-            if(lexico.token == lexico.simbolo.parametok):
-                obtoken()
-                if(lexico.token == lexico.simbolo.parenc):
-                    obtoken()
-                    if(lexico.token == lexico.simbolo.retortok):
-                        obtoken()
-                        if(lexico.token == lexico.simbolo.vartok):
-                            obtoken()
-                            if(lexico.token == lexico.simbolo.llaveatok):
+    if(Lexico.token == Lexico.simbolo.funtok):
+        Scanner.obtoken()
+        if(Lexico.token == Lexico.simbolo.parena):
+            Scanner.obtoken()
+            if(Lexico.token == Lexico.simbolo.parametok):
+                Scanner.obtoken()
+                if(Lexico.token == Lexico.simbolo.parenc):
+                    Scanner.obtoken()
+                    if(Lexico.token == Lexico.simbolo.retortok):
+                        Scanner.obtoken()
+                        if(Lexico.token == Lexico.simbolo.vartok):
+                            Scanner.obtoken()
+                            if(Lexico.token == Lexico.simbolo.llaveatok):
                                 bloque()
-                                obtoken()
-                                if(lexico.token == lexico.simbolo.rettok):
-                                    obtoken()
-                                    if(lexico.token == lexico.simbolo.ident):
-                                        obtoken()
-                                        if(lexico.token == lexico.simbolo.puntoycoma):
-                                            obtoken()
-                                            if(lexico.token == lexico.simbolo.llavectok):
-                                                obtoken
+                                Scanner.obtoken()
+                                if(Lexico.token == Lexico.simbolo.rettok):
+                                    Scanner.obtoken()
+                                    if(Lexico.token == Lexico.simbolo.ident):
+                                        Scanner.obtoken()
+                                        if(Lexico.token == Lexico.simbolo.puntoycoma):
+                                            Scanner.obtoken()
+                                            if(Lexico.token == Lexico.simbolo.llavectok):
+                                                Scanner.obtoken
                                                 return
                                             else:
                                                 error(1)
@@ -235,36 +265,13 @@ def delaracionfuncion():
             error(23)
     return
 
-def declaracionconst():
-    if(Lexico.token == Lexico.simbolo.ident):
-        obtoken()
-        if(Lexico.token == Lexico.simbolo.igl):
-            obtoken()
-            if(Lexico.token == Lexico.simbolo.numero):
-                poner(objeto.CONSTANTE)
-                obtoken()
-            else:
-                error(2) #error 2: debe ir seguido de un número
-
-        else:
-            error(3) #error 3: el identificador debe ir seguido de "=" 
-    else:
-        error(4) #error 4: Const, Var y Procedure deben ir seguidos de un identificador
-
-def declaracionvar():
-    if(Lexico.token == Lexico.simbolo.ident):
-        poner(objeto.VARIABLE)
-        obtoken()
-    else:
-        error(4)#error 4: Const, Var y Procedure deben ir seguidos de un identificador
-
 
 def cuerpoLlavesInstruccion():
     if(Lexico.token == Lexico.simbolo.llaveatok):
-        obtoken()
+        Scanner.obtoken()
         instruccion()
         if(Lexico.token == Lexico.simbolo.llavectok):
-            obtoken()
+            Scanner.obtoken()
             return True
         else:
             error(27)
@@ -273,10 +280,10 @@ def cuerpoLlavesInstruccion():
 
 def cuerposiosi():
     if(Lexico.token == Lexico.simbolo.parena):
-        obtoken()
+        Scanner.obtoken()
         condicion()
         if(Lexico.token == Lexico.simbolo.parenc):
-            obtoken()
+            Scanner.obtoken()
             val = cuerpoLlavesInstruccion()
             return val
         else:
@@ -288,22 +295,22 @@ def VerificarIdentsExistAndTypes(tipao):
     if(Lexico.token != Lexico.simbolo.ident):
             error(14)
     else:
-        i = posicion(lex)
+        i = posicion(Scanner.lex)
         if(i == -1):
             error(10)
         else:
             if(tabla[i].tipo == tipao):
-                obtoken()
+                Scanner.obtoken()
                 return True
             else:
                 error(6)
 
 def InstruccionMientras():
     if(Lexico.token == Lexico.simbolo.parena):
-        obtoken()
+        Scanner.obtoken()
         condicion()
         if(Lexico.token == Lexico.simbolo.parenc):
-            obtoken()
+            Scanner.obtoken()
             cuerpoLlavesInstruccion()
         else:
             error(21)
@@ -313,7 +320,7 @@ def InstruccionMientras():
 def instruccion():    
     #VERIFICANDO SI ES SITOK
     if(Lexico.token == Lexico.simbolo.sitok):
-        obtoken()
+        Scanner.obtoken()
         cuerpoestabien = cuerposiosi()
         while(cuerpoestabien):
             if(Lexico.token == Lexico.simbolo.ositok):
@@ -321,26 +328,26 @@ def instruccion():
             else:
                 break
         if(Lexico.token == Lexico.simbolo.sinotok):
-            obtoken()
+            Scanner.obtoken()
             cuerpoLlavesInstruccion()
     else:#Verificando si es PARATOK
         if(Lexico.token == Lexico.simbolo.paratok):
-            obtoken()
+            Scanner.obtoken()
             #verificar ident y que sea tipo num
             seguir = VerificarIdentsExistAndTypes(objeto.NUM)
             if(seguir and Lexico.token == Lexico.simbolo.rangotok):        
-                obtoken()
+                Scanner.obtoken()
                 if(Lexico.token == Lexico.simbolo.parena):
-                    obtoken()
+                    Scanner.obtoken()
                     seguir = VerificarIdentsExistAndTypes(objeto.NUM)
                     if(seguir and Lexico.token == Lexico.simbolo.coma):
-                        obtoken()
+                        Scanner.obtoken()
                         seguir = VerificarIdentsExistAndTypes(objeto.NUM)
                         if(seguir and Lexico.token == Lexico.simbolo.coma):
-                            obtoken()
-                            asignacion(True)
+                            Scanner.obtoken()
+                            asignacion(True,None)
                             if(Lexico.token == Lexico.simbolo.parenc):
-                                obtoken()
+                                Scanner.obtoken()
                                 cuerpoLlavesInstruccion()
                             else:
                                 error(21)
@@ -354,71 +361,48 @@ def instruccion():
                 error(5)
         else:#Verificando si es MIENSTRASTOK
             if(Lexico.token == Lexico.simbolo.mientrastok):
-                obtoken()
+                Scanner.obtoken()
                 InstruccionMientras()
             else:#Verificando si es HASTOK
                 if(Lexico.token == Lexico.simbolo.hastok):
-                    obtoken()
+                    Scanner.obtoken()
                     seguir = cuerpoLcuerpoLlavesInstruccion()
                     if(seguir and Lexico.token == Lexico.simbolo.mientrastok):
-                        obtoken()
+                        Scanner.obtoken()
                         InstruccionMientras()
                     else:
                         error(3)
                 else:
-                    asignacion(True)
+                    asignacion(True,None)
                     declaracionvariable()
 
 def expresion():
     if(Lexico.token == Lexico.simbolo.mas or Lexico.token == Lexico.simbolo.menos):
-        obtoken()
+        Scanner.obtoken()
         termino()
     else:
         termino()
     while(Lexico.token == Lexico.simbolo.mas or Lexico.token == Lexico.simbolo.menos):
-        obtoken()
+        Scanner.obtoken()
         termino()
 
 def termino():
-    factor()
+    #Apesar de que el ident tambien entra en valor lo verifico aparte pues me tengo que asegurar que este
+    #declarado a la hora de utilizarlo en operaciones    
+    if(not verificarIdent()):
+        #Si trae false es que el token no es Ident
+        #Si el token no existe tira error y muere el programa
+        valor()   
     while(Lexico.token == Lexico.simbolo.por or Lexico.token == Lexico.simbolo.barra):
-        obtoken()
-        factor()
-
-def factor():
-    if(Lexico.token == Lexico.simbolo.ident):
-        i = posicion(lex
-
-        )
-        if(i == -1):
-            error(11) #error 11: Identificador no declarado
-        else:
-            if(tabla[i].tipo == objeto.PROCEDIMIENTO):
-                error(21) #error 21: Una expresión no debe contener un identificador de procedimiento
-        obtoken()
-    else:
-        if(Lexico.token == Lexico.simbolo.numero):
-            obtoken()
-        else:
-            if(Lexico.token == Lexico.simbolo.parena):
-                obtoken()
-                expresion()
-                if(Lexico.token == Lexico.simbolo.parenc):
-                    obtoken()
-                else:
-                    error(22) #error 22: Falta un paréntesis de cierre  
-            else:
-                error(23) #error 23: El factor anterior no puede ir seguido de este símbolo 
+        Scanner.obtoken()
+        if(not verificarIdent()):
+            valor()
 
 def condicion():
-    if(Lexico.token == Lexico.simbolo.oddtok):
-        obtoken()
-        expresion()
+    expresion()
+    if((Lexico.token != Lexico.simbolo.igl) and (Lexico.token != Lexico.simbolo.nig) and (Lexico.token != Lexico.simbolo.mnr) and (Lexico.token != Lexico.simbolo.mei) and (Lexico.token != Lexico.simbolo.myr) and (Lexico.token != Lexico.simbolo.mai)):
+        error(20) #error 20: Se esperaba un operador relacional
     else:
+        Scanner.obtoken()
         expresion()
-        if((Lexico.token != Lexico.simbolo.igl) and (Lexico.token != Lexico.simbolo.nig) and (Lexico.token != Lexico.simbolo.mei) and (Lexico.token != Lexico.simbolo.myr) and (Lexico.token != Lexico.simbolo.mai)):
-            error(20) #error 20: Se esperaba un operador relacional
-        else:
-            obtoken()
-            expresion()
 

@@ -3,7 +3,7 @@ from parametros import *
 
 lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret","fun","rango","elev",
         "raizc","abs","aproxar","log","euxp","cptexto","modulo","tamtxt","aproxab","leerstd","imp","abArch","cArch","leerArch",
-        "escArch"]
+        "escArch","true","false"]
 class simbolo(Enum):
     nulo=0
     ident=1
@@ -48,12 +48,12 @@ class simbolo(Enum):
     textoarra=69
     cararra=70
     vofarra=71
-    llaveatok=72
-    llavectok=73
-    corchab=91
-    corchcr=93
     rangotok = 76
     parametok=77
+    corchab=91
+    corchcr=93
+    llaveatok=123
+    llavectok=125
     #FUNCIONES DEL LENGUAJE
     elev = 300
     raizc = 301
@@ -73,12 +73,21 @@ class simbolo(Enum):
     escArch = 405
     intok = 406
     decimaltok = 407
+    #TIPOS DE DATOS
+    numero = 500
+    decimal = 501
+    texto = 502
+    caracter = 503
+    booleano = 504
+    #CONSTANTES
+    truetok = 600
+    falsetok = 601
     
 
 tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.cartok, simbolo.voftok, simbolo.sitok,
          simbolo.sinotok, simbolo.ositok, simbolo.paratok,simbolo.mientrastok,simbolo.hastok, simbolo.rettok, simbolo.funtok, simbolo.rangotok,
          simbolo.elev, simbolo.raizc, simbolo.abs, simbolo.aproxar, simbolo.log, simbolo.euxp, simbolo.cptexto, simbolo.modulo, simbolo.tamtxt,
-         simbolo.aproxab, simbolo.leerstd, simbolo.imp, simbolo.abArch, simbolo.cArch, simbolo.leerArch, simbolo.escArch]
+         simbolo.aproxab, simbolo.leerstd, simbolo.imp, simbolo.abArch, simbolo.cArch, simbolo.leerArch, simbolo.escArch, simbolo.truetok, simbolo.falsetok]
 
 token = simbolo.nulo
 
