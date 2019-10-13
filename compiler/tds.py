@@ -43,11 +43,10 @@ def posicion(item):
     #implementando binary search
     #Scanner.lex tiene el ultimo lexema leido
     #print(str(Scanner.lex))
-
-    i = it-1
-    while(tabla[i].nombre != item and i>=0):
-        i-=1
-    return i
+    #i = it-1
+    #while(tabla[i].nombre != item and i>=0):
+        #i-=1
+    return binarySearch(tabla, 0, len(tabla)-1, item)
 
 def mergeSort(arr): 
     if len(arr) >1: 
@@ -78,4 +77,21 @@ def mergeSort(arr):
             arr[k] = R[j]
             j+=1
             k+=1
+            
+def binarySearch (arr, l, r, x): 
+    #print("r=  "+ str(r))
+    if r >= l: 
+        mid = int (l + (r - l)/2)
+        
+        if arr[mid].nombre == x: 
+            return mid 
+          
+        elif arr[mid].nombre > x: 
+            return binarySearch(arr, l, mid-1, x) 
+
+        else: 
+            return binarySearch(arr, mid + 1, r, x) 
+  
+    else: 
+        return -1
   
