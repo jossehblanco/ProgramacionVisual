@@ -128,7 +128,7 @@ def tipo():
     if(Lexico.token == Lexico.simbolo.numtok):
         return objeto.NUM
     elif(Lexico.token == Lexico.simbolo.dectok):
-        return objecto.DEC
+        return objeto.DEC
     elif(Lexico.token == Lexico.simbolo.textok):
         return objeto.TEXTO
     elif(Lexico.token == Lexico.simbolo.cartok):

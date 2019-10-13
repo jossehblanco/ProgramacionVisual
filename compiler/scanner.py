@@ -1,5 +1,6 @@
 from parametros import *
 import lexico as Lexico
+from auxiliares import error
 
 linea=[] #buffer de lineas
 contadorLineas = 0
@@ -38,7 +39,10 @@ def obtch():
     global contadorLineas
     if(fin_archivo == 1):
         error(32)
-    if(offset == ll-1):
+    #Le pongo el or pues si es una linea de comentario deberia de saltarse esa linea y leer otra
+    if(offset == ll-1 or Lexico.token == Lexico.simbolo.linecomment):
+        if(Lexico.token == Lexico.simbolo.linecomment):
+            contadorLineas +=1
         ll = getline(MAXLINEA)
         offset = -1
         if(ll == 0):
@@ -77,20 +81,22 @@ def leerints(lexid, i, j, MAX, checkDecimal):
             ch = obtch()
         except ValueError:
             if(checkDecimal):
-                error(1)#si en la primera iteracion no viene un numero es como que pongan 2. y nada mas
+                if(ch != ';' or (j == 1 and ch == ';')):
+                    error(1)#si en la primera iteracion no viene un numero es como que pongan 2. y nada mas
             break
     if(j>MAX):
-        error(30)
+        error(33)
     return
 
 def obtoken():
     global lextoken
     global caracteres
-    from auxiliares import error
+    #from auxiliares import error
     lexid = None
     global lex
     ok=0
     global ch
+
     while(ch == ' ' or ch == '\n' or ch == '\t'):
         ch=obtch()
 
@@ -191,21 +197,54 @@ def obtoken():
                 ch = obtch()
                 if(ch == '='):
                     caracteres += ch
-                    Lexico.token = Lexico.simbolo.nig
-                    obtoken()
+                    Lexico.token = Lexico.simbolo.nig          
+                    ch = obtch()
                 else:
                     error(15)
+            elif(ch == '/'):
+                caracteres = ch
+                ch = obtch()
+                if(ch == '/'):
+                    caracteres += ch
+                    Lexico.token = Lexico.simbolo.linecomment
+                    ch = obtch()
+                elif(ch == '*'):
+                    caracteres += ch
+                    Lexico.token = Lexico.simbolo.startcomment
+                    ch = obtch()
+                else:
+                    error(15)
+            elif(ch == '*'):
+                caracteres = ch
+                ch = obtch()
+                if(ch == '/'):
+                    caracteres += ch
+                    Lexico.token = Lexico.simbolo.endcomment
+                    ch = obtch()
+                else:
+                    Lexico.token = Lexico.simbolo.por
             else:
                 caracteres = ch
                 Lexico.token = Lexico.espec[ord(ch)]
                 ch = obtch()
 
-    #lextoken = Lexico.token
+    lextoken = Lexico.token
     if(lexid is None):
         lexid = caracteres
     lextoken = lexid + "                    " + str(Lexico.token)
     print(lextoken)
     print("\n")
+    if(Lexico.token == Lexico.simbolo.linecomment):
+        #para que no vuelva a entrar al if de la funcion obtch()
+        Lexico.token = Lexico.simbolo.nulo
+        obtoken()
+    if(Lexico.token == Lexico.simbolo.startcomment):
+        while(Lexico.token != Lexico.simbolo.endcomment):
+            ch = obtch()
+            obtoken()
+        obtoken()
+    
+
 
 
 

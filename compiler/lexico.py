@@ -82,6 +82,10 @@ class simbolo(Enum):
     #CONSTANTES
     truetok = 600
     falsetok = 601
+    #COMENTARIOS
+    linecomment = 602
+    startcomment = 603
+    endcomment = 604
     
 
 tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.cartok, simbolo.voftok, simbolo.sitok,
