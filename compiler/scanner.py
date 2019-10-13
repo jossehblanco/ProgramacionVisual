@@ -238,8 +238,6 @@ def obtoken():
     lextoken = Lexico.token
     if(lexid is None):
         lexid = caracteres
-    lextoken = lexid + "                    " + str(Lexico.token)
-    print(lextoken)
     print("\n")
     if(Lexico.token == Lexico.simbolo.linecomment):
         #para que no vuelva a entrar al if de la funcion obtch()
@@ -250,11 +248,3 @@ def obtoken():
             ch = obtch()
             obtoken()
         obtoken()
-
-
-
-
-
-
-
-                 
