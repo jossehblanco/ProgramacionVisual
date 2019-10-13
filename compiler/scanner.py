@@ -210,7 +210,7 @@ def obtoken():
     #lextoken = Lexico.token
     if(lexid is None):
         lexid = caracteres
-    lextoken = lexid + "                    " + str(Lexico.token)
+    lextoken = lexid + "    ----->      " + str(Lexico.token)
     consolef.write(lextoken)
     consolef.write("\n")
     #print(lextoken)
