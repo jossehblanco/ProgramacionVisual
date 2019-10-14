@@ -94,7 +94,48 @@ export class DiagramaComponent implements OnInit {
     this.openDialog();
   }
 
-  
+
+  guardarDiagrama(){
+    var jsonData = this.diagram.model.toJson();
+    console.log(jsonData);
+    var blob = new Blob([jsonData], {type : "application/json;charset=utf-8"});
+    saveAs(blob, "newDiagram.json");
+  }
+
+
+  fileData: File = null;
+jsonstring : string = "";
+fileUploadProgress: string = null;
+uploadedFilePath: string = null;
+
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    this.preview();
+}
+
+preview() {
+  // Show preview 
+  //var mimeType = this.fileData.type;
+  //if (mimeType.match(/image\/*/) == null) {
+    //return;
+  //}
+  this.jsonstring = "";
+  var reader = new FileReader();      
+  reader.readAsText(this.fileData)
+  reader.onload = (_event) => { 
+    console.log(reader.result)
+    this.jsonstring += reader.result; 
+  }
+}
+
+onSubmit() {
+  console.log("Se inicio la carga del diagrama");
+  var parsedJson = JSON.parse(this.jsonstring);
+  console.log("El JSON generado es", parsedJson);
+  this.diagram.model = go.Model.fromJson(parsedJson);
+}
+
+
 
   //Este metodo se llama al inicializar el compoennte. Por el momento no hay nada aqui.
   ngOnInit() {
