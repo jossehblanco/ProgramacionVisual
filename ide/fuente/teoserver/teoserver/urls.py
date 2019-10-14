@@ -19,5 +19,6 @@ from IDE import urls as ideurls
 
 urlpatterns = [
     path('', include(ideurls)),
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls)
 ]
