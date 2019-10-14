@@ -5,22 +5,84 @@
                 <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
                   <mat-icon aria-label="Side nav toggle icon" style="color:white;">menu</mat-icon>
                 </button>
-                <h2 style="color: white">IDE Cpitón</h2>
+                <h2 style="color: white">Visual Cpitón</h2>
               </mat-toolbar-row>
         </mat-toolbar>
     </div>
 
     <div layout="column" flex style="min-height: 90vh; background-color: red">
         <mat-sidenav-container style="min-height: 90vh;">
-            <mat-sidenav #drawer mode="side" opened role="navigation">    
-              <h4 style="text-align: center; margin-top: 16px">Paleta de Componentes</h4>
-              <hr>
-              <div id="paletteCanvas"> </div>
+            <mat-sidenav #drawer mode="side" opened role="navigation">
+                    
+                <mat-accordion>
+                <mat-expansion-panel style= "margin : 8px;">
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                Abrir
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="form-group" style="margin: 8px;">
+                                    <input style="margin: 8px;" type="file" (change)="fileProgress($event)" />
+                                    <button mat-button style="margin: 8px; background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;" class="btn btn-primary"  (click)="onSubmit()">Cargar</button>
+                                </div>            
+                          </mat-expansion-panel>
+
+                          <mat-expansion-panel style="margin: 8px;">
+                                <mat-expansion-panel-header>
+                                  <mat-panel-title>
+                                    Guardar
+                                  </mat-panel-title>
+                                  
+                                </mat-expansion-panel-header>
+                                <div class="form-group" style="margin: 8px;">
+                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "generar($event)">Descargar Código</button>
+                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "guardarDiagrama()">Descargar Diagrama</button>
+                                    </div>            
+                              </mat-expansion-panel>
+
+                              <mat-expansion-panel style="margin: 8px;">
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title>
+                                        Paleta
+                                      </mat-panel-title>
+                                      
+                                    </mat-expansion-panel-header>
+                                    <div style="height: 340px; margin-left: 0px;"id="paletteCanvas"> </div>
+                                               
+                                  </mat-expansion-panel>
+
+                                  <mat-expansion-panel style="margin: 8px;">
+                                        <mat-expansion-panel-header>
+                                          <mat-panel-title>
+                                            Acerca de
+                                          </mat-panel-title>
+                                    
+                                        </mat-expansion-panel-header>
+                                        <mat-panel-description>
+                                            Visual Cpitón version 1.1.2
+                                            Desarrollado por MDPU Studio
+                                            Para Teoría de Lenguajes de Programación
+                                        </mat-panel-description>
+                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "verAyuda()">Ayuda</button>
+                                                   
+                                      </mat-expansion-panel>
+
+                                </mat-accordion>
+                                            
+                                    
+                                   
+                                
+                            
+                    
+              
+              
             </mat-sidenav>
             <mat-sidenav-content style="margin-top: 0px">
                 <div id="ideCanvas" style="min-height: 75vh; width: 99%;"> </div>
-                <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "generar($event)">Generar Código</button>
-                <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "verAyuda()">Ayuda</button>
+                
+                
+                
+               
             </mat-sidenav-content>
           </mat-sidenav-container>
     </div>
