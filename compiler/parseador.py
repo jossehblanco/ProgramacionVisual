@@ -148,12 +148,12 @@ def tipo():
     else:
         return
 
-def agregarTipoAIdents(tipao):
+def agregarTipoAIdents(tipao,numError):
     if(Lexico.token == Lexico.simbolo.ident):
         poner(tipao)
         Scanner.obtoken()
     else:
-        error(4)
+        error(numError)
 
 #--------------------------------------------------------------------------------
 #Declaracion de variables--------------------------------------------------------
@@ -162,10 +162,10 @@ def declaracionvariable():
     if(tipao is None):
         return
     Scanner.obtoken()
-    agregarTipoAIdents(tipao)
+    agregarTipoAIdents(tipao,16)
     while(Lexico.token == Lexico.simbolo.coma):
         Scanner.obtoken()
-        agregarTipoAIdents(tipao)
+        agregarTipoAIdents(tipao,4)
     if(Lexico.token == Lexico.simbolo.puntoycoma):
         Scanner.obtoken()
     else:
@@ -185,7 +185,7 @@ def VerificarIdentExist(checkInTDS,tipao):
                 Scanner.obtoken()
                 return True
         else:
-            agregarTipoAIdents(tipao)
+            agregarTipoAIdents(tipao,16)
             return True;
 
 def asignacion(checkIdent,tipao):
@@ -239,7 +239,7 @@ def delaracionfuncion():
             Scanner.obtoken()
             if(Lexico.token == Lexico.simbolo.parena):
                 Scanner.obtoken()
-                Parametros()
+                parametros()
                 if(Lexico.token == Lexico.simbolo.parenc):
                     Scanner.obtoken()
                     if(Lexico.token == Lexico.simbolo.retortok):
@@ -427,3 +427,16 @@ def condicionExt():
     else:
         return
 
+def parametros():
+    tipao = tipo()
+    if(tipao is None):
+        error(0)
+    else:
+        obtoken()
+        #ver si lo declaramos o como manejar las variables por scope
+        agregarTipoAIdents(tipao,16)
+        if(Lexico.token == Lexico.simbolo.coma):
+            obtoken()
+            parametros()
+        else:
+            return
