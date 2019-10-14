@@ -8,7 +8,7 @@ LONG_FECHA=30   #Maxima longitud de fecha
 MAXIT=100       #Maximo tamaño de tabla de los simbolos
 
 try:
-    with open("./params.txt") as fp:
+    with open("../params.txt") as fp:
         line=fp.readline()
         lines=re.findall(r'\d+',line)
         numero=int(lines[0])

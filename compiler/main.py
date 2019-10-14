@@ -1,5 +1,7 @@
+import sys
 from cpiton import main
 
+x = str(sys.argv[1])
 #connection carlitox
 #main("/home/carlos/Documentos/TeoriaProyecto/TeoProyecto/compiler/ejemplo.txt")
 
@@ -7,4 +9,4 @@ from cpiton import main
 #main("ejemplo.txt")
 
 #connection bebecito
-main("C:/Users/Harbinger/Desktop/TeoProyecto/compiler/ejemplo2.txt")
+main(x)
