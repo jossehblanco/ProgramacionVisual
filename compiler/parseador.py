@@ -235,34 +235,47 @@ def asignacion(checkIdent,tipao):
 def delaracionfuncion():
     if(Lexico.token == Lexico.simbolo.funtok):
         Scanner.obtoken()
-        if(Lexico.token == Lexico.simbolo.parena):
+        if(Lexico.token == Lexico.simbolo.ident):
             Scanner.obtoken()
-            if(Lexico.token == Lexico.simbolo.parametok):
+            if(Lexico.token == Lexico.simbolo.parena):
                 Scanner.obtoken()
+                Parametros()
                 if(Lexico.token == Lexico.simbolo.parenc):
                     Scanner.obtoken()
                     if(Lexico.token == Lexico.simbolo.retortok):
                         Scanner.obtoken()
-                        if(Lexico.token == Lexico.simbolo.vartok):
+                        tipao = tipo()
+                        if(Lexico.token == Lexico.simbolo.llaveatok):
+                            bloque()
                             Scanner.obtoken()
-                            if(Lexico.token == Lexico.simbolo.llaveatok):
-                                bloque()
+                            if(Lexico.token == Lexico.simbolo.rettok):
                                 Scanner.obtoken()
-                                if(Lexico.token == Lexico.simbolo.rettok):
+                                if(Lexico.token == Lexico.simbolo.ident):
+                                    #Verificar que sea del tipo
                                     Scanner.obtoken()
-                                    if(Lexico.token == Lexico.simbolo.ident):
+                                    if(Lexico.token == Lexico.simbolo.puntoycoma):
                                         Scanner.obtoken()
-                                        if(Lexico.token == Lexico.simbolo.puntoycoma):
-                                            Scanner.obtoken()
-                                            if(Lexico.token == Lexico.simbolo.llavectok):
-                                                Scanner.obtoken
-                                                return
-                                            else:
-                                                error(1)
+                                        if(Lexico.token == Lexico.simbolo.llavectok):
+                                            Scanner.obtoken
+                                            return
                                         else:
-                                            error(1)
+                                            error(27)
+                                    else:
+                                        error(9)
+                                else:
+                                    error(40)
+                            else:
+                                error(39)
+                        else:
+                            error(26)
+                    else:
+                        error(17)
+                else:
+                    error(21)
+            else:
+                error(22)
         else:
-            error(23)
+            error(16)
     return
 
 
@@ -281,7 +294,7 @@ def cuerpoLlavesInstruccion():
 def cuerposiosi():
     if(Lexico.token == Lexico.simbolo.parena):
         Scanner.obtoken()
-        condicion()
+        condicionExt()
         if(Lexico.token == Lexico.simbolo.parenc):
             Scanner.obtoken()
             val = cuerpoLlavesInstruccion()
@@ -308,7 +321,7 @@ def VerificarIdentsExistAndTypes(tipao):
 def InstruccionMientras():
     if(Lexico.token == Lexico.simbolo.parena):
         Scanner.obtoken()
-        condicion()
+        condicionExt()
         if(Lexico.token == Lexico.simbolo.parenc):
             Scanner.obtoken()
             cuerpoLlavesInstruccion()
@@ -405,4 +418,12 @@ def condicion():
     else:
         Scanner.obtoken()
         expresion()
+
+def condicionExt():
+    condicion()
+    if((Lexico.token == Lexico.simbolo.andtok) or (Lexico.token == Lexico.simbolo.ortok)):
+        Scanner.obtoken()
+        condicionExt()
+    else:
+        return
 

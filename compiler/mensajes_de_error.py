@@ -8,15 +8,15 @@ mensaje_de_error=[
     " el identificador debe ser tipo num",#6
     " no se pudo castear a float",#7
     " se espera el cierre de comilla simple",#8
-    "falta un punto y coma entre instrucciones",#9
+    " falta un punto y coma entre",#9
     "identificador no declarado",#10
     "no estan permitidas las asignaciones a constantes o procedimientos",#11
     "se esperaba el operador de asignacion",#12
     "CALL debe de ir seguido de un identificador",#13
     "no tiene sentido llamar a una constante o a una variable",#14
     "se espera un '='",#15
-    "se espera un END o un punto y coma",#16
-    "se espera un DO",#17
+    " se espera identificador",#16
+    " se espera la palabra 'retorna'",#17
     "un simbolo incorrecto sigue a una instruccion",#18
     "se esperaba un operador relacional",#19
     " una expresion no debe de contener un identificador de procedimiento",#20
@@ -38,5 +38,7 @@ mensaje_de_error=[
     "el programa fuente es demasiado largo",#36
     "anidamiento demasiado profundo para los procedures",#37
     "se rebasa el maximo entero de cpiton--se asume cero"#38
+    " se espera la palabra 'ret'"#39
+    " se debe retornar un identificador"#40
     ]
 
