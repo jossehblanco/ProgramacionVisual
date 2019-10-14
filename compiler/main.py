@@ -7,4 +7,4 @@ from cpiton import main
 #main("ejemplo.txt")
 
 #connection bebecito
-main("C:/Users/Harbinger/Desktop/TeoProyecto/compiler/ejemplo.txt")
+main("C:/Users/Harbinger/Desktop/TeoProyecto/compiler/ejemplo2.txt")

@@ -3,7 +3,7 @@ from parametros import *
 
 lexpal=[":v",">:v","num","dec","texto","car","vof","si","sino","osi","para","mientras","has","ret","fun","rango","elev",
         "raizc","abs","aproxar","log","euxp","cptexto","modulo","tamtxt","aproxab","leerstd","imp","abArch","cArch","leerArch",
-        "escArch","true","false", "retorna"]
+        "escArch","true","false", "retorna","and","or"]
 class simbolo(Enum):
     nulo=0
     ident=1
@@ -66,14 +66,12 @@ class simbolo(Enum):
     modulo = 307
     tamtxt = 308
     aproxab = 309
-    leerstd = 400
-    imp = 401
-    abArch = 402
-    cArch = 403
-    leerArch = 404
-    escArch = 405
-    intok = 406
-    decimaltok = 407
+    leerstd = 310
+    imp = 311
+    abArch = 312
+    cArch = 313
+    leerArch = 314
+    escArch = 315
     #TIPOS DE DATOS
     numero = 500
     decimal = 501
@@ -95,7 +93,8 @@ class simbolo(Enum):
 tokpal = [simbolo.dputok, simbolo.mdputok, simbolo.numtok, simbolo.dectok, simbolo.textok, simbolo.cartok, simbolo.voftok, simbolo.sitok,
          simbolo.sinotok, simbolo.ositok, simbolo.paratok,simbolo.mientrastok,simbolo.hastok, simbolo.rettok, simbolo.funtok, simbolo.rangotok,
          simbolo.elev, simbolo.raizc, simbolo.abs, simbolo.aproxar, simbolo.log, simbolo.euxp, simbolo.cptexto, simbolo.modulo, simbolo.tamtxt,
-         simbolo.aproxab, simbolo.leerstd, simbolo.imp, simbolo.abArch, simbolo.cArch, simbolo.leerArch, simbolo.escArch, simbolo.truetok, simbolo.falsetok, simbolo.retortok]
+         simbolo.aproxab, simbolo.leerstd, simbolo.imp, simbolo.abArch, simbolo.cArch, simbolo.leerArch, simbolo.escArch, simbolo.truetok,
+        simbolo.falsetok, simbolo.retortok, simbolo.andtok, simbolo.ortok]#37
 
 token = simbolo.nulo
 

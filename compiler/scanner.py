@@ -53,7 +53,7 @@ def obtch():
         offset = -1
         if(ll == 0):
             fin_archivo = 1
-            consolef.write(linea)
+            #consolef.write(linea)
             #print(linea)
             offset-=1
     offset += 1
@@ -230,6 +230,28 @@ def obtoken():
                     ch = obtch()
                 else:
                     Lexico.token = Lexico.simbolo.por
+            elif(ord(ch) == 34):
+                lexid = ch
+                ch = obtch()
+                while(ord(ch) != 34):
+                    lexid += ch
+                    ch = obtch()
+                if(ch == ''):
+                    error(30)
+                lexid += ch
+                Lexico.token = Lexico.simbolo.texto
+                ch = obtch()
+            elif(ord(ch) == 39):
+                lexid = ch
+                ch = obtch()
+                lexid += ch
+                ch = obtch()
+                if(ord(ch) != 39):
+                    error(31)
+                else:
+                    lexid += ch
+                    Lexico.token = Lexico.simbolo.caracter
+                    ch = obtch()
             else:
                 caracteres = ch
                 Lexico.token = Lexico.espec[ord(ch)]

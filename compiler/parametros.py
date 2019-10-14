@@ -1,6 +1,6 @@
 import re
 MAXLINEA=1000   #Tamaño maximo de una linea ARCHIVO
-MAXPAL=34       #Numero de palabras reservadas
+MAXPAL=37       #Numero de palabras reservadas
 MAXDIGIT=5      #Maximo de digitos en numeros enteros ARCHIVO
 MAXDECIMAL=5    #Maximo de digitos despues del punto
 MAXID=10        #Maxima longitud de identificadores ARCHIVO

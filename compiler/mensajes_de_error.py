@@ -8,13 +8,13 @@ mensaje_de_error=[
     " el identificador debe ser tipo num",#6
     " no se pudo castear a float",#7
     " se espera el cierre de comilla simple",#8
-    " falta un punto y coma entre",#9
+    " falta un punto y coma",#9
     "identificador no declarado",#10
     "no estan permitidas las asignaciones a constantes o procedimientos",#11
     "se esperaba el operador de asignacion",#12
     "CALL debe de ir seguido de un identificador",#13
     "no tiene sentido llamar a una constante o a una variable",#14
-    "se espera un '='",#15
+    " se espera un '='",#15
     " se espera identificador",#16
     " se espera la palabra 'retorna'",#17
     "un simbolo incorrecto sigue a una instruccion",#18
@@ -40,5 +40,10 @@ mensaje_de_error=[
     "se rebasa el maximo entero de cpiton--se asume cero"#38
     " se espera la palabra 'ret'"#39
     " se debe retornar un identificador"#40
+    " se espera un identificador o un numero"#41
+    " se espera una ','"#42
+    " se espera texto"#43
+    " se espera un identificador o texto"#44
+    " se espera un ']'"#45
     ]
 

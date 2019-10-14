@@ -1,0 +1,7 @@
+:v
+texto b = "Hola mundo";
+car hola = 'a';
+num arreglo [3];
+arreglo [3] = 3,4,5;
+imp(b);
+>:v
