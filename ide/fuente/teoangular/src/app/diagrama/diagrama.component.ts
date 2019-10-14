@@ -6,6 +6,7 @@ import {saveAs} from 'file-saver'
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { MatDialogCComponent } from '../mat-dialog-c/mat-dialog-c.component';
 import { Codigo } from './codigo';
+import { FormControl, Validators } from '@angular/forms';
 
 //Se declara la constante $ ya que go.GraphObject.make se utiliza bastante
 const $ = go.GraphObject.make;
@@ -49,6 +50,38 @@ export class DiagramaComponent implements OnInit {
     this.conversordecodigo = cc;
   }
   
+  //check error del form
+  MAXLINEA = new FormControl('', [Validators.required]);
+  MAXDIGIT = new FormControl('', [Validators.required]);
+  MAXID = new FormControl('', [Validators.required]);
+
+  getErrorMessage() {
+    return this.MAXLINEA.hasError('required') ? 'You must enter a value' :
+            '';
+  }
+  getErrorMessage2() {
+    return this.MAXDIGIT.hasError('required') ? 'You must enter a value' :
+            '';
+  }
+  getErrorMessage3() {
+    return this.MAXID.hasError('required') ? 'You must enter a value' :
+            '';
+  }
+
+  //variables para el form
+  private MAXL : string;
+  private MAXD : string;
+  private MAXI : string;
+
+  onFormSubmit(){
+    this.MAXL = this.MAXLINEA.value;
+    this.MAXD = this.MAXDIGIT.value;
+    this.MAXI = this.MAXID.value;
+    this.textogenerado = "MAXLINEA;" + this.MAXL + "\nMAXDIGIT;" + this.MAXD + "\nMAXID;" + this.MAXI;
+    this.guardarConf()
+    console.log(this.textogenerado)
+  }
+
 
   openDialog() : void {
     this.nombrearchivo = ""
@@ -78,6 +111,28 @@ export class DiagramaComponent implements OnInit {
     })
   }
 
+  openDialog2() : void {
+    this.nombrearchivo = ""
+    const dialogRef  =this.dialog.open(MatDialogCComponent, {
+      width: '250px',
+      disableClose : true,
+      data: {nombrearchivo  : this.nombrearchivo}
+    });
+    var checkfalse : boolean 
+    dialogRef.afterClosed().subscribe(result => {
+      if(result != false){
+        this.nombrearchivo = result
+        console.log(result)
+    
+    this.snackBar.open('¡Se ha generado un nuevo archivo de diagrama!', "¡Entendido!", {duration : 6000}); 
+    this.guardarDiagrama()
+      }else{
+        this.snackBar.open('¡No se guardo el archivo :C!', "¡Entendido!", {duration : 6000}); 
+        return
+      }
+    })
+  }
+
 
   verAyuda(){
     window.open('../assets/ayuda.pdf', '_blank')
@@ -90,6 +145,12 @@ export class DiagramaComponent implements OnInit {
     saveAs(blob, this.nombrearchivo +".cpit");
   }
 
+  guardarConf(){
+    var blob = new Blob([this.textogenerado], {type : "text/plain;charset=utf-8"});
+    saveAs(blob, "param.txt");
+  }
+
+
   generar(event: Event) {
     this.openDialog();
   }
@@ -99,8 +160,10 @@ export class DiagramaComponent implements OnInit {
     var jsonData = this.diagram.model.toJson();
     console.log(jsonData);
     var blob = new Blob([jsonData], {type : "application/json;charset=utf-8"});
-    saveAs(blob, "newDiagram.json");
+    saveAs(blob, this.nombrearchivo+".vcpit");
   }
+
+  
 
 
   fileData: File = null;
@@ -112,6 +175,7 @@ uploadedFilePath: string = null;
     this.fileData = <File>fileInput.target.files[0];
     this.preview();
 }
+
 
 preview() {
   // Show preview 

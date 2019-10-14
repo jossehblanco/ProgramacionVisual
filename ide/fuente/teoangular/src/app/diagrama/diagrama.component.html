@@ -36,7 +36,7 @@
                                 </mat-expansion-panel-header>
                                 <div class="form-group" style="margin: 8px;">
                                         <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "generar($event)">Descargar Código</button>
-                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "guardarDiagrama()">Descargar Diagrama</button>
+                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "openDialog2()">Descargar Diagrama</button>
                                     </div>            
                               </mat-expansion-panel>
 
@@ -49,6 +49,34 @@
                                     </mat-expansion-panel-header>
                                     <div style="height: 340px; margin-left: 0px;"id="paletteCanvas"> </div>
                                                
+                                  </mat-expansion-panel>
+
+                              <mat-expansion-panel style="margin: 8px;">
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title>
+                                        Configuración
+                                      </mat-panel-title>
+                                
+                                    </mat-expansion-panel-header>
+
+                                    <form #configForm = "ngForm" (submit)="onFormSubmit()">  
+                                    <mat-form-field appearance="outline">
+                                      <mat-label>Tamano máximo buffer de líneas</mat-label>                                  
+                                      <input matInput placeholder="1000" [formControl]="MAXLINEA" type="number" required>
+                                      <mat-error *ngIf="MAXLINEA.invalid">{{getErrorMessage()}}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                      <mat-label>Máximo número dígitos en los enteros</mat-label>                                  
+                                      <input matInput placeholder="5" [formControl]="MAXDIGIT" type="number" required>
+                                      <mat-error *ngIf="MAXDIGIT.invalid">{{getErrorMessage2()}}</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline">
+                                      <mat-label>Máxima longitud identificadores</mat-label>                                  
+                                      <input matInput placeholder="10" [formControl]="MAXID" type="number" required>
+                                      <mat-error *ngIf="MAXID.invalid">{{getErrorMessage3()}}</mat-error>
+                                    </mat-form-field>
+                                    <button type="submit" mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;">Aplicar</button>
+                                    </form>         
                                   </mat-expansion-panel>
 
                                   <mat-expansion-panel style="margin: 8px;">
