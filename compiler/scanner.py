@@ -217,19 +217,33 @@ def obtoken():
                     ch = obtch()
                 elif(ch == '*'):
                     caracteres += ch
-                    Lexico.token = Lexico.simbolo.startcomment
-                    ch = obtch()
+                    Lexico.token = Lexico.simbolo.startcomment                    
+                    lextoken = caracteres + "                  " + str(Lexico.token) + "\n"
+                    consolef.write(lextoken)                    
+                    while(1):
+                        ch = obtch()                        
+                        if(ch == '*'):
+                            caracteres = ch
+                            ch = obtch()
+                            if(ch == '/'):
+                                caracteres += ch
+                                Lexico.token = Lexico.simbolo.endcomment
+                                ch = obtch()
+                                break                        
+                        if(ch == ''):                            
+                            error(46)
+                            break
                 else:
                     error(15)
-            elif(ch == '*'):
-                caracteres = ch
-                ch = obtch()
-                if(ch == '/'):
-                    caracteres += ch
-                    Lexico.token = Lexico.simbolo.endcomment
-                    ch = obtch()
-                else:
-                    Lexico.token = Lexico.simbolo.por
+            #elif(ch == '*'):
+            #    caracteres = ch
+            #    ch = obtch()
+            #    if(ch == '/'):
+            #        caracteres += ch
+            #        Lexico.token = Lexico.simbolo.endcomment
+            #        ch = obtch()
+            #    else:
+            #        Lexico.token = Lexico.simbolo.por
             elif(ord(ch) == 34):
                 lexid = ch
                 ch = obtch()
@@ -265,8 +279,9 @@ def obtoken():
         #para que no vuelva a entrar al if de la funcion obtch()
         Lexico.token = Lexico.simbolo.nulo
         obtoken()
-    if(Lexico.token == Lexico.simbolo.startcomment):
-        while(Lexico.token != Lexico.simbolo.endcomment):
-            ch = obtch()
-            obtoken()
+    if(Lexico.token == Lexico.simbolo.endcomment):
+        Lexico.token = Lexico.simbolo.nulo
         obtoken()
+    #    while(Lexico.token != Lexico.simbolo.endcomment):            
+    #        obtoken()
+    #    obtoken()

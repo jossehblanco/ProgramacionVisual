@@ -45,5 +45,6 @@ mensaje_de_error=[
     " se espera texto"#43
     " se espera un identificador o texto"#44
     " se espera un ']'"#45
+    " se esperaba el cierre del comentario '*/'"#46
     ]
 
