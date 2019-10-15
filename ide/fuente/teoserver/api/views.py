@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from .models import Params
 from .serializers import ParamsSerializer
 from django.core.files import File
+import os
+from django.conf import settings 
 # Create your views here.
 
 class ParamsView(APIView):
@@ -21,11 +23,12 @@ class ParamsView(APIView):
             MAXLINEA += "MAXLINEA;" + str(serializer.data.get('MAXLINEA')) + "\n"
             MAXDIGIT += "MAXDIGIT;" + str(serializer.data.get('MAXDIGIT')) + "\n" 
             MAXID += "MAXID;" + str(serializer.data.get('MAXID')) + "\n"
-        with open('/home/jossehblanco/Desktop/ProyectoTeo/PROYECTO/ide/fuente/teoserver/params.txt', 'w') as f:
+        with open((settings.BASE_DIR + '/params.txt'), 'w') as f:
             myFile = File(f)
             myFile.write(MAXLINEA)
             myFile.write(MAXDIGIT)
             myFile.write(MAXID)
+            print(settings.BASE_DIR )
         myFile.closed
         f.closed
         return Response({"success": "Article '{}' created successfully"})

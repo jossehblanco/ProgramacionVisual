@@ -10,6 +10,8 @@ import {MatSidenavModule, MatListModule, MatIconModule, MatButtonModule, MatAuto
 import {MatToolbarModule} from '@angular/material';
 import { MatDialogCComponent } from './mat-dialog-c/mat-dialog-c.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from './shared/apiservice';
 
 @NgModule({
   declarations: [
@@ -54,12 +56,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   entryComponents: [
     MatDialogCComponent
   ], 
   providers: [
+    ApiService,
     {provide : MAT_DIALOG_DEFAULT_OPTIONS, useValue:
     {hasBackdrop : true}}
   ],

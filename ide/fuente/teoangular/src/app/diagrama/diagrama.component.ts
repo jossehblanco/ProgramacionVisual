@@ -7,6 +7,8 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { MatDialogCComponent } from '../mat-dialog-c/mat-dialog-c.component';
 import { Codigo } from './codigo';
 import { FormControl, Validators } from '@angular/forms';
+import { Params } from '../shared/params';
+import { ApiService } from '../shared/apiservice';
 
 //Se declara la constante $ ya que go.GraphObject.make se utiliza bastante
 const $ = go.GraphObject.make;
@@ -39,7 +41,7 @@ export class DiagramaComponent implements OnInit {
   Obtengo la instancia de la clase que hize de Templates.ts en shared/templates.ts
   por medio de inyecciónd e dependencias.
   */
-  constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog, private cc : Codigo) { 
+  constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog, private cc : Codigo, public servicio : ApiService) { 
 
     //Asignando a las variables que hice mas arriba el valor de los templates que están en
     //la instancia de Templates para despues poderlas ocupar en este contexto.
@@ -78,8 +80,10 @@ export class DiagramaComponent implements OnInit {
     this.MAXD = this.MAXDIGIT.value;
     this.MAXI = this.MAXID.value;
     this.textogenerado = "MAXLINEA;" + this.MAXL + "\nMAXDIGIT;" + this.MAXD + "\nMAXID;" + this.MAXI;
-    this.guardarConf()
-    console.log(this.textogenerado)
+    var nobjeto : Params
+    nobjeto  = new Params(this.MAXL, this.MAXD, this.MAXI )
+    console.log(this.servicio.postParams(nobjeto))
+    this.snackBar.open('¡Se cambiaron los parametros del compilador!', "¡Entendido!", {duration : 6000});
   }
 
 
