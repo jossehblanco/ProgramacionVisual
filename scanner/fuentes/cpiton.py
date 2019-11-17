@@ -8,6 +8,7 @@ import parseador
 import tds
 
 fp = None
+No_de_errores = 0
 
 def main(argv):
     global fp
@@ -15,7 +16,7 @@ def main(argv):
         print("\nNo se ha proporcionado el nombre del programa fuente (uso: parser1 progfuente)")
     
     else:
-        fp=open(argv,"r")
+        fp=open(argv,"r")        
         if fp==None:
             print("\nNo se encontro el programa fuente indicado")
         else:
@@ -46,6 +47,7 @@ def main(argv):
             #while(token != lexico.simbolo.mdputok):
             #    token = scanner.obtoken()
 
+            No_de_errores = 0
             parseador.inicio()
             
             
@@ -56,6 +58,6 @@ def main(argv):
             from auxiliares import estadisticas
             estadisticas()
             scanner.consolef.close()
-            fp.close
+            fp.close()
             
     return 0
