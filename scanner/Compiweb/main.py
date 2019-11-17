@@ -6,10 +6,10 @@ MaxDigi=0
 MaxId=0
 
 def compiweb(src, maxlinea,maxdigi,maxid):
-    main(src)
     MaxLinea=int(maxlinea)
     MaxDigi=int(maxdigi)
     MaxId=int(maxid)
+    main(src)
 
 #x = str(sys.argv[1])
 #connection carlitox
