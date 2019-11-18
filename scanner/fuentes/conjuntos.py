@@ -3,12 +3,9 @@ import lexico as Lexico
 import scanner as Scanner
 
 #tokens iniciales de declaracion de variables y procedimientos
-tokinidecl = [0 for i in range (params.NOTOKENS)]
+tokini = [0 for i in range (params.NOTOKENS)]
 #tokens iniciales de instruccion
-tokiniinst = [0 for i in range (params.NOTOKENS)]
-
-
-tokinifact = [0 for i in range (params.NOTOKENS)]
+#tokiniinst = [0 for i in range (params.NOTOKENS)]
 
 set_arranque = [0 for i in range (params.NOTOKENS)]
 
@@ -16,7 +13,8 @@ set_arranque = [0 for i in range (params.NOTOKENS)]
 
 def copia_set(conjunto, conjunto2):
 	#copiando lo del conjunto2 a conjunto
-	conjunto = conjunto2.copy()
+    for i in range (0,params.NOTOKENS):
+        conjunto[i] = conjunto2[i]
 
 def union_set(conjunto1,conjunto2, conjunto3):
 	copia_set(conjunto1,conjunto2)
@@ -28,7 +26,7 @@ def test (conjunto1, conjunto2, n):
 	conj_union = []
 
 	if(conjunto1[Lexico.token] == 0):
-		#el token no está en el conjunto1
+		#el token no esta en el conjunto1
 		error(n) #por que no esta el token se marca el error
 
 		#se arma el conjunto de estabilizacion 
@@ -38,13 +36,30 @@ def test (conjunto1, conjunto2, n):
 		while(conj_union[Lexico.token] == 0):
 			Scanner.obtoken()
 
+def search_ini_Token():
+    while(tokini[Lexico.token] == 0):
+        Scanner.obtoken()
+
 def inicializar_conjuntos():
-	#creación de conjuntos de TOKENS INICIALES
+    #creacion de conjuntos de TOKENS INICIALES
 
 	#tokens iniciales declaracion variables
-	tokinidecl[Lexico.simbolo.numtok]=tokinideclvar[Lexico.simbolo.dectok]=tokinideclvar[Lexico.simbolo.textok]=tokinideclvar[Lexico.simbolo.cartok]=tokinideclvar[Lexico.simbolo.voftok]=tokinideclvar[Lexico.simbolo.numarra]=tokinideclvar[Lexico.simbolo.decarra]=tokinideclvar[Lexico.simbolo.textoarra]=tokinideclvar[Lexico.simbolo.cararra]=tokinideclvar[Lexico.simbolo.vofarra]=1
-	#tokens iniciales declaracion funciones
-	tokinidecl[Lexico.simbolo.funtok] = 1
+    tokini[Lexico.simbolo.numtok]=tokinideclvar[Lexico.simbolo.dectok]=tokinideclvar[Lexico.simbolo.textok]=tokinideclvar[Lexico.simbolo.cartok]=tokinideclvar[Lexico.simbolo.voftok]=tokinideclvar[Lexico.simbolo.numarra]=tokinideclvar[Lexico.simbolo.decarra]=tokinideclvar[Lexico.simbolo.textoarra]=tokinideclvar[Lexico.simbolo.cararra]=tokinideclvar[Lexico.simbolo.vofarra]=1
 
-	#tokens iniciales de instrucciones
-	tokiniinst[Lexico.simbolo.sitok]=tokiniinst[Lexico.simbolo.paratok]=tokiniinst[Lexico.simbolo.mientrastok]=tokiniinst[Lexico.simbolo.hastok]=1
+    #tokens iniciales declaracion funciones
+    tokini[Lexico.simbolo.funtok] = 1
+
+    #tokens iniciales de instrucciones
+    tokini[Lexico.simbolo.sitok]=tokiniinst[Lexico.simbolo.paratok]=tokiniinst[Lexico.simbolo.mientrastok]=tokiniinst[Lexico.simbolo.hastok]=1
+
+    #asignaciones
+    tokini[Lexico.simbolo.ident] = 1
+
+    #llamadas de funciones
+    for i in range(300,316):
+        tokini[i] = 1
+
+    copia_set(set_arranque,tokini)
+    set_arranque[Lexico.simbolo.dputok] = 1
+
+    

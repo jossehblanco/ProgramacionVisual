@@ -12,6 +12,20 @@ def error(no):
     contadorLineas += 1
     consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
     print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    search_ini_Token()
+    return No_de_errores
+
+def error_iden(no,lexema):    
+    from cpiton import No_de_errores
+    from scanner import consolef
+    from scanner import contadorLineas
+    from conjuntos import search_ini_Token
+    #print("\n^ error"+ mensaje_de_error[no]+"\n")
+    No_de_errores += 1
+    contadorLineas += 1
+    consolef.write("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
+    print("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
+    search_ini_Token()
     return No_de_errores
     
 

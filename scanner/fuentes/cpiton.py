@@ -6,6 +6,7 @@ import parametros
 import scanner
 import parseador
 import tds
+from conjuntos import inicializa_conjuntos
 
 fp = None
 No_de_errores = 0
@@ -38,6 +39,11 @@ def main(argv):
             scanner.fin_de_archivo=0
             scanner.offset=-1
             scanner.ll=0
+            No_de_errores = 0
+
+            #inicializacion de conjuntos de estabilizacion (en conjuntos.py) 
+            inicializa_conjuntos()
+
             scanner.obtoken()
             
             
@@ -46,8 +52,7 @@ def main(argv):
             #token = scanner.obtoken()
             #while(token != lexico.simbolo.mdputok):
             #    token = scanner.obtoken()
-
-            No_de_errores = 0
+            #                
             parseador.inicio()
             
             

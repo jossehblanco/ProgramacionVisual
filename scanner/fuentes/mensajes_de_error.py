@@ -37,14 +37,16 @@ mensaje_de_error=[
     "el programa fuente esta incompleto",#35
     "el programa fuente es demasiado largo",#36
     "anidamiento demasiado profundo para los procedures",#37
-    "se rebasa el maximo entero de cpiton--se asume cero"#38
-    " se espera la palabra 'ret'"#39
-    " se debe retornar un identificador"#40
-    " se espera un identificador o un numero"#41
-    " se espera una ','"#42
-    " se espera texto"#43
-    " se espera un identificador o texto"#44
-    " se espera un ']'"#45
-    " se esperaba el cierre del comentario '*/'"#46
+    "se rebasa el maximo entero de cpiton--se asume cero",#38
+    " se espera la palabra 'ret'",#39
+    " se debe retornar un identificador",#40
+    " se espera un identificador o un numero",#41
+    " se espera una ','",#42
+    " se espera texto",#43
+    " se espera un identificador o texto",#44
+    " se espera un ']'",#45
+    " se esperaba el cierre del comentario '*/'",#46
+    " se esperaba un tipo de dato num o decimal",#47
+    " no se permite declarar funciones dentro de funciones"#48
     ]
 

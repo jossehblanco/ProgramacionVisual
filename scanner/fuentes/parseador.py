@@ -2,18 +2,27 @@ from tds import *
 from auxiliares import *
 import lexico as Lexico
 import scanner as Scanner
+import parametros as params
+import conjuntos as Conjuntos
+
+
 
 def inicio():
     if(Lexico.token == Lexico.simbolo.dputok):
         Scanner.obtoken()
-        bloque()
+        bloque(True)
     else:
         error(29)
+        return
 
-def bloque():
+def bloque(PermiteFunciones):
     if(Lexico.token == Lexico.simbolo.mdputok):
         return
+    if(PermiteFunciones and Lexico.simbolo.rettok):
+        return
     temp = None
+    setpaso = [0 for i in range (params.NOTOKENS)] #conjunto de paso por valor
+    vacio = [0 for i in range (params.NOTOKENS)] #conjunto vacio
 #-------------Declaracion de variable----------------------------------    
     
     declaracionvariable();
@@ -25,13 +34,12 @@ def bloque():
     asignacion(True,None)
 #-----------------------------------------------------------------------
 #-------------Declaracion de funciones----------------------------------
-    
-    delaracionfuncion()
+    delaracionfuncion(PermiteFunciones)
     
 #-----------------------------------------------------------------------
 #-------------Instruccion-----------------------------------------------
     instruccion()
-    bloque()
+    bloque(PermiteFunciones)
     
 
 #-----------------------------------------------------------------------
@@ -74,15 +82,17 @@ def verificarIdent():
     if(Lexico.token == Lexico.simbolo.ident):
         i = posicion(Scanner.lex)
         if(i == -1):
-            error(10)
+            error_iden(10,Scanner.lex)
+            return 2 #error que no existe identificador
         else:
             if(tabla[i].tipo == objeto.FUNCION):
                 error(20)
+                return 2 #error que el identificador es una funcion
             else:
                 Scanner.obtoken()
-                return True
+                return 1 #Success
     else:        
-        return False
+        return 0 #No es un identificador
 
 def valor():
     global lextoken
@@ -91,6 +101,7 @@ def valor():
         expresion()
         if(Lexico.token != Lexico.simbolo.parenc):
             error(21)
+            return
     elif(Lexico.token == Lexico.simbolo.llaveatok):
         Scanner.obtoken()
         valor()
@@ -99,6 +110,7 @@ def valor():
             valor()
         if(Lexico.token != Lexico.simbolo.llavectok):
             error(27)
+            return
     else:
         if(Lexico.token != Lexico.simbolo.numero and Lexico.token != Lexico.simbolo.truetok and
           Lexico.token != Lexico.simbolo.ident and Lexico.token != Lexico.simbolo.falsetok and 
@@ -137,8 +149,10 @@ def agregarTipoAIdents(tipao,numError):
     if(Lexico.token == Lexico.simbolo.ident):
         poner(tipao)
         Scanner.obtoken()
+        return True
     else:
         error(numError)
+        return False
 
 #--------------------------------------------------------------------------------
 #Declaracion de variables--------------------------------------------------------
@@ -147,7 +161,9 @@ def declaracionvariable():
     if(tipao is None):
         return
     Scanner.obtoken()
-    agregarTipoAIdents(tipao,16)
+    #si da error retorna false
+    if(not agregarTipoAIdents(tipao,16)):
+        return
     if (Lexico.token == Lexico.simbolo.corchab):
         Scanner.obtoken()
         if(Lexico.token == Lexico.simbolo.numero):
@@ -156,11 +172,14 @@ def declaracionvariable():
                 Scanner.obtoken()                            
             else:
                 error(45)
+                return
         else:
-            error(1)    
+            error(1)
+            return
     while(Lexico.token == Lexico.simbolo.coma):
         Scanner.obtoken()
-        agregarTipoAIdents(tipao,4)
+        if(not agregarTipoAIdents(tipao,4)):
+            return
     if(Lexico.token == Lexico.simbolo.puntoycoma):
         Scanner.obtoken()
     else:
@@ -176,12 +195,12 @@ def VerificarIdentExist(checkInTDS,tipao):
             i = posicion(Scanner.lex)
             if(i == -1):
                 error(10)
+                return False
             else:
                 Scanner.obtoken()
                 return True
         else:
-            agregarTipoAIdents(tipao,16)
-            return True;
+            return agregarTipoAIdents(tipao,16)           
 
 def asignacion(checkIdent,tipao):
     fin = -1
@@ -205,6 +224,7 @@ def asignacion(checkIdent,tipao):
             return 0
         else:
             error(4)
+            return
     #Se va por el camino del arreglo
     elif (checkIdent and Lexico.token == Lexico.simbolo.corchab):
         Scanner.obtoken()
@@ -235,50 +255,53 @@ def asignacion(checkIdent,tipao):
     else:
         return
 
-def delaracionfuncion():
-    if(Lexico.token == Lexico.simbolo.funtok):
-        Scanner.obtoken()
-        if(Lexico.token == Lexico.simbolo.ident):
+def delaracionfuncion(PermiteFunciones):
+    if(PermiteFunciones):
+        if(Lexico.token == Lexico.simbolo.funtok):
             Scanner.obtoken()
-            if(Lexico.token == Lexico.simbolo.parena):
+            if(Lexico.token == Lexico.simbolo.ident):
                 Scanner.obtoken()
-                parametros()
-                if(Lexico.token == Lexico.simbolo.parenc):
+                if(Lexico.token == Lexico.simbolo.parena):
                     Scanner.obtoken()
-                    if(Lexico.token == Lexico.simbolo.retortok):
+                    parametros()
+                    if(Lexico.token == Lexico.simbolo.parenc):
                         Scanner.obtoken()
-                        tipao = tipo()
-                        if(Lexico.token == Lexico.simbolo.llaveatok):
-                            bloque()
+                        if(Lexico.token == Lexico.simbolo.retortok):
                             Scanner.obtoken()
-                            if(Lexico.token == Lexico.simbolo.rettok):
-                                Scanner.obtoken()
-                                if(Lexico.token == Lexico.simbolo.ident):
-                                    #Verificar que sea del tipo
+                            tipao = tipo()
+                            if(Lexico.token == Lexico.simbolo.llaveatok):
+                                bloque(False)
+                                #Scanner.obtoken()
+                                if(Lexico.token == Lexico.simbolo.rettok):
                                     Scanner.obtoken()
-                                    if(Lexico.token == Lexico.simbolo.puntoycoma):
+                                    if(Lexico.token == Lexico.simbolo.ident):
+                                        #Verificar que sea del tipo
                                         Scanner.obtoken()
-                                        if(Lexico.token == Lexico.simbolo.llavectok):
-                                            Scanner.obtoken
-                                            return
+                                        if(Lexico.token == Lexico.simbolo.puntoycoma):
+                                            Scanner.obtoken()
+                                            if(Lexico.token == Lexico.simbolo.llavectok):
+                                                Scanner.obtoken
+                                                return
+                                            else:
+                                                error(27)
                                         else:
-                                            error(27)
+                                            error(9)
                                     else:
-                                        error(9)
+                                        error(40)
                                 else:
-                                    error(40)
+                                    error(39)
                             else:
-                                error(39)
+                                error(26)
                         else:
-                            error(26)
+                            error(17)
                     else:
-                        error(17)
+                        error(21)
                 else:
-                    error(21)
+                    error(22)
             else:
-                error(22)
-        else:
-            error(16)
+                error(16)
+    else:
+        error(48)
     return
 
 
@@ -411,15 +434,33 @@ def expresion():
 
 def termino():
     #Apesar de que el ident tambien entra en valor lo verifico aparte pues me tengo que asegurar que este
-    #declarado a la hora de utilizarlo en operaciones    
-    if(not verificarIdent()):
-        #Si trae false es que el token no es Ident
-        #Si el token no existe tira error y muere el programa
-        valor()   
+    #declarado a la hora de utilizarlo en operaciones
+    verif = verificarIdent()    
+    if(verif == 0):
+        #Si trae 0 es que el token no es Ident        
+        if(Lexico.token == Lexico.simbolo.numero or Lexico.token == Lexico.simbolo.decimal):
+            #Meterlo a la pila?
+            Scanner.obtoken() 
+        else:
+            error(47) #se esperaba un numero o un decimal
+            return
+        #valor() este tenia antes
+    elif(verif == 2):
+        return
     while(Lexico.token == Lexico.simbolo.por or Lexico.token == Lexico.simbolo.barra):
         Scanner.obtoken()
-        if(not verificarIdent()):
-            valor()
+        verif = verificarIdent()
+        if(verif == 0):
+            #Si trae 0 es que el token no es Ident        
+            if(Lexico.token == Lexico.simbolo.numero or Lexico.token == Lexico.simbolo.decimal):
+                #Meterlo a la pila?
+                Scanner.obtoken()
+            else:
+                error(47) #se esperaba un numero o un decimal
+                return
+        elif(verif == 2):
+            #Si trae 2 es error por esto se retorna
+            return
 
 def condicion():
     expresion()
@@ -444,7 +485,8 @@ def parametros():
     else:
         obtoken()
         #ver si lo declaramos o como manejar las variables por scope
-        agregarTipoAIdents(tipao,16)
+        if(not agregarTipoAIdents(tipao,16)):
+            return
         if(Lexico.token == Lexico.simbolo.coma):
             obtoken()
             parametros()
