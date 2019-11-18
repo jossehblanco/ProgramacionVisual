@@ -13,7 +13,7 @@ mat-sidenav, mat-sidenav-container{
 }
 mat-sidenav{
     background-color: #eceff1;
-    width: 300px;
+    width: 350px;
     padding-top: 0;
     padding-right : 0;
     padding-left : 0;
@@ -28,7 +28,7 @@ mat-sidenav{
 #paletteCanvas{
     margin-top: 8px;
     margin-left: 28px;
-    width: 250px;
+    width: 290px;
     height: 80%;
     background-color: transparent;
 }
@@ -47,3 +47,11 @@ mat-sidenav{
     /* Full height */
     height: 100%;
   }
+
+ 
+  ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+    min-width: 0!important;
+    padding: 5px!important;
+    margin: 5px!important;
+   }
+   

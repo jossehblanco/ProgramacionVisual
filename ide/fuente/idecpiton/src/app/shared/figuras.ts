@@ -217,6 +217,42 @@ definirFiguras(){
       geo.spot2 = new go.Spot(.5, .75);
       return geo;
     });
+    
+    go.Shape.defineFigureGenerator("PrimitiveFromCall", function(shape, w, h) {
+      var geo = new go.Geometry();
+      var param1 = shape ? shape.parameter1 : NaN;
+      var param2 = shape ? shape.parameter2 : NaN;
+      if (isNaN(param1)) param1 = .1; // Distance of left line from left
+      if (isNaN(param2)) param2 = .3; // Distance of point from right
+      var fig = new go.PathFigure(0, 0, true);
+      geo.add(fig);
+    
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, 0));
+      fig.add(new go.PathSegment(go.PathSegment.Line, (1 - param2) * w, .5 * h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, h).close());
+      //??? geo.spot1 = new go.Spot(param1, 0);
+      //??? geo.spot2 = new go.Spot(1 - param2, 1);
+      return geo;
+    });
+    
+    go.Shape.defineFigureGenerator("PrimitiveToCall", function(shape, w, h) {
+      var geo = new go.Geometry();
+      var param1 = shape ? shape.parameter1 : NaN;
+      var param2 = shape ? shape.parameter2 : NaN;
+      if (isNaN(param1)) param1 = .1; // Distance of left line from left
+      if (isNaN(param2)) param2 = .3; // Distance of top and bottom right corners from right
+      var fig = new go.PathFigure(0, 0, true);
+      geo.add(fig);
+    
+      fig.add(new go.PathSegment(go.PathSegment.Line, (1 - param2) * w, 0));
+      fig.add(new go.PathSegment(go.PathSegment.Line, w, .5 * h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, (1 - param2) * w, h));
+      fig.add(new go.PathSegment(go.PathSegment.Line, 0, h).close());
+      //??? geo.spot1 = new go.Spot(param1, 0);
+      //??? geo.spot2 = new go.Spot(1 - param2, 1);
+      return geo;
+    });
     }
     
     

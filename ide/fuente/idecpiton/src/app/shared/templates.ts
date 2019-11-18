@@ -13,8 +13,14 @@ export class Templates{
     
     //Esto va a ser lo que yo pueda accesar cuando inyecte la dependencia
     //Se tiene que igualar a otra variable si se usa en otra clase (como lo hice en diagrama.componente.ts)
-    public paletteTemplateMap :go.Map<string, go.Node>;
+    public paletteTemplateInicioMap :go.Map<string, go.Node>;
     public diagramTemplateMap : go.Map<string, go.Node>;
+    public paletteTemplateVariablesMap : go.Map<string, go.Node>;
+    public paletteTemplateFlujoMap : go.Map<string, go.Node>;
+    public paletteTemplateBuclesMap : go.Map<string, go.Node>;
+    public paletteTemplateFuncionesMap : go.Map<string, go.Node>;
+    public paletteTemplateIOMap : go.Map<string, go.Node>;
+    public paletteTemplateArchivosMap : go.Map<string, go.Node>;
     public linkTemplate;
 
 
@@ -26,7 +32,13 @@ export class Templates{
 
         //inicializo los maps para que no estén undefined
         this.diagramTemplateMap = new go.Map<string, go.Node>();
-        this.paletteTemplateMap = new go.Map<string, go.Node>();
+        this.paletteTemplateInicioMap = new go.Map<string, go.Node>();
+        this.paletteTemplateVariablesMap = new go.Map<string, go.Node>();
+        this.paletteTemplateFlujoMap = new go.Map<string, go.Node>();
+        this.paletteTemplateBuclesMap = new go.Map<string, go.Node>();
+        this.paletteTemplateFuncionesMap = new go.Map<string, go.Node>();
+        this.paletteTemplateIOMap = new go.Map<string, go.Node>();
+        this.paletteTemplateArchivosMap = new go.Map<string, go.Node>();
 
 
 
@@ -55,6 +67,61 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
+    /*---------------------------Variable-------------------------------------------------*/
+
+    //crear y asignar variable
+    var defVariagble =
+    $(go.Node, "Auto",
+        $(go.Shape, "RoundedRectangle",
+        {fill: "white", stroke: "blue", strokeWidth: 3 },
+        {portId:"", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Vertical",
+        $(go.Panel, "Horizontal",
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_variable").makeTwoWay()),
+        $(go.TextBlock, { text: " = ", margin: 5 }),
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "valor_variable").makeTwoWay())
+        ),
+        $(go.Panel, "Horizontal",
+        $(go.TextBlock, { text: "Tipo: ", margin: 5 }),
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "tipo_variable").makeTwoWay())
+        )        
+        )
+    );
+
+    var crearvariable = 
+    $(go.Node, "Auto",
+        $(go.Shape, "RoundedRectangle",
+        {fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId:"", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Vertical",
+        $(go.Panel, "Horizontal",
+        $(go.TextBlock, { text: "Variable: ", margin: 5 }),
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_variable").makeTwoWay())
+        ),
+        $(go.Panel, "Horizontal",
+        $(go.TextBlock, { text: "Tipo: ", margin: 5 }),
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "tipo_variable").makeTwoWay())
+        )               
+        )
+    );
+
+    //asignar variable
+    var asignarVariable = 
+    $(go.Node, "Auto",
+        $(go.Shape, "RoundedRectangle",
+        {fill: "white", stroke: "purple", strokeWidth: 3 },
+        {portId:"", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Vertical",
+        $(go.Panel, "Horizontal",
+        $(go.TextBlock, { text: "Variable: ", margin: 5 }),
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_variable").makeTwoWay())
+        ),        
+        $(go.Panel, "Horizontal",
+        $(go.TextBlock, { text: "Valor: ", margin: 5 }),
+        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "valor_variable").makeTwoWay())
+        )
+        )
+    );
 
     /*---------------------------Control de Flujo--------------------------------------------*/ 
     var ifTemplate =
@@ -105,6 +172,7 @@ export class Templates{
         )
 
     );
+    
 
     //endfor
     var endforTemplate =
@@ -157,6 +225,59 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
+    /*---------------------------Funciones---------------------------------*/
+    
+    //crear funcion
+    var crearFuncion = 
+    $(go.Node, "Auto",
+      $(go.Shape, "PrimitiveToCall",
+        {height: 50,fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Horizontal",
+          $(go.TextBlock, {text: "Crear: ", margin: 5}),
+          $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_funcion").makeTwoWay()),
+          $(go.TextBlock, {width: 75, text: "", margin: 5})
+        )
+    );
+
+    //fin crear funcion
+    var endCrearFuncion = 
+    $(go.Node, "Auto",
+      $(go.Shape, "PrimitiveToCall",
+      { height: 50, fill: "white", stroke: "red", strokeWidth: 3 },
+      {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.Panel, "Horizontal",
+          $(go.TextBlock, {margin: 5, editable: false, textAlign: "left", verticalAlignment: go.Spot.Center},
+          new go.Binding("text", "representa").makeTwoWay()),
+          $(go.TextBlock, {width: 75, text: "", margin: 5})
+        )    
+    );
+
+    //llamar funcion
+    var llamarFuncion = 
+    $(go.Node, "Auto",
+      $(go.Shape, "PrimitiveFromCall",
+        {height:50, fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Horizontal", 
+          $(go.TextBlock, {text: "Llamar: ", margin: 5}),
+          $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_funcion").makeTwoWay()),
+          $(go.TextBlock, {width: 75, text: "", margin: 5})
+        )
+    );
+
+    //fin llamar funcion
+    var endLlamarFuncion = 
+    $(go.Node, "Auto",
+      $(go.Shape, "PrimitiveFromCall",
+        { height: 50, fill: "white", stroke: "red", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Horizontal",
+          $(go.TextBlock, {margin: 5, editable: false, textAlign: "left", verticalAlignment: go.Spot.Center},
+          new go.Binding("text", "representa").makeTwoWay()),
+          $(go.TextBlock, {width: 75, text: "", margin: 5})
+        )     
+    );
 
     /*---------------------------I/O---------------------------------------*/
     //leerstd
@@ -251,18 +372,6 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
-    //lo mismo para procedimiento
-    var procTemplate =
-    $(go.Node, "Auto",
-      $(go.Shape, "Rectangle",
-        { fill: "white", stroke: "black", strokeWidth: 3 },
-        { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
-      $(go.TextBlock, { margin: 5 , editable : true},
-        new go.Binding("text", "representa").makeTwoWay())
-    );
-
-
-
 
     /*
 
@@ -290,6 +399,36 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
+    /*---------------------------Variable-------------------------------------------------*/
+    
+    //crearvariable
+    var defVariagble2 =
+    $(go.Node, "Vertical",
+      $(go.Shape, "RoundedRectangle",
+        {  fill: "white", stroke: "blue", strokeWidth: 3 },
+        { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
+      $(go.TextBlock, { margin: 5 , editable : false},
+        new go.Binding("text", "representa").makeTwoWay())
+    );
+
+    var crearvariable2 = 
+    $(go.Node, "Vertical",
+        $(go.Shape, "RoundedRectangle",
+        {fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId:"", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.TextBlock, { margin: 5 , editable : false},
+          new go.Binding("text", "representa").makeTwoWay())     
+    );
+
+    //asignar variable
+    var asignarVariable2 = 
+    $(go.Node, "Vertical",
+        $(go.Shape, "RoundedRectangle",
+        {fill: "white", stroke: "purple", strokeWidth: 3 },
+        {portId:"", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.TextBlock, { margin: 5 , editable : false},
+          new go.Binding("text", "representa").makeTwoWay())
+    );
 
     /*---------------------------Control de Flujo--------------------------------------------*/ 
     var ifTemplate2 =
@@ -375,6 +514,47 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
+    /*---------------------------Funciones---------------------------------*/
+
+    //crear funcion
+    var crearFuncion2 = 
+    $(go.Node, "Vertical",
+      $(go.Shape, "PrimitiveToCall",
+        {fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa").makeTwoWay())
+    );
+
+    //fin crear funcion
+    var endCrearFuncion2 = 
+    $(go.Node, "Vertical",
+      $(go.Shape, "PrimitiveToCall",
+        {fill: "white", stroke: "red", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa").makeTwoWay())
+    );
+
+    //llamar funcion
+    var llamarFuncion2 = 
+    $(go.Node, "Vertical",
+      $(go.Shape, "PrimitiveFromCall",
+        {fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa").makeTwoWay())
+    );
+
+    //fin llamar funcion
+    var endLlamarFuncion2 = 
+    $(go.Node, "Vertical",
+      $(go.Shape, "PrimitiveFromCall",
+        {fill: "white", stroke: "red", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.TextBlock, {margin: 5, editable: true},
+        new go.Binding("text", "representa").makeTwoWay())
+    );
 
     /*---------------------------I/O---------------------------------------*/
     //leerstd
@@ -439,6 +619,7 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
+<<<<<<< HEAD
     //lo mismo para procedimiento
     var procTemplate2 =
     $(go.Node, "Vertical",
@@ -528,6 +709,70 @@ export class Templates{
 
   
 
+=======
+        this.diagramTemplateMap.add("inicio", inicioTemplate);
+        this.diagramTemplateMap.add("fin", finTemplate);
+        this.diagramTemplateMap.add("dvar", defVariagble);
+        this.diagramTemplateMap.add("cvar", crearvariable);
+        this.diagramTemplateMap.add("avar", asignarVariable);
+        this.diagramTemplateMap.add("if", ifTemplate);
+        this.diagramTemplateMap.add("fif", fifTemplate);
+        this.diagramTemplateMap.add("for", forTemplate);
+        this.diagramTemplateMap.add("efor", endforTemplate);
+        this.diagramTemplateMap.add("mientras", mientrasTemplate);
+        this.diagramTemplateMap.add("emientras", endmientrasTemplate);
+        this.diagramTemplateMap.add("hasm", hmientrasTemplate);
+        this.diagramTemplateMap.add("ehasm", endhmientrasTemplate);
+        this.diagramTemplateMap.add("cfunc", crearFuncion);
+        this.diagramTemplateMap.add("ecfunc", endCrearFuncion);
+        this.diagramTemplateMap.add("lfunc", llamarFuncion);
+        this.diagramTemplateMap.add("elfunc", endLlamarFuncion);
+        this.diagramTemplateMap.add("leer", leerTemplate);
+        this.diagramTemplateMap.add("imp", impTemplate);
+        this.diagramTemplateMap.add("abrira", abrirATemplate);
+        this.diagramTemplateMap.add("cerrara", cerrarATemplate);
+        this.diagramTemplateMap.add("leera", leerATemplate);
+        this.diagramTemplateMap.add("esca", escATemplate);
+
+        this.paletteTemplateInicioMap.add("inicio", inicioTemplate2);
+        this.paletteTemplateInicioMap.add("fin", finTemplate2);
+
+        this.paletteTemplateVariablesMap.add("dvar", defVariagble2);
+        this.paletteTemplateVariablesMap.add("cvar", crearvariable2);
+        this.paletteTemplateVariablesMap.add("avar", asignarVariable2);
+
+        this.paletteTemplateFlujoMap.add("if", ifTemplate2);
+        this.paletteTemplateFlujoMap.add("fif", fifTemplate2);
+
+        this.paletteTemplateBuclesMap.add("for", forTemplate2);
+        this.paletteTemplateBuclesMap.add("efor", endforTemplate2);
+        this.paletteTemplateBuclesMap.add("mientras", mientrasTemplate2);
+        this.paletteTemplateBuclesMap.add("emientras", endmientrasTemplate2);
+        this.paletteTemplateBuclesMap.add("hasm", hmientrasTemplate2);
+        this.paletteTemplateBuclesMap.add("ehasm", endhmientrasTemplate2);
+
+        this.paletteTemplateFuncionesMap.add("cfunc", crearFuncion2);
+        this.paletteTemplateFuncionesMap.add("ecfunc", endCrearFuncion2);
+        this.paletteTemplateFuncionesMap.add("lfunc", llamarFuncion2);
+        this.paletteTemplateFuncionesMap.add("elfunc", endLlamarFuncion2);
+
+        this.paletteTemplateIOMap.add("leer", leerTemplate2);
+        this.paletteTemplateIOMap.add("imp", impTemplate2);
+
+        this.paletteTemplateArchivosMap.add("abrira", abrirATemplate2);
+        this.paletteTemplateArchivosMap.add("cerrara", cerrarATemplate2);
+        this.paletteTemplateArchivosMap.add("leera", leerATemplate2);
+        this.paletteTemplateArchivosMap.add("esca", escATemplate2);
+
+        this.linkTemplate = $(go.Link,
+            $(go.Shape),                           // this is the link shape (the line)
+            $(go.Shape, { toArrow: "Standard" }),  // this is an arrowhead
+            {routing: go.Link.Orthogonal}, //Esto hace las lineas mas chivas y menos tontas
+            $(go.TextBlock, { text :""}, new go.Binding("text", "texto")) //Le agrego un textblock para tener un label. Hago un bind de la propiedad text con texto.
+          );
+    }
+    
+>>>>>>> 512cb4ad2fdc178d3afef3c4be6eb039ca607640
     
   
     
