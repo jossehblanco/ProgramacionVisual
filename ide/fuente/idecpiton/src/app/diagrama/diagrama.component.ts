@@ -23,13 +23,25 @@ export class DiagramaComponent implements OnInit {
   opened= false;
   //Declaracion de diagramas y paleta, empiezan como nulo y se inicializan luego
   private diagram : go.Diagram = null;
-  private palette : go.Palette = null;
-  private beginNode : go.Node = null;
+  //private paletteInicio : go.Palette = null;
+  //private paletteVariables : go.Palette = null;
+  /*private paletteFlujo : go.Palette = null;
+  private paletteBucles : go.Palette = null;
+  private paletteFunciones : go.Palette = null;
+  private paletteIO : go.Palette = null;
+  private paletteArchivos : go.Palette = null;
+  */private beginNode : go.Node = null;
 
   //Declarando variables para alojar los templates
   private diagramTemplate :go.Map<string, go.Node>;
-  private paletteTemplate : go.Map<string, go.Node>;
-  private linkTemplate ;
+  //private paletteTemplateInicio : go.Map<string, go.Node>;
+  //private paletteTemplateVariables : go.Map<string, go.Node>;
+  /*private paletteTemplateFlujo : go.Map<string, go.Node>;
+  private paletteTemplateBucles : go.Map<string, go.Node>;
+  private paletteTemplateFunciones : go.Map<string, go.Node>;
+  private paletteTemplateIO: go.Map<string, go.Node>;
+  private paletteTemplateArchivos : go.Map<string, go.Node>;
+  */private linkTemplate ;
   private textogenerado : string
   private nombrearchivo : string = "";
   private conversordecodigo: Codigo;
@@ -46,8 +58,14 @@ export class DiagramaComponent implements OnInit {
     //Asignando a las variables que hice mas arriba el valor de los templates que están en
     //la instancia de Templates para despues poderlas ocupar en este contexto.
     this.diagramTemplate = templates.diagramTemplateMap;
-    this.paletteTemplate = templates.paletteTemplateMap;
-    this.linkTemplate = templates.linkTemplate;
+    //this.paletteTemplateInicio = templates.paletteTemplateInicioMap;
+    //this.paletteTemplateVariables = templates.paletteTemplateVariablesMap;
+    /*this.paletteTemplateFlujo = templates.paletteTemplateFlujoMap;
+    this.paletteTemplateBucles = templates.paletteTemplateBuclesMap;
+    this.paletteTemplateFunciones = templates.paletteTemplateFuncionesMap;
+    this.paletteTemplateIO =  templates.paletteTemplateIOMap;
+    this.paletteTemplateArchivos = templates.paletteTemplateArchivosMap;
+    */this.linkTemplate = templates.linkTemplate;
     this.textogenerado = ""
     this.conversordecodigo = cc;
   }
@@ -236,10 +254,47 @@ onSubmit() {
     );
 
       //Inicializo mi objeto this.pallete como un tipo go.Palette que sera contenido en un div con id paletteCanvas 
-      this.palette = $(go.Palette, "paletteCanvas");      
-      //Asignando Templates
+      //this.paletteInicio = $(go.Palette, "paletteInicio");      
+      //this.paletteVariables = $(go.Palette, "paletteVariables");   
+     /* this.paletteFlujo = $(go.Palette, "paletteFlujo");   
+      this.paletteBucles = $(go.Palette, "paletteBucles");   
+      this.paletteFunciones = $(go.Palette, "paletteFunciones");   
+      this.paletteIO = $(go.Palette, "paletteIO");   
+      this.paletteArchivos = $(go.Palette, "paletteArchivos");   
+      *///Asignando Templates
       this.diagram.nodeTemplateMap = this.diagramTemplate;
-      this.palette.nodeTemplateMap = this.paletteTemplate;
+      //this.paletteInicio.nodeTemplateMap = this.paletteTemplateInicio;
+      //this.paletteVariables.nodeTemplateMap = this.paletteTemplateVariables;
+      /*this.paletteFlujo.nodeTemplateMap = this.paletteTemplateFlujo;
+      this.paletteBucles.nodeTemplateMap = this.paletteTemplateBucles;
+      this.paletteFunciones.nodeTemplateMap = this.paletteTemplateFunciones;
+      this.paletteIO.nodeTemplateMap = this.paletteTemplateIO;
+      this.paletteArchivos.nodeTemplateMap = this.paletteTemplateArchivos;
+      */
+
+      /*this.palette.groupTemplate =
+     $(go.Group, "Vertical",
+        {
+          layout:
+            $(go.GridLayout,
+              {
+                wrappingWidth: Infinity, wrappingColumn:2,
+                cellSize: new go.Size(1, 1), spacing: new go.Size(3, 3)
+              })
+        },
+        $(go.TextBlock, //group title
+          { alignment: go.Spot.MiddleTop, font: "Bold 12pt Sans-Serif" },
+          new go.Binding("text", "key")),
+        $(go.Panel, "Auto",
+          $(go.Shape, "RoundedRectangle",  // surrounds the Placeholder
+            { parameter1: 14,
+              fill: "rgba(128,128,128,0.33)"}),
+          $(go.Placeholder,    // represents the area of all member parts,
+            { padding: 5})  // with some extra padding around them
+        )
+     );*/
+        
+
       this.diagram.linkTemplate = this.linkTemplate;
 
 
@@ -252,26 +307,53 @@ onSubmit() {
        Una paleta y un diagrama pueden tener estilos diferentes, pero si hay una categoría que se 
        llama igual en ambos, esta cambiará si está definida con otro estilo cuando se arrastre.       
        */
-      this.palette.model.nodeDataArray = [
+    
+    
+
+      /*this.paletteInicio.model.nodeDataArray = [
         { key: "inicionode", representa: "Inicio", color: "white", category : "inicio"},
-        { key: "finnode", representa: "Fin", color: "white", category : "fin"},
+        { key: "finnode", representa: "Fin", color: "white", category : "fin"}
+      ];
+
+      this.paletteVariables.model.nodeDataArray = [
+        { key: "defvarnode", representa: "Definir Variable", nombre_variable: "variable", valor_variable: "valor", tipo_variable: "tipo variable", color: "white", category: "dvar"},
+        { key: "crearvarnode", representa: "Crear Variable", nombre_variable: "variable", tipo_variable: "tipo variable", color: "white", category: "cvar"},
+        { key: "asigvarnode", representa: "Asignar Variable", nombre_variable: "variable", valor_variable: "valor", color: "white", category: "avar"}
+      ];
+      /*
+      this.paletteFlujo.model.nodeDataArray = [
         { key: "ifnode", representa: "condicion", color: "white", category : "if"},
-        { key: "eifnode", representa: "fin condicion", color: "white", category : "fif"},
+        { key: "eifnode", representa: "fin condicion", color: "white", category : "fif"}
+      ];
+
+      this.paletteBucles.model.nodeDataArray = [
         { key: "fornode", representa: "para a rango", variable: "variable", desde:"x", hasta: "y", incremento: "z", color: "white", category : "for"},
         { key: "endfornode", representa: "fin para a rango", color: "white", category: "efor"},
-        { key: "procnode", representa: "proceso", color: "white" , category : "proc"},
         { key: "mientrasnode", representa: "mientras", color: "white", category : "mientras"},
         { key: "endmientrasnode", representa: "fin mientras", color: "white", category: "emientras"},
         { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"},
-        { key: "endhasnode", representa: "fin has mientras", color: "white", category: "ehasm"},
+        { key: "endhasnode", representa: "fin has mientras", color: "white", category: "ehasm"}
+      ];
+
+      this.paletteFunciones.model.nodeDataArray =[
+        { key: "crearfunc", representa: "Crear Funcion", nombre_funcion: "nombre funcion", color: "white", category: "cfunc"},
+        { key: "endcrearfunc", representa: "Fin Crear Funcion", color: "white", category: "ecfunc"},
+        { key: "llamarfunc", representa: "Llamar Funcion", nombre_funcion: "nombre funcion", color: "white", category: "lfunc"},
+        { key: "endllamarfunc", representa: "  Fin Llamar Funcion", color: "white", category: "elfunc"}
+      ];
+
+      this.paletteIO.model.nodeDataArray = [
         { key: "leernode", representa: "leerstd", color: "white", category : "leer", tipo : "tipo", guardar : "variable"},
-        { key: "impnode", representa: "imp", color: "white", category : "imp"},
+        { key: "impnode", representa: "imp", color: "white", category : "imp"}
+      ];
+
+      this.paletteArchivos.model.nodeDataArray = [
         { key: "abriranode", representa: "abrir archivo", color: "white", category : "abrira", url : "url", modo : "truncar/añadir", guardar : "variable"},
         { key: "cerraranode", representa: "cerrar archivo", color: "white", category : "cerrara"},
         { key: "leeranode", representa: "leer archivo", color: "white", category : "leera", tipo : "tipo", guardar :"variable"},
         { key: "escanode", representa: "escribir archivo", color: "white", category : "esca"}
       ];
-
+*/
       //igualo el modelo de mi diagrama (que está definido en este archivo) con this.model
       //Esto causa que tenga una referencia al modelo en app-component.ts (por data binding)
       this.diagram.model = this.model;
