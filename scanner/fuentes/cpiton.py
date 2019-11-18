@@ -19,6 +19,7 @@ def main(argv):
         if fp==None:
             print("\nNo se encontro el programa fuente indicado")
         else:
+            global nombreArch
             timer=datetime.datetime.today()
             
             #print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
