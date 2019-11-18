@@ -33,6 +33,7 @@ export class DiagramaComponent implements OnInit {
   private textogenerado : string
   private nombrearchivo : string = "";
   private conversordecodigo: Codigo;
+
   //Se define un objeto de tipo go.Model que se recibe mediante input (databinding) desde app-component.ts
   @Input()
   public model : go.Model
@@ -47,7 +48,76 @@ export class DiagramaComponent implements OnInit {
     //la instancia de Templates para despues poderlas ocupar en este contexto.
     this.diagramTemplate = templates.diagramTemplateMap;
     this.paletteTemplate = templates.paletteTemplateMap;
-    this.linkTemplate = templates.linkTemplate;
+    this.linkTemplate = 
+    $(go.Link,
+      {
+        routing: go.Link.AvoidsNodes,
+        curve: go.Link.JumpOver,
+        corner: 5,
+        toShortLength: 4,
+        selectable: false,
+        layoutConditions: go.Part.LayoutAdded | go.Part.LayoutRemoved,
+        // links cannot be selected, so they cannot be deleted
+        // If a node from the Palette is dragged over this node, its outline will turn green
+        mouseDragEnter: (e, link : go.Link) => { link.isHighlighted = true; },
+        mouseDragLeave: (e, link : go.Link) => { link.isHighlighted = false; },
+        mouseDrop : (e, obj : go.Link) =>{
+          var diagram = e.diagram;
+          var model = diagram.model as go.GraphLinksModel;
+          var newnode = diagram.selection.first();
+          if(!(newnode instanceof go.Node)) return; //hay que revisar si es un if, for while, y toda esa vaina alv
+
+
+          var fromnode = obj.fromNode;
+          var tonode = obj.toNode;
+          
+          if(newnode.data.category == "if"){
+            var truenode : go.Node;
+            var falsenode : go.Node;
+            var endif : go.Node;
+            obj.toNode = newnode;
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "procnode", representa: "proceso", color: "white" , category : "proc"});
+            let nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+              truenode = nit.value;
+            }
+            console.log(truenode.data.key);
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "procnode", representa: "proceso", color: "white" , category : "proc"});
+            nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+              falsenode = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "eifnode", representa: "fin condicion", color: "white", category : "fif"});
+            nit = diagram.nodes.iterator;
+            while(nit.hasNext()){          
+              endif = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key, to : truenode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key, to : falsenode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: truenode.data.key, to : endif.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: falsenode.data.key, to : endif.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: endif.data.key, to : tonode.data.key});
+
+          }
+          
+          
+
+        }
+      },
+      $(go.Shape, { stroke: "rgb(63,63,63)", strokeWidth: 2 },
+      new go.Binding("stroke", "isHighlighted", function(h) { return h ? "chartreuse" : "rgb(63,63,63)"; }).ofObject(),
+      new go.Binding("strokeWidth", "isHighlighted", function(h) { return h ? 4 : 2; }).ofObject()),
+      $(go.Shape,
+        { toArrow: "standard", stroke: null, fill: "black" }),
+      $(go.Panel,  // link label for conditionals, normally not visible
+        { visible: false, name: "LABEL", segmentIndex: 1, segmentFraction: 0.5 },
+        new go.Binding("visible", "", function(link) { return link.fromNode.category === "Condition" && !!link.data.text; }).ofObject(),
+        new go.Binding("segmentOffset", "side", function(s) { return s === "Left" ? new go.Point(0, 14) : new go.Point(0, -14); }),
+      ),
+      $(go.TextBlock, { text :""}, new go.Binding("text", "texto")) //Le agrego un textblock para tener un label. Hago un bind de la propiedad text con texto.
+    );
     this.textogenerado = ""
     this.conversordecodigo = cc;
   }
@@ -154,12 +224,6 @@ export class DiagramaComponent implements OnInit {
     saveAs(blob, "param.txt");
   }
 
-
-  generar(event: Event) {
-    this.openDialog();
-  }
-
-
   guardarDiagrama(){
     var jsonData = this.diagram.model.toJson();
     console.log(jsonData);
@@ -170,7 +234,7 @@ export class DiagramaComponent implements OnInit {
   
 
 
-  fileData: File = null;
+fileData: File = null;
 jsonstring : string = "";
 fileUploadProgress: string = null;
 uploadedFilePath: string = null;
@@ -178,6 +242,10 @@ uploadedFilePath: string = null;
   fileProgress(fileInput: any) {
     this.fileData = <File>fileInput.target.files[0];
     this.preview();
+}
+
+generar(event: Event) {
+  this.openDialog();
 }
 
 
@@ -301,7 +369,7 @@ onSubmit() {
       Se utiliza notación de typescript porque si se declara una función explicitamente se
       pierde la referencia a "this" y no se puede acceder al diagrama.
 
-      notación typescript:
+      notación typescript
 
       (parametros de la función) => { bloque de función }
        el nombre de la función queda implicito.
@@ -310,6 +378,8 @@ onSubmit() {
        (e) => { lo que he escrito en la función}
 
       */
+
+      
       this.diagram.addDiagramListener("LinkDrawn", (e) => {
         //la instancia del link se encuentra en e.subject, asi que lo guardé en una variable 
         //para acceder mas facilmente
