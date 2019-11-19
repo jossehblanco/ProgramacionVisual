@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaletteFlujoComponent } from './palette-flujo.component';
+import { ParamsdialogComponent } from './paramsdialog.component';
 
-describe('PaletteFlujoComponent', () => {
-  let component: PaletteFlujoComponent;
-  let fixture: ComponentFixture<PaletteFlujoComponent>;
+describe('ParamsdialogComponent', () => {
+  let component: ParamsdialogComponent;
+  let fixture: ComponentFixture<ParamsdialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaletteFlujoComponent ]
+      declarations: [ ParamsdialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PaletteFlujoComponent);
+    fixture = TestBed.createComponent(ParamsdialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

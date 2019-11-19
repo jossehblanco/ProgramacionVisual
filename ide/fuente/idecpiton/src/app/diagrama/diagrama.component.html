@@ -5,7 +5,42 @@
                 <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
                   <mat-icon aria-label="Side nav toggle icon" style="color:white;">menu</mat-icon>
                 </button>
-                <h2 style="color: white">Visual Cpitón</h2>
+                
+                
+      
+
+                <button style="color:white; " mat-button [matMenuTriggerFor]="archivoMenu">Archivo</button>
+                <mat-menu #archivoMenu="matMenu" xPosition="after">
+
+                    <div class="form-group" style="display: none;">
+                        <input #fileinput  style="margin: 8px;" type="file" (change)="fileProgress($event)" />
+                    </div>  
+
+                  <button mat-menu-item (click)="fileinput.click()"> Abrir...</button>
+                  <button mat-menu-item [matMenuTriggerFor]="guardarMenu">Guardar</button>
+                  <button mat-menu-item>Compilar</button>
+                </mat-menu>
+
+                <mat-menu #guardarMenu="matMenu" xPosition="after">
+                  <button mat-menu-item (click)="generar($event)">Generar Codigo</button>
+                  <button mat-menu-item (click)="generarDiagrama()" >Guardar Diagrama</button>
+                  <button mat-menu-item (click)= "generarImagen()">Exportar en PNG</button>
+                </mat-menu>
+
+
+                <button style="color:white; " mat-button [matMenuTriggerFor]="confMenu">Configuración</button>
+                <mat-menu #confMenu="matMenu" xPosition="after">
+                  <button mat-menu-item (click)= "paramsConfig()"> Parámetros de Compilación</button>
+                </mat-menu>
+
+
+                <button style="color:white; " mat-button [matMenuTriggerFor]="aboutMenu">Acerca De</button>
+                <mat-menu #aboutMenu="matMenu" xPosition="after">
+                  <button mat-menu-item>Notas de Versión</button>
+                  <button mat-menu-item>Ayuda</button>
+                </mat-menu>
+                
+                
               </mat-toolbar-row>
         </mat-toolbar>
     </div>
@@ -13,126 +48,34 @@
     <div layout="column" flex style="min-height: 90vh; background-color: red">
         <mat-sidenav-container style="min-height: 90vh;">
             <mat-sidenav #drawer mode="side" opened role="navigation">
-                    
-                <mat-accordion>
-                <mat-expansion-panel style= "margin : 8px;">
-                            <mat-expansion-panel-header>
-                              <mat-panel-title>
-                                Abrir
-                              </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div class="form-group" style="margin: 8px;">
-                                    <input style="margin: 8px;" type="file" (change)="fileProgress($event)" />
-                                    <button mat-button style="margin: 8px; background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;" class="btn btn-primary"  (click)="onSubmit()">Cargar</button>
-                                </div>            
-                          </mat-expansion-panel>
+                <mat-card style="margin: 8px; height:81vh">
+                    <mat-tab-group md-stretch-tabs mat-align-tabs="center" dynamicHeight >
+                        <mat-tab label="Procesos" >
+                            <ng-template matTabContent>
+                            <app-palette-variables></app-palette-variables>  
+                          </ng-template> 
+                        </mat-tab>
+                
+                        <mat-tab label="Flujo/Bucles" >
+                            <ng-template matTabContent>
+                            <app-palette-bucles></app-palette-bucles>
+                          </ng-template>
+                        </mat-tab>
+                        <mat-tab label="Func." >
+                            <ng-template matTabContent>
+                            <app-palette-funciones></app-palette-funciones>
+                          </ng-template>
+                        </mat-tab>
+                     
+                        <mat-tab label="I/O" >
+                            <ng-template matTabContent>
+                            <app-palette-archivos></app-palette-archivos>                                        
+                          </ng-template>
+                        </mat-tab>
+                      </mat-tab-group>
+                </mat-card>
 
-                          <mat-expansion-panel style="margin: 8px;">
-                                <mat-expansion-panel-header>
-                                  <mat-panel-title>
-                                    Guardar
-                                  </mat-panel-title>
-                                  
-                                </mat-expansion-panel-header>
-                                <div class="form-group" style="margin: 8px;">
-                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "generar($event)">Descargar Código</button>
-                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;"(click)= "openDialog2()">Descargar Diagrama</button>
-                                    </div>            
-                              </mat-expansion-panel>
-
-                              <mat-expansion-panel  style="margin: 8px;">
-                                    <mat-expansion-panel-header>
-                                      <mat-panel-title>
-                                        Paleta
-                                      </mat-panel-title>
-                                      
-                                    </mat-expansion-panel-header>
-                                    <mat-tab-group md-stretch-tabs mat-align-tabs="center" dynamicHeight >
-                                        <mat-tab label="1" >
-                                          <ng-template matTabContent>
-                                            <app-palette-inicio></app-palette-inicio>
-                                          </ng-template>
-                                        </mat-tab>
-                                        <mat-tab label="2" >
-                                            <ng-template matTabContent>
-                                            <app-palette-variables></app-palette-variables>  
-                                          </ng-template> 
-                                        </mat-tab>
-                                        <mat-tab label="3" >
-                                            <ng-template matTabContent>
-                                            <app-palette-flujo></app-palette-flujo>
-                                          </ng-template>
-                                        </mat-tab>
-                                        <mat-tab label="4" >
-                                            <ng-template matTabContent>
-                                            <app-palette-bucles></app-palette-bucles>
-                                          </ng-template>
-                                        </mat-tab>
-                                        <mat-tab label="5" >
-                                            <ng-template matTabContent>
-                                            <app-palette-funciones></app-palette-funciones>
-                                          </ng-template>
-                                        </mat-tab>
-                                        <mat-tab label="6" >
-                                            <ng-template matTabContent>
-                                            <app-palette-io></app-palette-io>
-                                          </ng-template>
-                                        </mat-tab>
-                                        <mat-tab label="7" >
-                                            <ng-template matTabContent>
-                                            <app-palette-archivos></app-palette-archivos>                                        
-                                          </ng-template>
-                                        </mat-tab>
-                                      </mat-tab-group>                                    
-                                               
-                                  </mat-expansion-panel>
-
-
-                              <mat-expansion-panel style="margin: 8px;">
-                                    <mat-expansion-panel-header>
-                                      <mat-panel-title>
-                                        Configuración
-                                      </mat-panel-title>
-                                
-                                    </mat-expansion-panel-header>
-
-                                    <form #configForm = "ngForm" (submit)="onFormSubmit()">  
-                                    <mat-form-field appearance="outline">
-                                      <mat-label>Tamano máximo buffer de líneas</mat-label>                                  
-                                      <input matInput placeholder="1000" [formControl]="MAXLINEA" type="number" required>
-                                      <mat-error *ngIf="MAXLINEA.invalid">{{getErrorMessage()}}</mat-error>
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline">
-                                      <mat-label>Máximo número dígitos en los enteros</mat-label>                                  
-                                      <input matInput placeholder="5" [formControl]="MAXDIGIT" type="number" required>
-                                      <mat-error *ngIf="MAXDIGIT.invalid">{{getErrorMessage2()}}</mat-error>
-                                    </mat-form-field>
-                                    <mat-form-field appearance="outline">
-                                      <mat-label>Máxima longitud identificadores</mat-label>                                  
-                                      <input matInput placeholder="10" [formControl]="MAXID" type="number" required>
-                                      <mat-error *ngIf="MAXID.invalid">{{getErrorMessage3()}}</mat-error>
-                                    </mat-form-field>
-                                    <button type="submit" mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;">Aplicar</button>
-                                    </form>         
-                                  </mat-expansion-panel>
-
-                                  <mat-expansion-panel style="margin: 8px;">
-                                        <mat-expansion-panel-header>
-                                          <mat-panel-title>
-                                            Acerca de
-                                          </mat-panel-title>
-                                    
-                                        </mat-expansion-panel-header>
-                                        <mat-panel-description>
-                                            Visual Cpitón version 1.1.2
-                                            Desarrollado por MDPU Studio
-                                            Para Teoría de Lenguajes de Programación
-                                        </mat-panel-description>
-                                        <button mat-button style= "background-color: #ba000d; color: white; margin-left: 8px; margin-top: 16px;" (click)= "verAyuda()  ">Ayuda</button>
-                                                   
-                                      </mat-expansion-panel>
-
-                                </mat-accordion>
+        
                                             
                                     
                                    

@@ -36,12 +36,10 @@ export class PaletteBuclesComponent implements OnInit {
     this.paletteBucles.nodeTemplateMap = this.paletteTemplateBucles;
 
     this.paletteBucles.model.nodeDataArray = [
+      { key: "ifnode", representa: "condicion", color: "white", category : "if"},
       { key: "fornode", representa: "para a rango", variable: "variable", desde:"x", hasta: "y", incremento: "z", color: "white", category : "for"},
-      { key: "endfornode", representa: "fin para a rango", color: "white", category: "efor"},
       { key: "mientrasnode", representa: "mientras", color: "white", category : "mientras"},
-      { key: "endmientrasnode", representa: "fin mientras", color: "white", category: "emientras"},
-      { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"},
-      { key: "endhasnode", representa: "fin has mientras", color: "white", category: "ehasm"}
+      { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"}
     ];
 }
 }

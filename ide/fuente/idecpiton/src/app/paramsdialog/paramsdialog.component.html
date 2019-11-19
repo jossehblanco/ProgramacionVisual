@@ -1,0 +1,27 @@
+<h1 mat-dialog-title> Cambiar parámetros de compilador: </h1>
+<div mat-dialog-content>
+    
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Tamano máximo buffer de líneas</mat-label>                                  
+              <!--<input matInput placeholder="1000" [formControl]="MAXLINEA" type="number" required> -->
+              <input matInput [(ngModel)] = "MAXLINEA" placeholder = "1000">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Máximo número dígitos en los enteros</mat-label>
+              <input matInput [(ngModel)] = "MAXDIGIT" placeholder = "5">                                  
+              <!-- <input matInput placeholder="5" [formControl]="MAXDIGIT" type="number" required> -->            
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Máxima longitud identificadores</mat-label>                                  
+              <!-- <input matInput placeholder="10" [formControl]="MAXID" type="number" required> -->
+              <input matInput [(ngModel)] = "MAXID" placeholder = "10">     
+            </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button  [mat-dialog-close]="[this.MAXLINEA, this.MAXDIGIT, this.MAXID]" cdkFocusInitial>Guardar</button>
+    <button mat-button  (click)= "onNoClick()" cdkFocusInitial>Cancelar</button>
+</div>

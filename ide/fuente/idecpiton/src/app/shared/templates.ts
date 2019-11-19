@@ -619,97 +619,6 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
-<<<<<<< HEAD
-    //lo mismo para procedimiento
-    var procTemplate2 =
-    $(go.Node, "Vertical",
-      $(go.Shape, "Rectangle",
-        { fill: "white", stroke: "black", strokeWidth: 3 },
-        { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
-      $(go.TextBlock, { margin: 5 , editable : true},
-        new go.Binding("text", "representa").makeTwoWay())
-    );
-
-
-    this.diagramTemplateMap.add("inicio", inicioTemplate);
-    this.diagramTemplateMap.add("fin", finTemplate);
-    this.diagramTemplateMap.add("if", ifTemplate);
-    this.diagramTemplateMap.add("fif", fifTemplate);
-    this.diagramTemplateMap.add("for", forTemplate);
-    this.diagramTemplateMap.add("efor", endforTemplate);
-    this.diagramTemplateMap.add("proc", procTemplate);
-    this.diagramTemplateMap.add("mientras", mientrasTemplate);
-    this.diagramTemplateMap.add("emientras", endmientrasTemplate);
-    this.diagramTemplateMap.add("hasm", hmientrasTemplate);
-    this.diagramTemplateMap.add("ehasm", endhmientrasTemplate);
-    this.diagramTemplateMap.add("leer", leerTemplate);
-    this.diagramTemplateMap.add("imp", impTemplate);
-    this.diagramTemplateMap.add("abrira", abrirATemplate);
-    this.diagramTemplateMap.add("cerrara", cerrarATemplate);
-    this.diagramTemplateMap.add("leera", leerATemplate);
-    this.diagramTemplateMap.add("esca", escATemplate);
-
-    this.paletteTemplateMap.add("inicio", inicioTemplate2);
-    this.paletteTemplateMap.add("fin", finTemplate2);
-    this.paletteTemplateMap.add("if", ifTemplate2);
-    this.paletteTemplateMap.add("fif", fifTemplate2);
-    this.paletteTemplateMap.add("for", forTemplate2);
-    this.paletteTemplateMap.add("efor", endforTemplate2);
-    this.paletteTemplateMap.add("proc", procTemplate2);
-    this.paletteTemplateMap.add("mientras", mientrasTemplate2);
-    this.paletteTemplateMap.add("emientras", endmientrasTemplate2);
-    this.paletteTemplateMap.add("hasm", hmientrasTemplate2);
-    this.paletteTemplateMap.add("ehasm", endhmientrasTemplate2);
-    this.paletteTemplateMap.add("leer", leerTemplate2);
-    this.paletteTemplateMap.add("imp", impTemplate2);
-    this.paletteTemplateMap.add("abrira", abrirATemplate2);
-    this.paletteTemplateMap.add("cerrara", cerrarATemplate2);
-    this.paletteTemplateMap.add("leera", leerATemplate2);
-    this.paletteTemplateMap.add("esca", escATemplate2);
-
-    /*
-    this.linkTemplate = $(go.Link,
-        {
-          mouseDragEnter: (e, link) => { (link as go.Link).isHighlighted = true; },
-          mouseDragLeave: (e, link) => { (link as go.Link).isHighlighted = true; },
-        },
-        $(go.Shape),                           // this is the link shape (the line)
-        $(go.Shape, { toArrow: "Standard" }),  // this is an arrowhead
-        {routing: go.Link.Orthogonal}, //Esto hace las lineas mas chivas y menos tontas
-        $(go.TextBlock, { text :""}, new go.Binding("text", "texto")) //Le agrego un textblock para tener un label. Hago un bind de la propiedad text con texto.
-      );*/
-
-      this.linkTemplate =
-        $(go.Link,
-          {
-            routing: go.Link.AvoidsNodes,
-            curve: go.Link.JumpOver,
-            corner: 5,
-            toShortLength: 4,
-            selectable: false,
-            layoutConditions: go.Part.LayoutAdded | go.Part.LayoutRemoved,
-            // links cannot be selected, so they cannot be deleted
-            // If a node from the Palette is dragged over this node, its outline will turn green
-            mouseDragEnter: (e, link : go.Link) => { link.isHighlighted = true; },
-            mouseDragLeave: (e, link : go.Link) => { link.isHighlighted = false; },
-          }, new go.Binding("mouseDrop", "drop"),
-          $(go.Shape, { stroke: "rgb(63,63,63)", strokeWidth: 2 },
-          new go.Binding("stroke", "isHighlighted", function(h) { return h ? "chartreuse" : "rgb(63,63,63)"; }).ofObject(),
-          new go.Binding("strokeWidth", "isHighlighted", function(h) { return h ? 4 : 2; }).ofObject()),
-          $(go.Shape,
-            { toArrow: "standard", stroke: null, fill: "black" }),
-          $(go.Panel,  // link label for conditionals, normally not visible
-            { visible: false, name: "LABEL", segmentIndex: 1, segmentFraction: 0.5 },
-            new go.Binding("visible", "", function(link) { return link.fromNode.category === "Condition" && !!link.data.text; }).ofObject(),
-            new go.Binding("segmentOffset", "side", function(s) { return s === "Left" ? new go.Point(0, 14) : new go.Point(0, -14); }),
-          ),
-          $(go.TextBlock, { text :""}, new go.Binding("text", "texto")) //Le agrego un textblock para tener un label. Hago un bind de la propiedad text con texto.
-        );
-  }
-
-  
-
-=======
         this.diagramTemplateMap.add("inicio", inicioTemplate);
         this.diagramTemplateMap.add("fin", finTemplate);
         this.diagramTemplateMap.add("dvar", defVariagble);
@@ -745,6 +654,7 @@ export class Templates{
         this.paletteTemplateFlujoMap.add("fif", fifTemplate2);
 
         this.paletteTemplateBuclesMap.add("for", forTemplate2);
+        this.paletteTemplateBuclesMap.add("if", ifTemplate2);
         this.paletteTemplateBuclesMap.add("efor", endforTemplate2);
         this.paletteTemplateBuclesMap.add("mientras", mientrasTemplate2);
         this.paletteTemplateBuclesMap.add("emientras", endmientrasTemplate2);
@@ -756,9 +666,8 @@ export class Templates{
         this.paletteTemplateFuncionesMap.add("lfunc", llamarFuncion2);
         this.paletteTemplateFuncionesMap.add("elfunc", endLlamarFuncion2);
 
-        this.paletteTemplateIOMap.add("leer", leerTemplate2);
-        this.paletteTemplateIOMap.add("imp", impTemplate2);
-
+        this.paletteTemplateArchivosMap.add("leer", leerTemplate2);
+        this.paletteTemplateArchivosMap.add("imp", impTemplate2);
         this.paletteTemplateArchivosMap.add("abrira", abrirATemplate2);
         this.paletteTemplateArchivosMap.add("cerrara", cerrarATemplate2);
         this.paletteTemplateArchivosMap.add("leera", leerATemplate2);
@@ -772,7 +681,6 @@ export class Templates{
           );
     }
     
->>>>>>> 512cb4ad2fdc178d3afef3c4be6eb039ca607640
     
   
     

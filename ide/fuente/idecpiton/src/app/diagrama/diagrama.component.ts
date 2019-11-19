@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ElementRef, ViewChild } from '@angular/core';
 import * as go from 'gojs';
 import { Figuras } from '../shared/figuras';
 import { Templates } from '../shared/templates';
@@ -9,6 +9,7 @@ import { Codigo } from './codigo';
 import { FormControl, Validators } from '@angular/forms';
 import { Params } from '../shared/params';
 import { ApiService } from '../shared/apiservice';
+import { ParamsdialogComponent } from '../paramsdialog/paramsdialog.component';
 
 //Se declara la constante $ ya que go.GraphObject.make se utiliza bastante
 const $ = go.GraphObject.make;
@@ -45,6 +46,9 @@ export class DiagramaComponent implements OnInit {
   private textogenerado : string
   private nombrearchivo : string = "";
   private conversordecodigo: Codigo;
+  private MAXLINEA :number= 1000;
+  private MAXDIGIT :number = 5;
+  private MAXID :number = 10;
 
   //Se define un objeto de tipo go.Model que se recibe mediante input (databinding) desde app-component.ts
   @Input()
@@ -54,6 +58,7 @@ export class DiagramaComponent implements OnInit {
   Obtengo la instancia de la clase que hize de Templates.ts en shared/templates.ts
   por medio de inyecciónd e dependencias.
   */
+ @ViewChild('fileinput', {static: false}) finput : ElementRef;
   constructor(templates : Templates, private snackBar : MatSnackBar, public dialog : MatDialog, private cc : Codigo, public servicio : ApiService) { 
 
     //Asignando a las variables que hice mas arriba el valor de los templates que están en
@@ -134,38 +139,28 @@ export class DiagramaComponent implements OnInit {
     this.conversordecodigo = cc;
   }
   
-  //check error del form
-  MAXLINEA = new FormControl('', [Validators.required]);
-  MAXDIGIT = new FormControl('', [Validators.required]);
-  MAXID = new FormControl('', [Validators.required]);
 
-  getErrorMessage() {
-    return this.MAXLINEA.hasError('required') ? 'You must enter a value' :
-            '';
-  }
-  getErrorMessage2() {
-    return this.MAXDIGIT.hasError('required') ? 'You must enter a value' :
-            '';
-  }
-  getErrorMessage3() {
-    return this.MAXID.hasError('required') ? 'You must enter a value' :
-            '';
-  }
 
   //variables para el form
   private MAXL : string;
   private MAXD : string;
   private MAXI : string;
 
-  onFormSubmit(){
-    this.MAXL = this.MAXLINEA.value;
-    this.MAXD = this.MAXDIGIT.value;
-    this.MAXI = this.MAXID.value;
-    this.textogenerado = "MAXLINEA;" + this.MAXL + "\nMAXDIGIT;" + this.MAXD + "\nMAXID;" + this.MAXI;
-    var nobjeto : Params
-    nobjeto  = new Params(this.MAXL, this.MAXD, this.MAXI )
-    console.log(this.servicio.postParams(nobjeto))
-    this.snackBar.open('¡Se cambiaron los parametros del compilador!', "¡Entendido!", {duration : 6000});
+
+  paramsConfig() : void {
+    const dialogRef  =this.dialog.open(ParamsdialogComponent, {
+      width: '336px',
+      disableClose : true,
+      data: {MAXLINEA : this.MAXLINEA, MAXID : this.MAXID, MAXDIGIT : this.MAXDIGIT}
+    });
+
+    var checkfalse : boolean 
+    dialogRef.afterClosed().subscribe(result => {
+      this.MAXLINEA = (result[0] as number);
+      this.MAXDIGIT = (result[1] as number);
+      this.MAXID = (result[2] as number);
+      console.log(result);
+    })
   }
 
 
@@ -197,7 +192,7 @@ export class DiagramaComponent implements OnInit {
     })
   }
 
-  openDialog2() : void {
+  generarDiagrama() : void {
     this.nombrearchivo = ""
     const dialogRef  =this.dialog.open(MatDialogCComponent, {
       width: '250px',
@@ -252,6 +247,7 @@ fileUploadProgress: string = null;
 uploadedFilePath: string = null;
 
   fileProgress(fileInput: any) {
+    console.log("Se produjo un cambio!")
     this.fileData = <File>fileInput.target.files[0];
     this.preview();
 }
@@ -273,7 +269,29 @@ preview() {
   reader.onload = (_event) => { 
     console.log(reader.result)
     this.jsonstring += reader.result; 
+    this.onSubmit();
   }
+}
+
+generarImagen(){
+  var base64string : string | ImageData | HTMLElement=  this.diagram.makeImageData(
+    {
+      scale: 1,
+      background: "white",
+      returnType : "string"
+  });
+
+   var b64 = (base64string as string).replace('data:image/png;base64,', '');
+   console.log(b64);
+  var bytechars = atob(b64);
+  const byteNumbers = new Array(bytechars.length);
+  for (let i = 0; i < bytechars.length; i++) {
+    byteNumbers[i] = bytechars.charCodeAt(i);
+  }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], {type: 'image/png'});
+    saveAs(blob, "param.png");
 }
 
 onSubmit() {

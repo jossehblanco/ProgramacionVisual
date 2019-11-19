@@ -38,9 +38,7 @@ export class PaletteFuncionesComponent implements OnInit {
 
     this.paletteFunciones.model.nodeDataArray =[
       { key: "crearfunc", representa: "Crear Funcion", nombre_funcion: "nombre funcion", color: "white", category: "cfunc"},
-      { key: "endcrearfunc", representa: "Fin Crear Funcion", color: "white", category: "ecfunc"},
-      { key: "llamarfunc", representa: "Llamar Funcion", nombre_funcion: "nombre funcion", color: "white", category: "lfunc"},
-      { key: "endllamarfunc", representa: "  Fin Llamar Funcion", color: "white", category: "elfunc"}
+      { key: "llamarfunc", representa: "Llamar Funcion", nombre_funcion: "nombre funcion", color: "white", category: "lfunc"}
     ];
 
   }

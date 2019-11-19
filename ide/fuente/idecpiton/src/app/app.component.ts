@@ -16,6 +16,7 @@ export class AppComponent {
   para que se pueda tener acceso a este por medio de databinding (linkear datos entre componentes)
   en caso de que se expanda la aplicación.
   */
-  public model : go.GraphLinksModel = new go.GraphLinksModel([], [{from: "" , to: "", texto:""}]);
+  public model : go.GraphLinksModel = new go.GraphLinksModel([{ key: "inicionode", representa: "Inicio", color: "white", category : "inicio"},
+  { key: "finnode", representa: "Fin", color: "white", category : "fin"}], [{from: "inicionode" , to: "finnode"}]);
 
 }

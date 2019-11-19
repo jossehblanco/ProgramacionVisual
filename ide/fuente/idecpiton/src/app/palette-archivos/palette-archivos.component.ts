@@ -37,6 +37,8 @@ export class PaletteArchivosComponent implements OnInit {
     this.paletteArchivo.nodeTemplateMap = this.paletteTemplateArchivo;
 
     this.paletteArchivo.model.nodeDataArray = [
+      { key: "leernode", representa: "leerstd", color: "white", category : "leer", tipo : "tipo", guardar : "variable"},
+      { key: "impnode", representa: "imp", color: "white", category : "imp"},
       { key: "abriranode", representa: "abrir archivo", color: "white", category : "abrira", url : "url", modo : "truncar/añadir", guardar : "variable"},
       { key: "cerraranode", representa: "cerrar archivo", color: "white", category : "cerrara"},
       { key: "leeranode", representa: "leer archivo", color: "white", category : "leera", tipo : "tipo", guardar :"variable"},
