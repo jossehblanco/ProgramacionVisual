@@ -9,7 +9,7 @@ mensaje_de_error=[
     " no se pudo castear a float",#7
     " se espera el cierre de comilla simple",#8
     " falta un punto y coma",#9
-    "identificador no declarado",#10
+    " identificador no declarado",#10
     "no estan permitidas las asignaciones a constantes o procedimientos",#11
     "se esperaba el operador de asignacion",#12
     "CALL debe de ir seguido de un identificador",#13
@@ -31,7 +31,7 @@ mensaje_de_error=[
     " se esperaba :v como inicio de programa",#29
     " se esperaba comilla doble",#30
     " se esperaba un caracter",#31
-    "se esperaba un >:v",#32
+    " se esperaba un >:v",#32
     " este numero es demasiado grande - trunc(5)",#33
     "se rebaso el tamaño de la Tabla de Simbolos",#34
     "el programa fuente esta incompleto",#35

@@ -18,11 +18,11 @@ def inicio():
 def bloque(PermiteFunciones):
     if(Lexico.token == Lexico.simbolo.mdputok):
         return
-    if(PermiteFunciones and Lexico.simbolo.rettok):
+    if(not PermiteFunciones and (Lexico.token == Lexico.simbolo.rettok)):
         return
     temp = None
-    setpaso = [0 for i in range (params.NOTOKENS)] #conjunto de paso por valor
-    vacio = [0 for i in range (params.NOTOKENS)] #conjunto vacio
+    #setpaso = [0 for i in range (params.NOTOKENS)] #conjunto de paso por valor
+    #vacio = [0 for i in range (params.NOTOKENS)] #conjunto vacio
 #-------------Declaracion de variable----------------------------------    
     
     declaracionvariable();
@@ -158,7 +158,7 @@ def agregarTipoAIdents(tipao,numError):
 #Declaracion de variables--------------------------------------------------------
 def declaracionvariable():
     tipao = tipo()
-    if(tipao is None):
+    if(tipao is None):        
         return
     Scanner.obtoken()
     #si da error retorna false
@@ -194,6 +194,8 @@ def VerificarIdentExist(checkInTDS,tipao):
         if(checkInTDS):
             i = posicion(Scanner.lex)
             if(i == -1):
+                #Para no leer el mismo token infinitamente
+                Scanner.obtoken()
                 error(10)
                 return False
             else:
@@ -314,8 +316,10 @@ def cuerpoLlavesInstruccion():
             return True
         else:
             error(27)
+            return False
     else:
         error(26)
+        return False
 
 def cuerposiosi():
     if(Lexico.token == Lexico.simbolo.parena):
@@ -327,22 +331,29 @@ def cuerposiosi():
             return val
         else:
             error(21)
+            return False
     else:
         error(22)
+        return False
 
 def VerificarIdentsExistAndTypes(tipao):
     if(Lexico.token != Lexico.simbolo.ident):
             error(14)
+            return False
     else:
         i = posicion(Scanner.lex)
         if(i == -1):
+            #Para no leer el mismo token
+            Scanner.obtoken()
             error(10)
+            return False
         else:
             if(tabla[i].tipo == tipao):
                 Scanner.obtoken()
                 return True
             else:
                 error(6)
+                return False
 
 def InstruccionMientras():
     if(Lexico.token == Lexico.simbolo.parena):
@@ -358,6 +369,7 @@ def InstruccionMientras():
 
 def instruccion():    
     
+    seguir = False
     #COMO ES RECURSIVA ESTOS SON SUN FINALES
     if(Lexico.token == Lexico.simbolo.llavectok or Lexico.token == Lexico.simbolo.mdputok):
         return
@@ -383,7 +395,7 @@ def instruccion():
                 Scanner.obtoken()
                 if(Lexico.token == Lexico.simbolo.parena):
                     Scanner.obtoken()
-                    seguir = VerificarIdentsExistAndTypes(objeto.NUM)
+                    seguir = VerificarIdentsExistAndTypes(objeto.NUM)                    
                     if(seguir and Lexico.token == Lexico.simbolo.coma):
                         Scanner.obtoken()
                         seguir = VerificarIdentsExistAndTypes(objeto.NUM)
@@ -395,14 +407,19 @@ def instruccion():
                                 cuerpoLlavesInstruccion()
                             else:
                                 error(21)
+                                return
                         else:
                             error(4)
-                    else:
+                            return
+                    else:                        
                         error(4)
+                        return
                 else:
                     error(22)
+                    return
             else:
                 error(5)
+                return
         else:#Verificando si es MIENSTRASTOK
             if(Lexico.token == Lexico.simbolo.mientrastok):
                 Scanner.obtoken()

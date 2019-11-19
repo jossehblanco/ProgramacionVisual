@@ -1,16 +1,16 @@
 :v
 num b = 3, a = 4;
 num t = 91;
-num y = 4;
-num u = 1;
+num 78 = 4;
+num u = 1
 num c;
 texto holis = "holis";
 dec p = 0.22, papa = 0.56;
 si( b > 4){
-	/*para c rango(t,y,u){
+	para c rango(t,y,u){
 		imp(b);
 		a = 5;
-	}*/
+	}
 	//a = 5;
 }
 >:v

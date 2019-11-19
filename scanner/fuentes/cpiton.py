@@ -6,7 +6,7 @@ import parametros
 import scanner
 import parseador
 import tds
-from conjuntos import inicializa_conjuntos
+from conjuntos import inicializar_conjuntos
 
 fp = None
 No_de_errores = 0
@@ -29,6 +29,7 @@ def main(argv):
             
             from auxiliares import inicializar_espec
             #print(auxiliares.hola)
+            
             inicializar_espec()
             
             scanner.consolef.write("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
@@ -42,7 +43,7 @@ def main(argv):
             No_de_errores = 0
 
             #inicializacion de conjuntos de estabilizacion (en conjuntos.py) 
-            inicializa_conjuntos()
+            inicializar_conjuntos()
 
             scanner.obtoken()
             

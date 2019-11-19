@@ -2,42 +2,45 @@ from parametros import *
 import lexico as Lexico
 from mensajes_de_error import mensaje_de_error
 import sys
+import cpiton as Cpiton
 
 def error(no):    
-    from cpiton import No_de_errores
-    from scanner import consolef
-    from scanner import contadorLineas
-    #print("\n^ error"+ mensaje_de_error[no]+"\n")
-    No_de_errores += 1
-    contadorLineas += 1
-    consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
-    print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
-    search_ini_Token()
-    return No_de_errores
-
-def error_iden(no,lexema):    
-    from cpiton import No_de_errores
+    #from cpiton import No_de_errores
     from scanner import consolef
     from scanner import contadorLineas
     from conjuntos import search_ini_Token
     #print("\n^ error"+ mensaje_de_error[no]+"\n")
-    No_de_errores += 1
+    Cpiton.No_de_errores += 1
+    contadorLineas += 1
+    consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    search_ini_Token()
+    print("Next token = " + str(Lexico.token))
+    return Cpiton.No_de_errores
+
+def error_iden(no,lexema):    
+    #from cpiton import No_de_errores
+    from scanner import consolef
+    from scanner import contadorLineas
+    from conjuntos import search_ini_Token
+    #print("\n^ error"+ mensaje_de_error[no]+"\n")
+    Cpiton.No_de_errores += 1
     contadorLineas += 1
     consolef.write("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
     print("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
     search_ini_Token()
-    return No_de_errores
+    return Cpiton.No_de_errores
     
 
 def estadisticas():
     print("\n\n***  Estadisticas Globales  ***\n")
-    from cpiton import No_de_errores
-    if(No_de_errores == 0):
+    #from cpiton import No_de_errores
+    if(Cpiton.No_de_errores == 0):
         print("***   No se detectaron errores  ***")
     else:       
-        printf("*** %d error(es) detectado(s)  ***\n" % No_de_errores);
-        printf("*** No se genero el ejecutable ***");
-    return No_de_errores
+        print("*** %d error(es) detectado(s)  ***\n" % Cpiton.No_de_errores);
+        print("*** No se genero el ejecutable ***");
+    return Cpiton.No_de_errores
 
 def inicializar_espec():
     i = 0
