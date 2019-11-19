@@ -13,7 +13,7 @@ export class MatDialogCComponent implements OnInit {
   nombrearchivo : string
   constructor(public dialogRef : MatDialogRef<MatDialogCComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {     
     this.nombrearchivo = data.nombrearchivo
-
+    
   }
 
   onNoClick() : void {

@@ -68,8 +68,9 @@ export class DiagramaComponent implements OnInit {
     $(go.Link,
       {
         routing: go.Link.AvoidsNodes,
-        curve: go.Link.JumpOver,
+        curve: go.Link.JumpGap,
         corner: 5,
+        adjusting: go.Link.Scale,
         toShortLength: 4,
         selectable: false,
         layoutConditions: go.Part.LayoutAdded | go.Part.LayoutRemoved,
@@ -92,32 +93,98 @@ export class DiagramaComponent implements OnInit {
             var falsenode : go.Node;
             var endif : go.Node;
             obj.toNode = newnode;
-            (diagram.model as go.GraphLinksModel).addNodeData({ key: "procnode", representa: "proceso", color: "white" , category : "proc"});
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "defvarnode", representa: "Definir Variable", nombre_variable: "variable", valor_variable: "valor", tipo_variable: "tipo variable", color: "white", category: "dvar"});
             let nit = diagram.nodes.iterator;
             while(nit.hasNext()){
               truenode = nit.value;
             }
-            console.log(truenode.data.key);
-            (diagram.model as go.GraphLinksModel).addNodeData({ key: "procnode", representa: "proceso", color: "white" , category : "proc"});
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "defvarnode", representa: "Definir Variable", nombre_variable: "variable", valor_variable: "valor", tipo_variable: "tipo variable", color: "white", category: "dvar"});
             nit = diagram.nodes.iterator;
             while(nit.hasNext()){
               falsenode = nit.value;
             }
-
             (diagram.model as go.GraphLinksModel).addNodeData({ key: "eifnode", representa: "fin condicion", color: "white", category : "fif"});
             nit = diagram.nodes.iterator;
             while(nit.hasNext()){          
               endif = nit.value;
             }
-
-            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key, to : truenode.data.key});
-            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key, to : falsenode.data.key});
-            (diagram.model as go.GraphLinksModel).addLinkData({from: truenode.data.key, to : endif.data.key});
-            (diagram.model as go.GraphLinksModel).addLinkData({from: falsenode.data.key, to : endif.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key, fromPort : "Left", to : truenode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,fromPort : "Right", to : falsenode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: truenode.data.key, to : endif.data.key, toPort : "Left"});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: falsenode.data.key, to : endif.data.key, toPort : "Right"});
             (diagram.model as go.GraphLinksModel).addLinkData({from: endif.data.key, to : tonode.data.key});
+          }else if(newnode.data.category == "for"){
+            var endfornode : go.Node;
+            var procesonode : go.Node;
+            
+            obj.toNode = newnode;
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "defvarnode", representa: "Definir Variable", nombre_variable: "variable", valor_variable: "valor", tipo_variable: "tipo variable", color: "white", category: "dvar"});
+            let nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+               procesonode = nit.value;
+            }
 
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "endfornode", representa: "fin para a rango", color: "white", category: "efor"});
+            nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+              endfornode = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,  to : procesonode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: procesonode.data.key,  to : endfornode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: endfornode.data.key,  to : tonode.data.key});
+          }else if(newnode.data.category == "mientras"){
+            var endmientrasnode : go.Node;
+            var procesonode : go.Node;
+            
+            obj.toNode = newnode;
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "defvarnode", representa: "Definir Variable", nombre_variable: "variable", valor_variable: "valor", tipo_variable: "tipo variable", color: "white", category: "dvar"});
+            let nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+               procesonode = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "endmientrasnode", representa: "fin mientras", color: "white", category: "emientras"});
+            nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+              endmientrasnode = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,  to : procesonode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: procesonode.data.key,  to : endmientrasnode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: endmientrasnode.data.key,  to : tonode.data.key});            
+          }else if(newnode.data.category == "hasm"){
+            var endhasmnode : go.Node;
+            var procesonode : go.Node;
+            
+            obj.toNode = newnode;
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "defvarnode", representa: "Definir Variable", nombre_variable: "variable", valor_variable: "valor", tipo_variable: "tipo variable", color: "white", category: "dvar"});
+            let nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+               procesonode = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addNodeData({ key: "endhasnode", representa: "fin has mientras", color: "white", category: "ehasm"});
+            nit = diagram.nodes.iterator;
+            while(nit.hasNext()){
+              endhasmnode = nit.value;
+            }
+
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,  to : procesonode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: procesonode.data.key,  to : endhasmnode.data.key});
+            (diagram.model as go.GraphLinksModel).addLinkData({from: endhasmnode.data.key,  to : tonode.data.key});
+          }else {
+            obj.toNode = newnode;
+            (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,  to : tonode.data.key});      
+              
           }
-          
+         
+          /*
+          { key: "ifnode", representa: "condicion", color: "white", category : "if"},
+          { key: "fornode", representa: "para a rango", variable: "variable", desde:"x", hasta: "y", incremento: "z", color: "white", category : "for"},
+          { key: "mientrasnode", representa: "mientras", color: "white", category : "mientras"},
+          { key: "hasmnode", representa: "has mientras", color: "white", category : "hasm"}
+          */
           
 
         }
@@ -324,7 +391,7 @@ onSubmit() {
     this.diagram = $(go.Diagram, 'ideCanvas', {
       layout: $(go.TreeLayout,{ //Este layout se encarga de ordenarlos asi bien rikolino
         isOngoing : true,
-        treeStyle : go.TreeLayout.StyleAlternating,
+        alignment : go.TreeLayout.AlignmentCenterSubtrees,
         arrangement: go.TreeLayout.ArrangementFixedRoots, //Esto nos permite arrastrar de la paleta sin que lo ordene automatico
         //Propiedades para el arbol
         angle: 90,
@@ -436,7 +503,23 @@ onSubmit() {
 */
       //igualo el modelo de mi diagrama (que está definido en este archivo) con this.model
       //Esto causa que tenga una referencia al modelo en app-component.ts (por data binding)
-      this.diagram.model = this.model;
+      this.diagram.model = $(go.GraphLinksModel, { linkFromPortIdProperty: "fromPort",  // required information:
+      linkToPortIdProperty: "toPort",      // identifies data property names
+      nodeDataArray: [
+        { key: "inicionode", representa: "Inicio", color: "white", category : "inicio"},
+        { key: "finnode", representa: "Fin", color: "white", category : "fin"}
+      ],
+      linkDataArray: [
+        {from: "inicionode" , to: "finnode"}
+      ] })
+
+
+      /*
+new go.GraphLinksModel([
+    { key: "inicionode", representa: "Inicio", color: "white", category : "inicio"},
+  { key: "finnode", representa: "Fin", color: "white", category : "fin"}], [{from: "inicionode" , to: "finnode"}
+]);
+      */
       //Inicializando el grid en el background del diagrama
       this.diagram.grid.visible = true;
       //Inicializando el controlador para dar deshacer

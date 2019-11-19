@@ -130,9 +130,54 @@ export class Templates{
         { fill: "white", stroke: "black", strokeWidth: 3 }, //tags de estilo y propiedades, esto lo rellena de blanco
         { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
       $(go.TextBlock, { margin: 5, editable: true}, //esto le dice que tengamos un textbox dentro del nodo, con margen de 5 y editable (esto permite escribir cuando lo arrastramos)
-        new go.Binding("text", "representa").makeTwoWay()) //Hacemos un bind de la propiedad text (por defecto de un textblock) con la propiedad representa de cada nodo. Esto se ve  mas adelante cuando se inicializa el nodearray
+        new go.Binding("text", "representa").makeTwoWay()), //Hacemos un bind de la propiedad text (por defecto de un textblock) con la propiedad representa de cada nodo. Esto se ve  mas adelante cuando se inicializa el nodearray
         //basicamente este binding va a hacer que el text del textblock tenga cualquier cosa que esté en el tag "representa"
+        $(go.Shape, "Circle",
+            {
+              portId: "Left", fromSpot: go.Spot.Left,
+              alignment: go.Spot.Left, alignmentFocus: go.Spot.Left,
+              stroke: null, fill: null, width: 1, height: 1
+            }),
+          $(go.Shape, "Circle",
+            {
+              portId: "Right", fromSpot: go.Spot.Right,
+              alignment: go.Spot.Right, alignmentFocus: go.Spot.Right,
+              stroke: null, fill: null, width: 1, height: 1
+            })
       );
+
+      var iftemplatet =  $(go.Node, "Spot", new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+      {
+        locationSpot: go.Spot.Center,
+        toSpot: go.Spot.Top,
+        portSpreading: go.Node.SpreadingNone,
+        layoutConditions: go.Part.LayoutAdded | go.Part.LayoutRemoved,
+        // If a node from the pallette is dragged over this node, its outline will turn green
+        mouseDragEnter: function(e, node : go.Node) { node.isHighlighted = true; },
+        mouseDragLeave: function(e, node : go.Node) { node.isHighlighted = false; },
+      },
+      $(go.Panel, "Auto",
+      $(go.Shape, "Diamond", //Shape es el dibujito que va a mostrar, este puede ser custom o predefinido. DIamond ya está predefinido
+      { fill: "white", stroke: "black", strokeWidth: 3 }, //tags de estilo y propiedades, esto lo rellena de blanco
+      { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
+    $(go.TextBlock, { margin: 5, editable: true}, //esto le dice que tengamos un textbox dentro del nodo, con margen de 5 y editable (esto permite escribir cuando lo arrastramos)
+      new go.Binding("text", "representa").makeTwoWay())
+      ),
+      $(go.Shape, "Circle",
+        {
+          portId: "Left", toSpot: go.Spot.Left,
+          alignment: go.Spot.Left, alignmentFocus: go.Spot.Left,
+          stroke: null, fill: null, width: 1, height: 1,
+          fromLinkable : true
+        }),
+      $(go.Shape, "Circle",
+        {
+          portId: "Right", toSpot: go.Spot.Right,
+          alignment: go.Spot.Right, alignmentFocus: go.Spot.Right,
+          stroke: "red", fill: null, width: 1, height: 1,
+          fromLinkable : true
+        })
+    )
 
       var fifTemplate =
     $(go.Node, "Auto", //Primero se tiene que especificar que es un nodo (hay otros tipos, como grupo, link, etc)
@@ -144,6 +189,38 @@ export class Templates{
         //basicamente este binding va a hacer que el text del textblock tenga cualquier cosa que esté en el tag "representa"
       );
       
+      var fiftemplatet =  $(go.Node, "Spot", new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+      {
+        locationSpot: go.Spot.Center,
+        toSpot: go.Spot.NotTopSide,
+        portSpreading: go.Node.SpreadingNone,
+        layoutConditions: go.Part.LayoutAdded | go.Part.LayoutRemoved,
+        // If a node from the pallette is dragged over this node, its outline will turn green
+        mouseDragEnter: function(e, node : go.Node) { node.isHighlighted = true; },
+        mouseDragLeave: function(e, node : go.Node) { node.isHighlighted = false; },
+      },
+      $(go.Panel, "Auto",
+      $(go.Shape, "Diamond", //Shape es el dibujito que va a mostrar, este puede ser custom o predefinido. DIamond ya está predefinido
+      { fill: "white", stroke: "red", strokeWidth: 3 }, //tags de estilo y propiedades, esto lo rellena de blanco
+      { portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer" }),
+    $(go.TextBlock, { margin: 5, editable: false}, //esto le dice que tengamos un textbox dentro del nodo, con margen de 5 y editable (esto permite escribir cuando lo arrastramos)
+      new go.Binding("text", "representa").makeTwoWay())
+      ),
+      $(go.Shape, "Circle",
+        {
+          portId: "Left", fromSpot: go.Spot.Left,
+          alignment: go.Spot.Left, alignmentFocus: go.Spot.Left,
+          stroke: null, fill: null, width: 1, height: 1,
+          fromLinkable : true
+        }),
+      $(go.Shape, "Circle",
+        {
+          portId: "Right", fromSpot: go.Spot.Right,
+          alignment: go.Spot.Right, alignmentFocus: go.Spot.Right,
+          stroke: null, fill: null, width: 1, height: 1,
+          fromLinkable : true
+        })
+    )
 
 
     /*----------------------------bluces-----------------------------------------------*/
@@ -624,8 +701,8 @@ export class Templates{
         this.diagramTemplateMap.add("dvar", defVariagble);
         this.diagramTemplateMap.add("cvar", crearvariable);
         this.diagramTemplateMap.add("avar", asignarVariable);
-        this.diagramTemplateMap.add("if", ifTemplate);
-        this.diagramTemplateMap.add("fif", fifTemplate);
+        this.diagramTemplateMap.add("if", iftemplatet);
+        this.diagramTemplateMap.add("fif", fiftemplatet);
         this.diagramTemplateMap.add("for", forTemplate);
         this.diagramTemplateMap.add("efor", endforTemplate);
         this.diagramTemplateMap.add("mientras", mientrasTemplate);
