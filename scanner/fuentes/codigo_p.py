@@ -2,6 +2,7 @@ import parametros as params
 from auxiliares import error
 from auxiliares import estadisticas
 import cpiton as cp
+from enum import Enum
 class fcn(Enum):
     LIT=0
     OPR=1
@@ -18,8 +19,11 @@ class codigo_intermedio(object):
         self.ni=ni
         self.di=di
 
-global codigo[MAXIC]
-global ic=0;
+global codigo
+global ic
+
+codigo=[]
+ic=0
 
 def gen(fcn,y,z):
     if(ic>MAXIC-1):
@@ -27,13 +31,15 @@ def gen(fcn,y,z):
         estadisticas()
         error(1)
     codigo[ic]=codigo_intermedio(x,y,z)
-    ic++
+    ic+=1
     return
 
 def listar_p():
     i=0
-    global mnemonico=["LIT","OPR","CAR","ALM","LLA","INS","SAL","SAC"]
-    global comentario=[";cargar una constante",";operacion aritmetica,                                                            relacional o retornar",";cargar una variable",
+    global comentario
+    global mnemonico
+    mnemonico=["LIT","OPR","CAR","ALM","LLA","INS","SAL","SAC"]
+    comentario=[";cargar una constante",";operacion aritmetica, relacional o retornar",";cargar una variable",
                      ";almacenamiento/instruccion de asignacion",";llamada a procedimiento",";asignacion de espacio de memoria",
                      ";salto incondicional",";salto condicional"]
     

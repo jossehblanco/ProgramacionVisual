@@ -1,6 +1,7 @@
 import datetime
 import mensajes_de_error
 import lexico
+import codigo_p
 #import auxiliares
 import parametros
 import scanner
@@ -22,6 +23,7 @@ def main(argv):
             print("\nNo se encontro el programa fuente indicado")
         else:
             global nombreArch
+            nombreArch=argv
             timer=datetime.datetime.today()
             
             #print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
@@ -31,6 +33,7 @@ def main(argv):
             from auxiliares import inicializar_espec
             #print(auxiliares.hola)
             
+
             inicializar_espec()
             
             scanner.consolef.write("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
@@ -66,5 +69,10 @@ def main(argv):
             estadisticas()
             scanner.consolef.close()
             fp.close()
+            
+            
+            if No_de_errores==0:
+                codigo_p.listar_p()
+                codigo_p.escribe_codigo(argv)
             
     return 0
