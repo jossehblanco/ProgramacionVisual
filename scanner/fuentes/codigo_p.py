@@ -26,7 +26,7 @@ codigo=[]
 ic=0
 
 def gen(fcn,y,z):
-    if(ic>MAXIC-1):
+    if(ic>params.MAXIC-1):
         error(33)
         estadisticas()
         error(1)
@@ -44,7 +44,7 @@ def listar_p():
                      ";salto incondicional",";salto condicional"]
     
     print("\n\n --Listado de codigo-p simplificado generado por el compilador--\n\n")
-    
+    print("Esto es ic "+str(ic)+str(params.MAXIC))
     for i in range(0,ic):
         print("\n "+i+mnemonico[codigo[i].f]+" "+codigo[i].ni+" "+codigo[i].di+" "+comentario[codigo[i].f])
       

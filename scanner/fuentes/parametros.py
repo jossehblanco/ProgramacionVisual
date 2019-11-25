@@ -7,6 +7,7 @@ MAXID=10        #Maxima longitud de identificadores ARCHIVO
 LONG_FECHA=30   #Maxima longitud de fecha
 MAXIT=100       #Maximo tamaño de tabla de los simbolos
 NOTOKENS= 606    #Numero de tokens en el lenguaje 
+MAXIC=200 
 
 #(en lexico.py llegan hasta el 606 por esto es que es 606 creo que deberiamos bajarle a los numeros del lexico.py)
 
