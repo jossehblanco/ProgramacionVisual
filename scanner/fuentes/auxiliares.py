@@ -2,24 +2,45 @@ from parametros import *
 import lexico as Lexico
 from mensajes_de_error import mensaje_de_error
 import sys
+import cpiton as Cpiton
 
-def error(no):
-    from cpiton import fp
+def error(no):    
+    #from cpiton import No_de_errores
     from scanner import consolef
     from scanner import contadorLineas
-    fp.closed
+    from conjuntos import search_ini_Token
     #print("\n^ error"+ mensaje_de_error[no]+"\n")
+    Cpiton.No_de_errores += 1
     contadorLineas += 1
     consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
-    consolef.close()
-    sys.exit()
-    return
+    print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    search_ini_Token()
+    print("Next token = " + str(Lexico.token))
+    return Cpiton.No_de_errores
+
+def error_iden(no,lexema):    
+    #from cpiton import No_de_errores
+    from scanner import consolef
+    from scanner import contadorLineas
+    from conjuntos import search_ini_Token
+    #print("\n^ error"+ mensaje_de_error[no]+"\n")
+    Cpiton.No_de_errores += 1
+    contadorLineas += 1
+    consolef.write("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
+    print("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
+    search_ini_Token()
+    return Cpiton.No_de_errores
     
 
 def estadisticas():
     print("\n\n***  Estadisticas Globales  ***\n")
-    print("***   No se detectaron errores  ***")
-    return
+    #from cpiton import No_de_errores
+    if(Cpiton.No_de_errores == 0):
+        print("***   No se detectaron errores  ***")
+    else:       
+        print("*** %d error(es) detectado(s)  ***\n" % Cpiton.No_de_errores);
+        print("*** No se genero el ejecutable ***");
+    return Cpiton.No_de_errores
 
 def inicializar_espec():
     i = 0
