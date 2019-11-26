@@ -1,9 +1,17 @@
 import scanner as Scanner
 from parametros import *
 from enum import Enum
-
+global it
+global tabla
 tabla=[]
 it=0
+
+class nivelydireccion(object):
+    nivel=0
+    direc=0
+    def: __init__(self, nivel, direc):
+        self.nivel = nivel
+        self.direc = direc
 
 class objeto(Enum):
     NUM = 0

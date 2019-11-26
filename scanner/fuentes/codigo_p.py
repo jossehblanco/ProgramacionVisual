@@ -21,16 +21,20 @@ class codigo_intermedio(object):
 
 global codigo
 global ic
+global comentario
+global mnemonico
 
 codigo=[]
 ic=0
 
-def gen(fcn,y,z):
+def gen(x,y,z):
+    global ic
     if(ic>params.MAXIC-1):
         error(33)
         estadisticas()
         error(1)
-    codigo[ic]=codigo_intermedio(x,y,z)
+    print("esto es ic:" ,ic)
+    codigo.append(codigo_intermedio(x,y,z))
     ic+=1
     return
 
@@ -44,19 +48,22 @@ def listar_p():
                      ";salto incondicional",";salto condicional"]
     
     print("\n\n --Listado de codigo-p simplificado generado por el compilador--\n\n")
-    print("Esto es ic "+str(ic)+str(params.MAXIC))
+    print("Esto es ic ",str(ic),str(params.MAXIC))
     for i in range(0,ic):
-        print("\n "+i+mnemonico[codigo[i].f]+" "+codigo[i].ni+" "+codigo[i].di+" "+comentario[codigo[i].f])
+        aux=codigo[i].f
+        print(i," ",mnemonico[aux.value]," ",codigo[i].ni," ",codigo[i].di," ",comentario[aux.value])
       
 
 def escribe_codigo(fuente):
     extension=cp.nombreArch.split(".")
     ext=extension[0]+".p"
+    print(ext," ",ic)
     try:
         fil=open(ext,"w")
         for i in range(0,ic):
-            fil.write(""+codigo[i])
-        
+            aux=codigo[i].f
+            print(i," ",mnemonico[aux.value]," ",codigo[i].ni," ",codigo[i].di," ",comentario[aux.value])
+            fil.write(str(i)+" "+str(mnemonico[aux.value])+" "+str(codigo[i].ni)+" "+str(codigo[i].di)+" "+str(comentario[aux.value]))
     except Exception as ex:
         print("Error al crear el archivo")
     

@@ -4,8 +4,13 @@ import lexico as Lexico
 import scanner as Scanner
 import parametros as params
 import conjuntos as Conjuntos
+import codigo_p as cop
 
+global idat #indice de asignacion de memoria, comienza en 3 ED,DR y EE
+global it0 #inidice que recuerda en donde cominzan las instrucciones del bloque
 
+idat=3
+it0=tds.it
 
 def inicio():
     if(Lexico.token == Lexico.simbolo.dputok):
@@ -21,6 +26,7 @@ def bloque(PermiteFunciones):
     if(not PermiteFunciones and (Lexico.token == Lexico.simbolo.rettok)):
         return
     temp = None
+    cop.gen(cop.fcn.SAL,0,0)
     #setpaso = [0 for i in range (params.NOTOKENS)] #conjunto de paso por valor
     #vacio = [0 for i in range (params.NOTOKENS)] #conjunto vacio
 #-------------Declaracion de variable----------------------------------    

@@ -1,7 +1,7 @@
 
 
 Compilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- 
-25/11/2019
+26/11/2019
 Lexema                  Token
 :v                  simbolo.dputok
 num                  simbolo.numtok
@@ -13,61 +13,4 @@ a                  simbolo.ident
 =                  simbolo.asignacion
 4                  simbolo.numero
 ;                  simbolo.puntoycoma
-num                  simbolo.numtok
-t                  simbolo.ident
-=                  simbolo.asignacion
-91                  simbolo.numero
-;                  simbolo.puntoycoma
-num                  simbolo.numtok
-78                  simbolo.numero
-
-^ error se espera identificador numero de linea 4
-=                  simbolo.asignacion
-4                  simbolo.numero
-;                  simbolo.puntoycoma
-num                  simbolo.numtok
-u                  simbolo.ident
-=                  simbolo.asignacion
-1                  simbolo.numero
-num                  simbolo.numtok
-
-^ error falta una ',' o ';' numero de linea 6
-c                  simbolo.ident
-;                  simbolo.puntoycoma
-texto                  simbolo.textok
-holis                  simbolo.ident
-=                  simbolo.asignacion
-"holis"                  simbolo.texto
-;                  simbolo.puntoycoma
-dec                  simbolo.dectok
-p                  simbolo.ident
-=                  simbolo.asignacion
-0.22                  simbolo.decimal
-,                  simbolo.coma
-papa                  simbolo.ident
-=                  simbolo.asignacion
-0.56                  simbolo.decimal
-;                  simbolo.puntoycoma
-si                  simbolo.sitok
-(                  simbolo.parena
-b                  simbolo.ident
->                  simbolo.myr
-4                  simbolo.numero
-)                  simbolo.parenc
-{                  simbolo.llaveatok
-para                  simbolo.paratok
-c                  simbolo.ident
-rango                  simbolo.rangotok
-(                  simbolo.parena
-t                  simbolo.ident
-,                  simbolo.coma
-y                  simbolo.ident
-,                  simbolo.coma
-
-^ error identificador no declarado numero de linea 10
-u                  simbolo.ident
-
-^ error falta una ',' o ';' numero de linea 10
-
-^ error falta una llave de cierre '}' numero de linea 10
-)                  simbolo.parenc
+>:v                  simbolo.mdputok
