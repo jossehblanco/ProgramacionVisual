@@ -136,8 +136,7 @@ def valor():
         #Se valida si existe el identificador y si es funcion o variable
         EsFuncion = verificarExistsIdentAndCheckFunc() #Esta funcion no obtiene token solo chequea
         #Obtengo otro token pues aunque de falso el if necesito obtener el siguiente token para dejarlo listo
-        expresion()
-        #Scanner.obtoken()
+        expresion()#Aqui se hace el obtoken        
         if(EsFuncion == 1):
             if(Lexico.token == Lexico.simbolo.parena):
                 parametros()
@@ -244,7 +243,6 @@ def VerificarIdentExist(checkInTDS,tipao):
 def asignacion(checkIdent,tipao):
     fin = -1
     seguir = VerificarIdentExist(checkIdent,tipao)
-    errorEnc = -1
     #Se va por el camino de una asignacion a variable
     #CheckIdent nos determina si viene de declaracion de variable por tanto 
     #Si viene falso no tenemos que revisar que el identificador exista
