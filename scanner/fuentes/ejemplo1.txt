@@ -2,11 +2,12 @@
 num b = 3, a = 4;
 num t = 91;
 num 78 = 4;
-num u = 1
+num u = 1;
 num c;
 texto holis = "holis";
 dec p = 0.22, papa = 0.56;
-u p 4;
+b = b + t * 5;
+u = 4;
 si( b - 3 > 4){
 	para c rango(8,10,2){
 		imp(b);

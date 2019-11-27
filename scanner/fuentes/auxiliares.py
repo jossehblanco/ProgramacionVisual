@@ -31,7 +31,7 @@ def error_iden(no,lexema):
     return Cpiton.No_de_errores
 
 #Para uso de la funcion test
-def show_error(no):
+def show_error(no,terminar):
     #from cpiton import No_de_errores
     from scanner import consolef
     from scanner import contadorLineas
@@ -40,7 +40,9 @@ def show_error(no):
     Cpiton.No_de_errores += 1
     contadorLineas += 1
     consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
-    print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")    
+    print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    if(terminar):
+        sys.exit()
     return Cpiton.No_de_errores
 
 def estadisticas():

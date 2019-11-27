@@ -10,7 +10,7 @@ mensaje_de_error=[
     " se espera el cierre de comilla simple",#8
     " falta un punto y coma",#9
     " identificador no declarado",#10
-    "no estan permitidas las asignaciones a constantes o procedimientos",#11
+    " este valor no es valido para una variable en el lenguaje",#11
     "se esperaba el operador de asignacion",#12
     "CALL debe de ir seguido de un identificador",#13
     "no tiene sentido llamar a una constante o a una variable",#14

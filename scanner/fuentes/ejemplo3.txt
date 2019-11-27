@@ -1,0 +1,9 @@
+:v
+num 78 = 4;
+num u = 1;
+num c;
+texto holis = "holis";
+>:v
+
+
+Revisar cuando falle expresion

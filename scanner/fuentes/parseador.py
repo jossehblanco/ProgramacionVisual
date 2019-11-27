@@ -76,6 +76,17 @@ def bloque():
          #   error(5)
     return
 
+def verificarExistsIdentAndCheckFunc():
+    i = posicion(Scanner.lex)
+    if(i == -1):
+        error_iden(10,Scanner.lex)
+        return 2 #error que no existe identificador
+    else:
+        if(tabla[i].tipo == objeto.FUNCION):
+            return 1 #Es una funcion
+        else:
+            return 0 #Es variable
+
 def verificarIdent():    
     if(Lexico.token == Lexico.simbolo.ident):
         i = posicion(Scanner.lex)
@@ -92,14 +103,15 @@ def verificarIdent():
     else:        
         return 0 #No es un identificador
 
-def valor():
-    global lextoken
+def valor():    
     if(Lexico.token == Lexico.simbolo.parena):
         Scanner.obtoken()
         expresion()
         if(Lexico.token != Lexico.simbolo.parenc):
             error(21)
             return
+        else:
+            Scanner.obtoken()
     elif(Lexico.token == Lexico.simbolo.llaveatok):
         Scanner.obtoken()
         valor()
@@ -109,13 +121,33 @@ def valor():
         if(Lexico.token != Lexico.simbolo.llavectok):
             error(27)
             return
+        else:
+            #Si es igual que obtenga el siguiente
+            Scanner.obtoken()
+    elif(Lexico.token == Lexico.simbolo.numero or Lexico.token == Lexico.simbolo.decimal):
+        expresion()
+    elif(Lexico.token == Lexico.simbolo.ident):
+        #Se valida si existe el identificador y si es funcion o variable
+        EsFuncion = verificarExistsIdentAndCheckFunc() #Esta funcion no obtiene token solo chequea
+        #Obtengo otro token pues aunque de falso el if necesito obtener el siguiente token para dejarlo listo
+        expresion()
+        #Scanner.obtoken()
+        if(EsFuncion == 1):
+            if(Lexico.token == Lexico.simbolo.parena):
+                parametros()
+                if(Lexico.token != Lexico.simbolo.parenc):
+                    error(21)
+                else:
+                    #Si es igual que obtenga token
+                    Scanner.obtoken()
+            else:
+                error(22)
     else:
-        if(Lexico.token != Lexico.simbolo.numero and Lexico.token != Lexico.simbolo.truetok and
-          Lexico.token != Lexico.simbolo.ident and Lexico.token != Lexico.simbolo.falsetok and 
-          Lexico.token != Lexico.simbolo.decimal and Lexico.token != Lexico.simbolo.caracter and
-          Lexico.token != Lexico.simbolo.texto):
-            expresion()
-    Scanner.obtoken()
+        if(Lexico.token != Lexico.simbolo.truetok and Lexico.token != Lexico.simbolo.falsetok and 
+          Lexico.token != Lexico.simbolo.caracter and Lexico.token != Lexico.simbolo.texto):
+            error(11)
+        else:
+            Scanner.obtoken()
     return
 
 
@@ -502,6 +534,11 @@ def termino():
             error(47) #se esperaba un numero o un decimal
             return
         #valor() este tenia antes
+    elif(verif == 1):
+        #Si trae 1 es que el token es un Ident
+        #Traer de la tabla el valor del ident?
+        print(Lexico.token.value)
+        #Scanner.obtoken()
     elif(verif == 2):
         return
     while(Lexico.token == Lexico.simbolo.por or Lexico.token == Lexico.simbolo.barra):
@@ -515,6 +552,11 @@ def termino():
             else:
                 error(47) #se esperaba un numero o un decimal
                 return
+        elif(verif == 1):
+            #Si trae 1 es que el token es un Ident
+            #Traer de la tabla el valor del ident?
+            print(Lexico.token.value)
+            #Scanner.obtoken()
         elif(verif == 2):
             #Si trae 2 es error por esto se retorna
             return
@@ -535,17 +577,18 @@ def condicionExt():
     else:
         return
 
-def parametros():
+def parametros(toksig):
     tipao = tipo()
     if(tipao is None):
-        error(0)
+        show_error(0,False)
+        return
     else:
-        obtoken()
+        Scanner.obtoken()
         #ver si lo declaramos o como manejar las variables por scope
         if(not agregarTipoAIdents(tipao,16)):
             return
         if(Lexico.token == Lexico.simbolo.coma):
-            obtoken()
+            Scanner.obtoken()
             parametros()
         else:
             return

@@ -29,9 +29,8 @@ num                  simbolo.numtok
 u                  simbolo.ident
 =                  simbolo.asignacion
 1                  simbolo.numero
+;                  simbolo.puntoycoma
 num                  simbolo.numtok
-
-^ error falta una ',' o ';' numero de linea 6
 c                  simbolo.ident
 ;                  simbolo.puntoycoma
 texto                  simbolo.textok
@@ -48,13 +47,17 @@ papa                  simbolo.ident
 =                  simbolo.asignacion
 0.56                  simbolo.decimal
 ;                  simbolo.puntoycoma
+b                  simbolo.ident
+=                  simbolo.asignacion
+b                  simbolo.ident
++                  simbolo.mas
+t                  simbolo.ident
+*                  simbolo.por
+5                  simbolo.numero
+;                  simbolo.puntoycoma
 u                  simbolo.ident
-p                  simbolo.ident
-
-^ error se espera un '=' o un '[' numero de linea 9
+=                  simbolo.asignacion
 4                  simbolo.numero
-
-^ error se espera un '=' o un '[' numero de linea 9
 ;                  simbolo.puntoycoma
 si                  simbolo.sitok
 (                  simbolo.parena
