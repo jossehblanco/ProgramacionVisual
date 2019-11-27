@@ -1,7 +1,7 @@
 
 
 Compilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- 
-18/11/2019
+27/11/2019
 Lexema                  Token
 :v                  simbolo.dputok
 num                  simbolo.numtok
@@ -48,9 +48,19 @@ papa                  simbolo.ident
 =                  simbolo.asignacion
 0.56                  simbolo.decimal
 ;                  simbolo.puntoycoma
+u                  simbolo.ident
+p                  simbolo.ident
+
+^ error se espera un '=' o un '[' numero de linea 9
+4                  simbolo.numero
+
+^ error se espera un '=' o un '[' numero de linea 9
+;                  simbolo.puntoycoma
 si                  simbolo.sitok
 (                  simbolo.parena
 b                  simbolo.ident
+-                  simbolo.menos
+3                  simbolo.numero
 >                  simbolo.myr
 4                  simbolo.numero
 )                  simbolo.parenc
@@ -59,15 +69,23 @@ para                  simbolo.paratok
 c                  simbolo.ident
 rango                  simbolo.rangotok
 (                  simbolo.parena
-t                  simbolo.ident
+8                  simbolo.numero
 ,                  simbolo.coma
-y                  simbolo.ident
+10                  simbolo.numero
 ,                  simbolo.coma
-
-^ error identificador no declarado numero de linea 10
-u                  simbolo.ident
-
-^ error falta una ',' o ';' numero de linea 10
-
-^ error falta una llave de cierre '}' numero de linea 10
+2                  simbolo.numero
 )                  simbolo.parenc
+{                  simbolo.llaveatok
+imp                  simbolo.imp
+(                  simbolo.parena
+b                  simbolo.ident
+)                  simbolo.parenc
+;                  simbolo.puntoycoma
+a                  simbolo.ident
+=                  simbolo.asignacion
+5                  simbolo.numero
+;                  simbolo.puntoycoma
+}                  simbolo.llavectok
+//                  simbolo.linecomment
+}                  simbolo.llavectok
+>:v                  simbolo.mdputok

@@ -14,7 +14,7 @@ lextoken = ""
 caracteres = ""
 
 try:
-    consolef= open("console.txt","w")
+    consolef= open("C:/Users/Harbinger/Desktop/TeoProyecto/scanner/fuentes/console.txt","w")
 
 except Exception as ex:
     print("Archivo no encontrado "+ex)

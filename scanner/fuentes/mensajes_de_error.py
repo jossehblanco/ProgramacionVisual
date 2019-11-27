@@ -47,6 +47,7 @@ mensaje_de_error=[
     " se espera un ']'",#45
     " se esperaba el cierre del comentario '*/'",#46
     " se esperaba un tipo de dato num o decimal",#47
-    " no se permite declarar funciones dentro de funciones"#48
+    " no se permite declarar funciones dentro de funciones",#48
+    " se espera un '=' o un '['"#49
     ]
 

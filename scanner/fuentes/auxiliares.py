@@ -15,7 +15,6 @@ def error(no):
     consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
     print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
     search_ini_Token()
-    print("Next token = " + str(Lexico.token))
     return Cpiton.No_de_errores
 
 def error_iden(no,lexema):    
@@ -30,7 +29,19 @@ def error_iden(no,lexema):
     print("\n Error %s %s numero de linea %d \n" %(mensaje_de_error[no],lexema,contadorLineas))
     search_ini_Token()
     return Cpiton.No_de_errores
+
+#Para uso de la funcion test
+def show_error(no):
+    #from cpiton import No_de_errores
+    from scanner import consolef
+    from scanner import contadorLineas
+    from conjuntos import search_ini_Token
     
+    Cpiton.No_de_errores += 1
+    contadorLineas += 1
+    consolef.write("\n^ error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")
+    print("\n^ Error"+ mensaje_de_error[no]+" numero de linea " + str(contadorLineas) + "\n")    
+    return Cpiton.No_de_errores
 
 def estadisticas():
     print("\n\n***  Estadisticas Globales  ***\n")

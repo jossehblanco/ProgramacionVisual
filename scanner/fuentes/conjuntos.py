@@ -1,6 +1,8 @@
 import parametros as params
 import lexico as Lexico
 import scanner as Scanner
+from auxiliares import error
+from auxiliares import show_error
 
 #tokens iniciales de declaracion de variables y procedimientos
 tokini = [0 for i in range (params.NOTOKENS)]
@@ -16,25 +18,25 @@ def copia_set(conjunto, conjunto2):
     for i in range (0,params.NOTOKENS):
         conjunto[i] = conjunto2[i]
 
-def union_set(conjunto1,conjunto2, conjunto3):
-	copia_set(conjunto1,conjunto2)
-	for i in range (0,params.NOTOKENS):
-		if(conjunto3[i] == 1):
-			conjunto1[i] = 1
+def union_set(conjunto1,conjunto2,conjunto3):
+    copia_set(conjunto1,conjunto2)
+    if(not all(conjunto3)):
+        for i in range (0,params.NOTOKENS):
+            if(conjunto3[i] == 1):
+                conjunto1[i] = 1
 
 def test (conjunto1, conjunto2, n):
-	conj_union = []
-
-	if(conjunto1[Lexico.token] == 0):
-		#el token no esta en el conjunto1
-		error(n) #por que no esta el token se marca el error
-
-		#se arma el conjunto de estabilizacion 
-		union_set(conj_union,conjunto1,conjunto2)
-		#se salta texto hasta llegar al token estabilizador que esta en el conjunto
-		#es de ver si el arreglo se modifica por referencia o nel
-		while(conj_union[Lexico.token] == 0):
-			Scanner.obtoken()
+    if(conjunto1[Lexico.token.value] == 0):
+	    #el token no esta en el conjunto1        
+        show_error(n)
+        conj_union = [0 for i in range (params.NOTOKENS)]
+        #por que no esta el token se marca el error
+	    #se arma el conjunto de estabilizacion
+        union_set(conj_union,conjunto1,conjunto2)
+	    #se salta texto hasta llegar al token estabilizador que esta en el conjunto
+	    #es de ver si el arreglo se modifica por referencia o nel
+        while(conj_union[Lexico.token.value] == 0):
+            Scanner.obtoken()    
 
 def search_ini_Token():
     while(tokini[Lexico.token.value] == 0):
