@@ -11,7 +11,8 @@ from conjuntos import inicializar_conjuntos
 
 fp = None
 No_de_errores = 0
-
+global niv
+niv=0
 def main(argv):
     global fp
     if argv==None:
@@ -51,7 +52,7 @@ def main(argv):
 
             scanner.obtoken()
             
-            
+            niv=0
             tds.it=0
             #global token
             #token = scanner.obtoken()

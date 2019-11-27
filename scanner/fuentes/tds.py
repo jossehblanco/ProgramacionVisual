@@ -1,6 +1,8 @@
 import scanner as Scanner
 from parametros import *
 from enum import Enum
+from mensajes_de_error import *
+import cpiton as cp
 global it
 global tabla
 tabla=[]
@@ -9,7 +11,7 @@ it=0
 class nivelydireccion(object):
     nivel=0
     direc=0
-    def: __init__(self, nivel, direc):
+    def __init__(self, nivel, direc):
         self.nivel = nivel
         self.direc = direc
 
@@ -30,23 +32,35 @@ class registro(object):
 	nombre=" "
 	tipo=" "
 
-	def __init__(self,nombre,tipo):
+	def __init__(self,nombre,tipo,nivel=nivelydireccion(0,0)):
 		self.nombre = nombre
 		self.tipo = tipo
+		self.nivel = nivel
 
-def poner(k):
+def poner(k,idat):
     from auxiliares import error
     global it
+    #print("esto es k",k)
     it+=1
     if(it > MAXIT):
         error(31)
     else:
         nuevo = registro(Scanner.lex,k)
+        print("esto es it",it)
         tabla.insert(it,nuevo)
         mergeSort(tabla)
+        if k== objeto.NUM:
+            if Scanner.valor > MAXD:
+                error(35)
+                Scanner.valor=0
+            tabla[it].nivel.nivel=cp.niv
+            tabla[it].nivel.direc=idat
+            
+        
         #for i in tabla:
          #   print(i.nombre)
         #print("\n-------------\n")
+
 def posicion(item):
     #implementando binary search
     #Scanner.lex tiene el ultimo lexema leido

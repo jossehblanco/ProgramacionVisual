@@ -10,7 +10,7 @@ global idat #indice de asignacion de memoria, comienza en 3 ED,DR y EE
 global it0 #inidice que recuerda en donde cominzan las instrucciones del bloque
 
 idat=3
-it0=tds.it
+it0=it
 
 def inicio():
     if(Lexico.token == Lexico.simbolo.dputok):
@@ -153,7 +153,7 @@ def tipo():
 
 def agregarTipoAIdents(tipao,numError):
     if(Lexico.token == Lexico.simbolo.ident):
-        poner(tipao)
+        poner(tipao,idat)
         Scanner.obtoken()
         return True
     else:
