@@ -162,6 +162,39 @@ export class Templates{
         )
     );
 
+    /*---------------------------Funciones---------------------------------*/
+    
+    //crear funcion
+    var crearFuncion = 
+    $(go.Node, "Auto",
+      $(go.Shape, "PrimitiveToCall",
+        {height: 50,fill: "white", stroke: "green", strokeWidth: 3 },
+        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+        $(go.Panel, "Horizontal",
+          $(go.TextBlock, {text: "Crear: ", margin: 5}),
+          $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_funcion").makeTwoWay()),
+          $(go.TextBlock, {width: 75, text: "", margin: 5}))/*,
+          $(go.Shape, "PrimitiveToCall",
+          {
+            portId: "down", fromSpot: go.Spot.Bottom,
+            alignment: go.Spot.Bottom, alignmentFocus: go.Spot.Bottom,
+            stroke: "red", fill: "white", height: 50, strokeWidth: 3
+          })*/         
+    );
+
+    //fin crear funcion
+    var endCrearFuncion = 
+    $(go.Node, "Auto",
+      $(go.Shape, "PrimitiveToCall",
+      { height: 50, fill: "white", stroke: "red", strokeWidth: 3 },
+      {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
+      $(go.Panel, "Horizontal",
+          $(go.TextBlock, {margin: 5, editable: false, textAlign: "left", verticalAlignment: go.Spot.Center},
+          new go.Binding("text", "representa").makeTwoWay()),
+          $(go.TextBlock, {width: 75, text: "", margin: 5})
+        )    
+    );
+
     /*---------------------------Control de Flujo--------------------------------------------*/ 
     var ifTemplate =
     $(go.Node, "Auto", //Primero se tiene que especificar que es un nodo (hay otros tipos, como grupo, link, etc)
@@ -218,7 +251,7 @@ export class Templates{
         })
     )
 
-      var fifTemplate =
+    var fifTemplate =
     $(go.Node, "Auto", //Primero se tiene que especificar que es un nodo (hay otros tipos, como grupo, link, etc)
       $(go.Shape, "Diamond", //Shape es el dibujito que va a mostrar, este puede ser custom o predefinido. DIamond ya está predefinido
         { fill: "white", stroke: "red", strokeWidth: 3 }, //tags de estilo y propiedades, esto lo rellena de blanco
@@ -341,33 +374,7 @@ export class Templates{
         new go.Binding("text", "representa").makeTwoWay())
     );
 
-    /*---------------------------Funciones---------------------------------*/
     
-    //crear funcion
-    var crearFuncion = 
-    $(go.Node, "Auto",
-      $(go.Shape, "PrimitiveToCall",
-        {height: 50,fill: "white", stroke: "green", strokeWidth: 3 },
-        {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
-        $(go.Panel, "Horizontal",
-          $(go.TextBlock, {text: "Crear: ", margin: 5}),
-          $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "nombre_funcion").makeTwoWay()),
-          $(go.TextBlock, {width: 75, text: "", margin: 5})
-        )
-    );
-
-    //fin crear funcion
-    var endCrearFuncion = 
-    $(go.Node, "Auto",
-      $(go.Shape, "PrimitiveToCall",
-      { height: 50, fill: "white", stroke: "red", strokeWidth: 3 },
-      {portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer"}),
-      $(go.Panel, "Horizontal",
-          $(go.TextBlock, {margin: 5, editable: false, textAlign: "left", verticalAlignment: go.Spot.Center},
-          new go.Binding("text", "representa").makeTwoWay()),
-          $(go.TextBlock, {width: 75, text: "", margin: 5})
-        )    
-    );
 
     //llamar funcion
     var llamarFuncion = 
