@@ -63,7 +63,7 @@ def escribe_codigo(fuente):
         for i in range(0,ic):
             aux=codigo[i].f
             print(i," ",mnemonico[aux.value]," ",codigo[i].ni," ",codigo[i].di," ",comentario[aux.value])
-            fil.write(str(i)+" "+str(mnemonico[aux.value])+" "+str(codigo[i].ni)+" "+str(codigo[i].di)+" "+str(comentario[aux.value]))
+            fil.write(str(i)+" "+str(mnemonico[aux.value])+" "+str(codigo[i].ni)+" "+str(codigo[i].di)+"\n")
     except Exception as ex:
         print("Error al crear el archivo")
     

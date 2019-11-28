@@ -5,6 +5,7 @@ import scanner as Scanner
 import parametros as params
 import conjuntos as Conjuntos
 import codigo_p as cop
+import cpiton as cpi
 
 global idat #indice de asignacion de memoria, comienza en 3 ED,DR y EE
 global it0 #inidice que recuerda en donde cominzan las instrucciones del bloque
@@ -24,6 +25,8 @@ def bloque():
     if(Lexico.token == Lexico.simbolo.mdputok):
         return
     temp = None
+    tabla[it].tipo=objeto.FUNCION
+    tabla[it].nivel.direc=cop.ic
     cop.gen(cop.fcn.SAL,0,0)
     #setpaso = [0 for i in range (params.NOTOKENS)] #conjunto de paso por valor
     #vacio = [0 for i in range (params.NOTOKENS)] #conjunto vacio
@@ -44,8 +47,11 @@ def bloque():
 #-------------Instruccion-----------------------------------------------
     instruccion()
     bloque()
-    
 
+    cop.codigo[tabla[it0].nivel.direc].di=cop.ic
+    tabla[it0].nivel.direc=cop.ic
+    cop.gen(cop.fcn.INS,0,idat)
+    cop.gen(cop.fcn.OPR,0,0)
 #-----------------------------------------------------------------------
     #if(Lexico.token == Lexico.simbolo)
     #if(Lexico.token == Lexico.simbolo.consttok):
@@ -89,6 +95,7 @@ def verificarExistsIdentAndCheckFunc():
         return 2 #error que no existe identificador
     else:
         if(tabla[i].tipo == objeto.FUNCION):
+
             return 1 #Es una funcion
         else:
             return 0 #Es variable
@@ -140,6 +147,10 @@ def valor():
         if(EsFuncion == 1):
             Scanner.obtoken()
             if(Lexico.token == Lexico.simbolo.parena):
+                i=posicion(Scanner.lex)
+                if tabla[i].tipo == objeto.FUNCION:
+                    cop.gen(cop.fcn.LLA, cpi.niv - tabla[i].nivel.nivel, tabla[i].nivel.direc)
+                parametros()
                 #Pasar por valor los parametros de las funciones
                 Scanner.obtoken()
                 valor()
@@ -203,6 +214,8 @@ def declaracionvariable():
     tipao = tipo()
     if(tipao is None):        
         return
+    i=posicion(Scanner.lex)
+    cop.gen(cop.fcn.CAR, cpi.niv - tabla[i].nivel.nivel,tabla[i].nivel.direc)
     Scanner.obtoken()
     #si da error retorna false
     if(not agregarTipoAIdents(tipao,16)):
@@ -212,6 +225,7 @@ def declaracionvariable():
         if(Lexico.token == Lexico.simbolo.numero):
             Scanner.obtoken()
             if(Lexico.token == Lexico.simbolo.corchcr):
+                cop.gen(cop.fcn.INS,0,idat)
                 Scanner.obtoken()                            
             else:
                 error(45)
@@ -220,6 +234,7 @@ def declaracionvariable():
             error(1)
             return
     while(Lexico.token == Lexico.simbolo.coma):
+        cop.gen(cop.fcn.CAR, cpi.niv - tabla[i].nivel.nivel, tabla[i].nivel.direc)
         Scanner.obtoken()
         if(not agregarTipoAIdents(tipao,4)):
             return
@@ -255,6 +270,7 @@ def VerificarIdentExist(checkInTDS,tipao):
 
 def asignacion(checkIdent,tipao):
     fin = -1
+    i=posicion(Scanner.lex)
     seguir = VerificarIdentExist(checkIdent,tipao)
     #Se va por el camino de una asignacion a variable
     #CheckIdent nos determina si viene de declaracion de variable por tanto 
@@ -263,6 +279,7 @@ def asignacion(checkIdent,tipao):
     if((seguir == 0 or not checkIdent)and Lexico.token == Lexico.simbolo.asignacion):
         Scanner.obtoken()
         valor()
+        cop.gen(cop.fcn.ALM,cpi.niv - tabla[i].nivel.nivel,tabla[i].nivel.direc)
         if(Lexico.token == Lexico.simbolo.coma):
             Scanner.obtoken()
             #Si checkident es False significa que viene declaracion variable
@@ -288,6 +305,7 @@ def asignacion(checkIdent,tipao):
                 if(Lexico.token == Lexico.simbolo.asignacion):
                     Scanner.obtoken()
                     valor()
+                    cop.gen(cop.fcn.ALM, cpi.niv - tabla[i].nivel.nivel, tabla[i].nivel.direc)
                     if(Lexico.token == Lexico.simbolo.coma):
                         #Aqui leo el numero
                         Scanner.obtoken()
@@ -489,6 +507,9 @@ def instruccion():
         #Lo quito pues dentro de expresion puede encontrar un identificador y no seria una instruccion de asignacion
         setpaso[Lexico.token.ident.value] = 0
         cuerpoestabien = CuerpoInstrucciones(setpaso)
+        ic1 = cop.ic
+        cop.gen(cop.fcn.SAC, 0, 0)
+        cop.codigo[ic1].di = cop.ic
         while(cuerpoestabien):
             if(Lexico.token == Lexico.simbolo.ositok):
                 cuerpoestabien = CuerpoInstrucciones()
@@ -499,6 +520,9 @@ def instruccion():
             cuerpoLlavesInstruccion()
     else:#Verificando si es PARATOK
         if(Lexico.token == Lexico.simbolo.paratok):
+            ic1 = cop.ic
+            cop.gen(cop.fcn.SAC, 0, 0)
+            cop.codigo[ic1].di = cop.ic
             setpaso = [0 for i in range (params.NOTOKENS)]
             setpaso[Lexico.simbolo.llaveatok.value]=setpaso[Lexico.simbolo.llavectok.value] = 1
             Scanner.obtoken()
@@ -513,12 +537,18 @@ def instruccion():
                 return
         else:#Verificando si es MIENSTRASTOK
             if(Lexico.token == Lexico.simbolo.mientrastok):
+                ic1 = cop.ic
+                cop.gen(cop.fcn.SAC, 0, 0)
+                cop.codigo[ic1].di = cop.ic
                 Scanner.obtoken()
                 setpaso = Conjuntos.tokini
                 setpaso[Lexico.token.ident.value] = 0
                 CuerpoInstrucciones(setpaso)
             else:#Verificando si es HASTOK
                 if(Lexico.token == Lexico.simbolo.hastok):
+                    ic1 = cop.ic
+                    cop.gen(cop.fcn.SAC, 0, 0)
+                    cop.codigo[ic1].di = cop.ic
                     Scanner.obtoken()
                     seguir = cuerpoLlavesInstruccion()
                     if(seguir and Lexico.token == Lexico.simbolo.mientrastok):
@@ -565,6 +595,10 @@ def termino():
     elif(verif == 2):
         return
     while(Lexico.token == Lexico.simbolo.por or Lexico.token == Lexico.simbolo.barra):
+        if Lexico.simbolo.por:
+            cop.gen(cop.fcn.OPR,0,4)
+        if Lexico.simbolo.barra:
+            cop.gen(cop.fcn.OPR,0,6)
         Scanner.obtoken()
         verif = verificarIdent()
         if(verif == 0):
@@ -589,12 +623,28 @@ def condicion(toksig):
     if((Lexico.token != Lexico.simbolo.igl) and (Lexico.token != Lexico.simbolo.nig) and (Lexico.token != Lexico.simbolo.mnr) and (Lexico.token != Lexico.simbolo.mei) and (Lexico.token != Lexico.simbolo.myr) and (Lexico.token != Lexico.simbolo.mai)):
         Conjuntos.test(toksig,[],19) #error 19: Se esperaba un operador relacional
     else:
+        if Lexico.token == Lexico.simbolo.igl:
+            cop.gen(cop.fcn.OPR,0,8)
+        if Lexico.token == Lexico.simbolo.nig:
+            cop.gen(cop.fcn.OPR,0,16)
+        if Lexico.token == Lexico.simbolo.mnr:
+            cop.gen(cop.fcn.OPR,0,10)
+        if Lexico.token == Lexico.simbolo.mei:
+            cop.gen(cop.fcn.OPR,0,13)
+        if Lexico.token == Lexico.simbolo.myr:
+            cop.gen(cop.fcn.OPR,0,12)
+        if Lexico.token == Lexico.simbolo.mai:
+            cop.gen(cop.fcn.OPR,0,11)
         Scanner.obtoken()
         expresion()
 
 def condicionExt(toksig):
     condicion(toksig)
     if((Lexico.token == Lexico.simbolo.andtok) or (Lexico.token == Lexico.simbolo.ortok)):
+        if Lexico.token == Lexico.simbolo.andtok:
+            cop.gen(cop.fcn.OPR,0,14)
+        if Lexico.token == Lexico.simbolo.ortok:
+            cop.gen(cop.fcn.OPR,0,15)
         Scanner.obtoken()
         condicionExt(toksig)
     else:
