@@ -1,5 +1,4 @@
 :v
-
 fun hola(num uno, texto ella) retorna num {
 	num c;
 	si( 5 + b > 4){

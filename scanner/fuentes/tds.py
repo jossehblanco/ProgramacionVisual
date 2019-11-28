@@ -7,10 +7,6 @@ import cpiton as cp
 global it
 global tabla
 
-tabla= []
-it=0
-
-
 class nivelydireccion(object):
     nivel=0
     direc=0
@@ -40,8 +36,6 @@ class registro(object):
 		self.tipo = tipo
 		self.nivel = nivel
 
-global it
-global tabla
 tabla=[]
 it=0
 tabla.append(registro("",""))
