@@ -2,6 +2,8 @@ import * as go from 'gojs';
 import { Injectable } from '@angular/core';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Figuras } from './figuras';
+import { MatDialog } from '@angular/material';
+import { TypeselectComponent } from '../typeselect/typeselect.component';
 const $ = go.GraphObject.make;
 //Definiendo clase como inyectable para poder hacer uso de las instancias de templates y tempate maps
 //Que declare aqui
@@ -23,10 +25,17 @@ export class Templates{
     public paletteTemplateArchivosMap : go.Map<string, go.Node>;
     public linkTemplate;
 
+    tipos: string[] = [
+      "num","dec", "texto", "vof","num[]","dec[]", "texto[]", "vof[]"
+    ];
+
+    openSelectionDialog(){
+
+    }
 
     //Inyecto la dependencia de figuras.ts para poder hacer uso de la funcion
     //que define las figuras antes de declarar las templates      
-    constructor(figuras: Figuras){
+    constructor(figuras: Figuras, public dialog : MatDialog){
         //Ejecuto el metodo definir figuras
         figuras.definirFiguras();
 
@@ -83,7 +92,22 @@ export class Templates{
         ),
         $(go.Panel, "Horizontal",
         $(go.TextBlock, { text: "Tipo: ", margin: 5 }),
-        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "tipo_variable").makeTwoWay())
+        $(go.TextBlock, {cursor: "select", margin: 5, editable: false, stroke: "blue", click : (e, obj : go.TextBlock) => {
+          
+          const dialogRef = this.dialog.open(TypeselectComponent, {
+            width: '332px',
+            disableClose : true,
+            data: { tipos : this.tipos }
+          });
+
+          dialogRef.afterClosed().subscribe(result =>{
+            console.log(result)
+            if(result != false ) obj.text = result;
+          });
+          
+          
+
+        }}, new go.Binding("text", "tipo_variable").makeTwoWay())
         )        
         )
     );
@@ -100,7 +124,22 @@ export class Templates{
         ),
         $(go.Panel, "Horizontal",
         $(go.TextBlock, { text: "Tipo: ", margin: 5 }),
-        $(go.TextBlock, {margin: 5, editable: true, stroke: "blue"}, new go.Binding("text", "tipo_variable").makeTwoWay())
+        $(go.TextBlock, { editable: false , cursor: "select", margin: 5,  stroke: "blue", click: (e, obj : go.TextBlock) => {
+          
+          const dialogRef = this.dialog.open(TypeselectComponent, {
+            width: '332px',
+            disableClose : true,
+            data: { tipos : this.tipos }
+          });
+
+          dialogRef.afterClosed().subscribe(result =>{
+            console.log(result)
+            if(result != false ) obj.text = result;
+          });
+          
+          
+
+        }}, new go.Binding("text", "tipo_variable").makeTwoWay())
         )               
         )
     );

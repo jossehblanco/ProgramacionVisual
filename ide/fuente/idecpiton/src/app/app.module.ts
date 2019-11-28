@@ -17,6 +17,7 @@ import { PaletteBuclesComponent } from './palette-bucles/palette-bucles.componen
 import { PaletteFuncionesComponent } from './palette-funciones/palette-funciones.component';
 import { PaletteArchivosComponent } from './palette-archivos/palette-archivos.component';
 import { ParamsdialogComponent } from './paramsdialog/paramsdialog.component';
+import { TypeselectComponent } from './typeselect/typeselect.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ParamsdialogComponent } from './paramsdialog/paramsdialog.component';
     PaletteFuncionesComponent,
     PaletteArchivosComponent,
     ParamsdialogComponent,
+    TypeselectComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import { ParamsdialogComponent } from './paramsdialog/paramsdialog.component';
   ],
   entryComponents: [
     MatDialogCComponent,
-    ParamsdialogComponent
+    ParamsdialogComponent,
+    TypeselectComponent
   ], 
   providers: [
     ApiService,
