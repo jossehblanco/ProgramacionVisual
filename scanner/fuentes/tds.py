@@ -3,10 +3,6 @@ from parametros import *
 from enum import Enum
 from mensajes_de_error import *
 import cpiton as cp
-global it
-global tabla
-tabla=[]
-it=0
 
 class nivelydireccion(object):
     nivel=0
@@ -37,6 +33,12 @@ class registro(object):
 		self.tipo = tipo
 		self.nivel = nivel
 
+global it
+global tabla
+tabla=[]
+it=0
+tabla.append(registro("",""))
+
 def poner(k,idat):
     from auxiliares import error
     global it
@@ -49,14 +51,12 @@ def poner(k,idat):
         print("esto es it",it)
         tabla.insert(it,nuevo)
         mergeSort(tabla)
-        if k== objeto.NUM:
+        if k == objeto.NUM:
             if Scanner.valor > MAXD:
                 error(35)
                 Scanner.valor=0
             tabla[it].nivel.nivel=cp.niv
             tabla[it].nivel.direc=idat
-            
-        
         #for i in tabla:
          #   print(i.nombre)
         #print("\n-------------\n")
