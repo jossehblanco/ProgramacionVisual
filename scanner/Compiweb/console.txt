@@ -1,39 +1,7 @@
 
 
 Compilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- 
-17/11/2019
+28/11/2019
 Lexema                  Token
-:v                  simbolo.dputok
-texto                  simbolo.textok
-b                  simbolo.ident
-=                  simbolo.asignacion
-"Hola mundo"                  simbolo.texto
-;                  simbolo.puntoycoma
-car                  simbolo.cartok
-hola                  simbolo.ident
-=                  simbolo.asignacion
-'a'                  simbolo.caracter
-;                  simbolo.puntoycoma
-num                  simbolo.numtok
-arreglo                  simbolo.ident
-[                  simbolo.corchab
-3                  simbolo.numero
-]                  simbolo.corchcr
-;                  simbolo.puntoycoma
-arreglo                  simbolo.ident
-[                  simbolo.corchab
-3                  simbolo.numero
-]                  simbolo.corchcr
-=                  simbolo.asignacion
-3                  simbolo.numero
-,                  simbolo.coma
-4                  simbolo.numero
-,                  simbolo.coma
-5                  simbolo.numero
-;                  simbolo.puntoycoma
-imp                  simbolo.imp
-(                  simbolo.parena
-b                  simbolo.ident
-)                  simbolo.parenc
-;                  simbolo.puntoycoma
->:v                  simbolo.mdputok
+
+^ error se esperaba un >:v numero de linea 1
