@@ -624,7 +624,7 @@ def condicion(toksig):
         if Lexico.token == Lexico.simbolo.igl:
             cop.gen(cop.fcn.OPR,0,8)
         if Lexico.token == Lexico.simbolo.nig:
-            cop.gen(cop.fcn.OPR,0,16)
+            cop.gen(cop.fcn.OPR,0,9)
         if Lexico.token == Lexico.simbolo.mnr:
             cop.gen(cop.fcn.OPR,0,10)
         if Lexico.token == Lexico.simbolo.mei:

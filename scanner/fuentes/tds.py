@@ -4,13 +4,6 @@ from enum import Enum
 from mensajes_de_error import *
 import cpiton as cp
 
-global it
-global tabla
-
-tabla= []
-it=0
-
-
 class nivelydireccion(object):
     nivel=0
     direc=0
