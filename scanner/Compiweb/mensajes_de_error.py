@@ -9,8 +9,8 @@ mensaje_de_error=[
     " no se pudo castear a float",#7
     " se espera el cierre de comilla simple",#8
     " falta un punto y coma",#9
-    "identificador no declarado",#10
-    "no estan permitidas las asignaciones a constantes o procedimientos",#11
+    " identificador no declarado",#10
+    " este valor no es valido para una variable en el lenguaje",#11
     "se esperaba el operador de asignacion",#12
     "CALL debe de ir seguido de un identificador",#13
     "no tiene sentido llamar a una constante o a una variable",#14
@@ -31,20 +31,23 @@ mensaje_de_error=[
     " se esperaba :v como inicio de programa",#29
     " se esperaba comilla doble",#30
     " se esperaba un caracter",#31
-    "se esperaba un >:v",#32
+    " se esperaba un >:v",#32
     " este numero es demasiado grande - trunc(5)",#33
     "se rebaso el tamaño de la Tabla de Simbolos",#34
     "el programa fuente esta incompleto",#35
     "el programa fuente es demasiado largo",#36
     "anidamiento demasiado profundo para los procedures",#37
-    "se rebasa el maximo entero de cpiton--se asume cero"#38
-    " se espera la palabra 'ret'"#39
-    " se debe retornar un identificador"#40
-    " se espera un identificador o un numero"#41
-    " se espera una ','"#42
-    " se espera texto"#43
-    " se espera un identificador o texto"#44
-    " se espera un ']'"#45
-    " se esperaba el cierre del comentario '*/'"#46
+    "se rebasa el maximo entero de cpiton--se asume cero",#38
+    " se espera la palabra 'ret'",#39
+    " se debe retornar un identificador",#40
+    " se espera un identificador o un numero",#41
+    " se espera una ','",#42
+    " se espera texto",#43
+    " se espera un identificador o texto",#44
+    " se espera un ']'",#45
+    " se esperaba el cierre del comentario '*/'",#46
+    " se esperaba un tipo de dato num o decimal",#47
+    " no se permite declarar funciones dentro de funciones",#48
+    " se espera un '=' o un '['"#49
     ]
 

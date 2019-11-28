@@ -1,0 +1,17 @@
+:v
+
+fun hola(num uno, texto ella) retorna num {
+	num c;
+	si( 5 + b > 4){
+		para c rango(8,10,2){
+			imp(b);
+			c = 5;
+		}
+		//a = 5;
+	}
+	ret c;
+}
+
+num a = hola(uno,ella);
+
+>:v

@@ -1,24 +1,34 @@
 import datetime
 import mensajes_de_error
 import lexico
+import codigo_p
 #import auxiliares
 import parametros
 import scanner
 import parseador
 import tds
+from conjuntos import inicializar_conjuntos
+from io import StringIO
 
 fp = None
-
-def main(argv):
+No_de_errores = 0
+global niv
+niv=0
+def main(strcode):
     global fp
-    if argv==None:
+    if 2==3:
         print("\nNo se ha proporcionado el nombre del programa fuente (uso: parser1 progfuente)")
     
     else:
-        fp=open(argv,"r")
+        fp= StringIO(strcode)
+        for linea in fp:
+            print(linea)        
         if fp==None:
             print("\nNo se encontro el programa fuente indicado")
         else:
+
+            global nombreArch
+            nombreArch='ella'
             timer=datetime.datetime.today()
             
             #print("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
@@ -27,6 +37,8 @@ def main(argv):
             
             from auxiliares import inicializar_espec
             #print(auxiliares.hola)
+            
+
             inicializar_espec()
             
             scanner.consolef.write("\n\nCompilador de cpiton version 69.0/parser1 --- Octubre de 2019 --- \n")
@@ -37,15 +49,20 @@ def main(argv):
             scanner.fin_de_archivo=0
             scanner.offset=-1
             scanner.ll=0
+            No_de_errores = 0
+
+            #inicializacion de conjuntos de estabilizacion (en conjuntos.py) 
+            inicializar_conjuntos()
+
             scanner.obtoken()
             
-            
+            niv=0
             tds.it=0
             #global token
             #token = scanner.obtoken()
             #while(token != lexico.simbolo.mdputok):
             #    token = scanner.obtoken()
-
+            #                
             parseador.inicio()
             
             
@@ -56,6 +73,11 @@ def main(argv):
             from auxiliares import estadisticas
             estadisticas()
             scanner.consolef.close()
-            fp.close
+            fp.close()
+            
+            
+            if No_de_errores==0:
+                codigo_p.listar_p()
+                codigo_p.escribe_codigo(argv)
             
     return 0
