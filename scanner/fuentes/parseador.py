@@ -331,7 +331,9 @@ def delaracionfuncion():
                             #Para no dejar que declare funciones dentro de funciones
                             instruccion()
                             #Para leer el final de la instruccion es decir el '}'
-                            Scanner.obtoken()
+                            #Hago el if por si se ha omitido el '}' y pueda seguir escaneando
+                            if(Lexico.token != Lexico.simbolo.rettok):
+                                Scanner.obtoken()
                             if(Lexico.token == Lexico.simbolo.rettok):
                                 Scanner.obtoken()
                                 if(Lexico.token == Lexico.simbolo.ident):
