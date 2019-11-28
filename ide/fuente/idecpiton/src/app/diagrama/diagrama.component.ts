@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, Input, ElementRef, ViewChild } from '@angular/core';
 import * as go from 'gojs';
 import { Figuras } from '../shared/figuras';
+import { fromEvent } from 'rxjs';
 import { Templates } from '../shared/templates';
 import {saveAs} from 'file-saver'
 import { MatSnackBar, MatDialog } from '@angular/material';
@@ -42,13 +43,17 @@ export class DiagramaComponent implements OnInit {
   private paletteTemplateFunciones : go.Map<string, go.Node>;
   private paletteTemplateIO: go.Map<string, go.Node>;
   private paletteTemplateArchivos : go.Map<string, go.Node>;
-  */private linkTemplate ;
+  */
+  private arrayNodes : string[] = [];
+  private countNodes : number = 0;
+  private linkTemplate ;
   private textogenerado : string
   private nombrearchivo : string = "";
   private conversordecodigo: Codigo;
   private MAXLINEA :number= 1000;
   private MAXDIGIT :number = 5;
   private MAXID :number = 10;
+  private isAdendro: number = 1;
 
   //Se define un objeto de tipo go.Model que se recibe mediante input (databinding) desde app-component.ts
   @Input()
@@ -76,8 +81,8 @@ export class DiagramaComponent implements OnInit {
         layoutConditions: go.Part.LayoutAdded | go.Part.LayoutRemoved,
         // links cannot be selected, so they cannot be deleted
         // If a node from the Palette is dragged over this node, its outline will turn green
-        mouseDragEnter: (e, link : go.Link) => { link.isHighlighted = true; },
-        mouseDragLeave: (e, link : go.Link) => { link.isHighlighted = false; },
+        mouseDragEnter: (e, link : go.Link) => { link.isHighlighted = true; this.isAdendro++; console.log(this.isAdendro);},
+        mouseDragLeave: (e, link : go.Link) => { link.isHighlighted = false; this.isAdendro--; console.log(this.isAdendro);},
         mouseDrop : (e, obj : go.Link) =>{
           var diagram = e.diagram;
           var model = diagram.model as go.GraphLinksModel;
@@ -173,6 +178,7 @@ export class DiagramaComponent implements OnInit {
             (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,  to : procesonode.data.key});
             (diagram.model as go.GraphLinksModel).addLinkData({from: procesonode.data.key,  to : endhasmnode.data.key});
             (diagram.model as go.GraphLinksModel).addLinkData({from: endhasmnode.data.key,  to : tonode.data.key});
+            
           }else {
             obj.toNode = newnode;
             (diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key,  to : tonode.data.key});      
@@ -370,6 +376,8 @@ onSubmit() {
 
 
 
+
+
   //Este metodo se llama al inicializar el compoennte. Por el momento no hay nada aqui.
   ngOnInit() {
   
@@ -379,6 +387,8 @@ onSubmit() {
   Esto se hace para garantizarnos que los divs donde contendremos todo ya existen a este punto.
   */
   ngAfterViewInit(){
+
+    
     
     /*
     Se inicializa el diagrama, se manda a llamar la constante $
@@ -500,7 +510,7 @@ onSubmit() {
         { key: "leeranode", representa: "leer archivo", color: "white", category : "leera", tipo : "tipo", guardar :"variable"},
         { key: "escanode", representa: "escribir archivo", color: "white", category : "esca"}
       ];
-*/
+      */
       //igualo el modelo de mi diagrama (que está definido en este archivo) con this.model
       //Esto causa que tenga una referencia al modelo en app-component.ts (por data binding)
       this.diagram.model = $(go.GraphLinksModel, { linkFromPortIdProperty: "fromPort",  // required information:
@@ -574,5 +584,35 @@ new go.GraphLinksModel([
                   link.data, "texto", "falso");
             }}}
         );
+
+      this.diagram.addDiagramListener("ExternalObjectsDropped", (e) => {
+        
+          e.subject.each((node) => {
+            var model = e.diagram.model;
+            //console.log(this.isAdendro);
+            if (model.getCategoryForNodeData(node.data) == "cfunc"){
+              this.arrayNodes[this.countNodes] = (model.getKeyForNodeData(node)) as string;
+              this.countNodes++; 
+              var endfuncnode : go.Node;
+              var newnode = this.diagram.selection.first();
+
+              node = newnode;
+              (this.diagram.model as go.GraphLinksModel).addNodeData({key: "fcrearfunc", representa: "Fin Crear Funcion", color: "white", category: "ecfunc"});
+              let nit = this.diagram.nodes.iterator;
+              while(nit.hasNext()){
+                endfuncnode = nit.value;
+              }
+              (this.diagram.model as go.GraphLinksModel).addLinkData({from: newnode.data.key, to : endfuncnode.data.key});            
+            }
+            for(let i = 0; i < this.arrayNodes.length; i++){
+              console.log(this.diagram.findNodeForKey(this.arrayNodes[i]));               
+            }  
+        }); 
+        }
+        
+      );
+      
+           
   }
+  
 }
