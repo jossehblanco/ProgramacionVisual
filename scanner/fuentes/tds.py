@@ -5,7 +5,8 @@ from mensajes_de_error import *
 import cpiton as cp
 global it
 global tabla
-tabla=[]
+
+tabla= []
 it=0
 
 class nivelydireccion(object):
@@ -46,15 +47,15 @@ def poner(k,idat):
         error(31)
     else:
         nuevo = registro(Scanner.lex,k)
-        print("esto es it",it)
+        #print("esto es it",it)
         tabla.insert(it,nuevo)
         mergeSort(tabla)
         if k== objeto.NUM:
             if Scanner.valor > MAXD:
                 error(35)
                 Scanner.valor=0
-            tabla[it].nivel.nivel=cp.niv
-            tabla[it].nivel.direc=idat
+            tabla[it-1].nivel.nivel=cp.niv
+            tabla[it-1].nivel.direc=idat
             
         
         #for i in tabla:

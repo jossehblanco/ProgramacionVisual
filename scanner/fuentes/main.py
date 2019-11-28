@@ -7,7 +7,7 @@ from cpiton import main
 
 #connection bebecito
 #C:\Users\Harbinger\Desktop\TeoProyecto\scanner\fuentes
-main("C:/Users/Harbinger/Desktop/TeoProyecto/scanner/fuentes/ejemplo1.txt")
+main("C:/Users/Harbinger/Desktop/TeoProyecto/scanner/fuentes/ejemplo3.txt")
 
 #connection bebecito
 #main(x)
