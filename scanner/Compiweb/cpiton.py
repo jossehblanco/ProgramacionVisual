@@ -21,8 +21,8 @@ def main(strcode):
     
     else:
         fp= StringIO(strcode)
-        for linea in fp:
-            print(linea)        
+        #for linea in fp:
+            #print(linea)        
         if fp==None:
             print("\nNo se encontro el programa fuente indicado")
         else:
