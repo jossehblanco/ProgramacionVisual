@@ -1,0 +1,9 @@
+fun elev(num a, num b) retorna num{
+    num c,r=1;
+    para c rango(0,b,c=c+1){
+        r=r*a
+    }
+    ret r
+}
+
+fun 

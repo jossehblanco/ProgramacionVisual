@@ -4,6 +4,9 @@ from enum import Enum
 from mensajes_de_error import *
 import cpiton as cp
 
+global it
+global tabla
+
 class nivelydireccion(object):
     nivel=0
     direc=0
@@ -33,8 +36,6 @@ class registro(object):
 		self.tipo = tipo
 		self.nivel = nivel
 
-global it
-global tabla
 tabla=[]
 it=0
 tabla.append(registro("",""))

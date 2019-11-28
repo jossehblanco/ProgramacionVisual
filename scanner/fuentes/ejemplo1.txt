@@ -8,7 +8,7 @@ texto holis = "//gola//";
 dec p = 0.22, papa = 0.56;
 b = b + t * 5;
 u = 4;
-si( 5 = b > 4{
+si( 5 + b > 4{
 	para c rango(8,10,2){
 		imp(b);
 		a = 5;

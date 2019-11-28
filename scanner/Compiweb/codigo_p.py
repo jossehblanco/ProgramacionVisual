@@ -33,7 +33,7 @@ def gen(x,y,z):
         error(33)
         estadisticas()
         error(1)
-    #print("esto es ic:" ,ic)
+    print("esto es ic:" ,ic)
     codigo.append(codigo_intermedio(x,y,z))
     ic+=1
     return
@@ -48,7 +48,7 @@ def listar_p():
                      ";salto incondicional",";salto condicional"]
     
     print("\n\n --Listado de codigo-p simplificado generado por el compilador--\n\n")
-    #print("Esto es ic ",str(ic),str(params.MAXIC))
+    print("Esto es ic ",str(ic),str(params.MAXIC))
     for i in range(0,ic):
         aux=codigo[i].f
         print(i," ",mnemonico[aux.value]," ",codigo[i].ni," ",codigo[i].di," ",comentario[aux.value])
@@ -63,7 +63,7 @@ def escribe_codigo(fuente):
         for i in range(0,ic):
             aux=codigo[i].f
             print(i," ",mnemonico[aux.value]," ",codigo[i].ni," ",codigo[i].di," ",comentario[aux.value])
-            fil.write(str(i)+" "+str(mnemonico[aux.value])+" "+str(codigo[i].ni)+" "+str(codigo[i].di)+" \n")
+            fil.write(str(i)+" "+str(mnemonico[aux.value])+" "+str(codigo[i].ni)+" "+str(codigo[i].di)+"\n")
     except Exception as ex:
         print("Error al crear el archivo")
     

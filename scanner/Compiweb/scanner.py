@@ -36,7 +36,7 @@ def getline(lim):
     return i
 
 def obtch():
-    from auxiliares import error
+    from auxiliares import show_error
     global fin_archivo
     global offset
     global ll
@@ -44,7 +44,7 @@ def obtch():
     global MAXLINEA
     global contadorLineas
     if(fin_archivo == 1):
-        error(32)
+        show_error(32,True)
     #Le pongo el or pues si es una linea de comentario deberia de saltarse esa linea y leer otra
     if(offset == ll-1 or Lexico.token == Lexico.simbolo.linecomment):
         if(Lexico.token == Lexico.simbolo.linecomment):
@@ -266,6 +266,8 @@ def obtoken():
                     lexid += ch
                     Lexico.token = Lexico.simbolo.caracter
                     ch = obtch()
+            #elif(ch == ""):
+            #    
             else:
                 caracteres = ch
                 Lexico.token = Lexico.espec[ord(ch)]
