@@ -43,46 +43,48 @@ def interpretar():
     s=-1
     b=0
     d=0
+    bandera = True
     p.insert(0,0)
     p.insert(1,0)
     p.insert(2,0)
-    while d != 0:
+    while d != 0 or bandera:
+        bandera = False
         d += 1
         i=codigo[d]
         print("\nejecutando la instruccion ", d-1,": ", mnemonico[i.f]," ",i.ni," ",i.di)
 
-        if i.f == fcn.LIT:
+        if i.f == fcn.LIT.value:
             s += 1
             p[s] = i.di
             print("\nLIT: cargando la literal ",i.di," en la direccion ",s," ( s en ",s,")")
 
-        if i.f == fcn.CAR:
+        if i.f == fcn.CAR.value:
             s += 1
             p[s] = p[base(i.ni,b) + i.di]
             print("\nCAR: cargando ",p[base(i.ni,b) + i.di]," en la direccion ",s,"(s en ",s,")")
 
-        if i.f == fcn.ALM:
+        if i.f == fcn.ALM.value:
             print("\nALM : almacenando ",p[s]," en la direccion ", base(i.ni,b)+i.di," (s en",s-1,")")
             p[base(i.ni,b)+i.di]=p[s]
             s -= 1
-        if i.f == fcn.LLA:
+        if i.f == fcn.LLA.value:
             p[s+1] = base(i.ni,b)
             p[s+2] = b
             p[s+3] = d
             print("\nLLA: activando subrutina, enlaces y DR: ",p[s+1]," ",p[s+2]," ",p[s+3]," ")
-            b=s+1
-            d=i.di
+            b = s+1
+            d = i.di
             print("\n      :nueva base",b," , instruccion ",d," (s en",s,")")
 
-        if i.f == fcn.INS:
+        if i.f == fcn.INS.value:
             print("\nINS : asignando ",i.di," espacions en el stack (s en ",s+i.di," )")
             s += i.di
 
-        if i.f == fcn.SAL:
+        if i.f == fcn.SAL.value:
             print("\nSAL: saltando incondicionalmente a la instruccion ",i.di," (s en ",s,")")
-            d=i.di
+            d = i.di
 
-        if i.f == fcn.SAC:
+        if i.f == fcn.SAC.value:
             print("\nSAC : ")
             if(p[s]==0):
                 d = i.di
@@ -92,7 +94,7 @@ def interpretar():
             s -= 1
             print("(s en ",s,")")
 
-        if i.f == fcn.OPR:
+        if i.f == fcn.OPR.value:
             print("\nOPR: ")
             if i.di == 0:
                 s = b-1
@@ -168,12 +170,14 @@ def main(argv):
     if file == None:
         print("Error al abrir el archivo")
     else:
-        ic=0
         line = file.readline()
-        codigo[ic] = codigo_intermedio(line[2:5],line[6],line[8])
+        aux = line.split(" ")
+        codigo.append(codigo_intermedio(mnemonico.index(aux[1]),int(aux[2]),int(aux[3])))
+        line = file.readline()
+        aux = line.split(" ")
         while line != '':
-            ic += 1
+            codigo.append(codigo_intermedio(mnemonico.index(aux[1]),int(aux[2]),int(aux[3])))
             line = file.readline()
-            codigo[ic] = codigo_intermedio(line[2:5],line[6],line[8])
+            aux = line.split(" ")
         file.close()
         interpretar()
