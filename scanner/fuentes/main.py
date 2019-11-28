@@ -9,6 +9,7 @@ x = str(sys.argv[1])
 #C:\Users\Harbinger\Desktop\TeoProyecto\scanner\fuentes
 #main("C:/Users/Harbinger/Desktop/TeoProyecto/scanner/fuentes/ejemplo1.txt")
 
+
 #connection bebecito
 
 main(x)

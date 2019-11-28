@@ -143,13 +143,20 @@ def valor():
         #Se valida si existe el identificador y si es funcion o variable
         EsFuncion = verificarExistsIdentAndCheckFunc() #Esta funcion no obtiene token solo chequea
         #Obtengo otro token pues aunque de falso el if necesito obtener el siguiente token para dejarlo listo
-        expresion()#Aqui se hace el obtoken        
+     
         if(EsFuncion == 1):
+            Scanner.obtoken()
             if(Lexico.token == Lexico.simbolo.parena):
                 i=posicion(Scanner.lex)
                 if tabla[i].tipo == objeto.FUNCION:
                     cop.gen(cop.fcn.LLA, cpi.niv - tabla[i].nivel.nivel, tabla[i].nivel.direc)
                 parametros()
+                #Pasar por valor los parametros de las funciones
+                Scanner.obtoken()
+                valor()
+                while(Lexico.token == Lexico.simbolo.coma):
+                    Scanner.obtoken()
+                    valor()
                 if(Lexico.token != Lexico.simbolo.parenc):
                     error(21)
                 else:
@@ -157,6 +164,8 @@ def valor():
                     Scanner.obtoken()
             else:
                 error(22)
+        else:
+            expresion()
     else:
         if(Lexico.token != Lexico.simbolo.truetok and Lexico.token != Lexico.simbolo.falsetok and 
           Lexico.token != Lexico.simbolo.caracter and Lexico.token != Lexico.simbolo.texto):
@@ -236,6 +245,7 @@ def declaracionvariable():
     #bloque()  
     return
 
+#Utilizado unicamente en asignacion
 def VerificarIdentExist(checkInTDS,tipao):    
     if(Lexico.token != Lexico.simbolo.ident):
             return 2
@@ -249,6 +259,10 @@ def VerificarIdentExist(checkInTDS,tipao):
                 error_iden(10,temp)                
                 return 1
             else:
+                #Si checkInTDS viene falso viene desde Declaracion
+                #Por tanto hay que declararlo en la TDS
+                if(not (tipao is None)):
+                    agregarTipoAIdents(tipao,16)
                 Scanner.obtoken()
                 return 0
         else:
@@ -319,7 +333,7 @@ def delaracionfuncion():
     if(Lexico.token == Lexico.simbolo.funtok):
         Scanner.obtoken()
         if(Lexico.token == Lexico.simbolo.ident):
-            poner(objeto.FUNCION)
+            poner(objeto.FUNCION,idat)
             Scanner.obtoken()
             if(Lexico.token == Lexico.simbolo.parena):
                 Scanner.obtoken()
@@ -329,10 +343,13 @@ def delaracionfuncion():
                     if(Lexico.token == Lexico.simbolo.retortok):
                         Scanner.obtoken()
                         tipao = tipo()
+                        Scanner.obtoken()
                         if(Lexico.token == Lexico.simbolo.llaveatok):
+                            Scanner.obtoken()
                             #Para no dejar que declare funciones dentro de funciones
                             instruccion()
-                            #Scanner.obtoken()
+                            #Para leer el final de la instruccion es decir el '}'
+                            Scanner.obtoken()
                             if(Lexico.token == Lexico.simbolo.rettok):
                                 Scanner.obtoken()
                                 if(Lexico.token == Lexico.simbolo.ident):
@@ -378,16 +395,21 @@ def cuerpoLlavesInstruccion():
         error(26)
         return False
 
-def cuerposiosi():
+def CuerpoInstrucciones(toksig):
     if(Lexico.token == Lexico.simbolo.parena):
         Scanner.obtoken()
-        condicionExt()
-        if(Lexico.token == Lexico.simbolo.parenc):
-            Scanner.obtoken()
+        toksig[Lexico.simbolo.parenc.value] = 1
+        toksig[Lexico.simbolo.llaveatok.value] = 1
+        condicionExt(toksig)
+        #Para eentrar a las llaves del if y empezar a compilar
+        if(Lexico.token == Lexico.simbolo.parenc or Lexico.token == Lexico.simbolo.llaveatok):
+            if(Lexico.token != Lexico.simbolo.llaveatok):
+                Scanner.obtoken()
             val = cuerpoLlavesInstruccion()
             return val
         else:
             error(21)
+            
             return False
     else:
         error(22)
@@ -412,18 +434,6 @@ def VerificarIdentsExistAndTypes(tipao):
             else:
                 error(6)
                 return False
-
-def InstruccionMientras():
-    if(Lexico.token == Lexico.simbolo.parena):
-        Scanner.obtoken()
-        condicionExt()
-        if(Lexico.token == Lexico.simbolo.parenc):
-            Scanner.obtoken()
-            cuerpoLlavesInstruccion()
-        else:
-            error(21)
-    else:
-        error(22)
 
 def ParentesisFor(toksig):
     seguir = False
@@ -483,6 +493,7 @@ def ParentesisFor(toksig):
 def instruccion():    
     
     seguir = False
+    setpaso = []
     #COMO ES RECURSIVA ESTOS SON SUN FINALES
     if(Lexico.token == Lexico.simbolo.llavectok or Lexico.token == Lexico.simbolo.mdputok or Lexico.token == Lexico.simbolo.rettok):
         return
@@ -490,14 +501,16 @@ def instruccion():
     #VERIFICANDO SI ES SITOK
     if(Lexico.token == Lexico.simbolo.sitok):
         Scanner.obtoken()
-        cuerpoestabien = cuerposiosi()
+        setpaso = Conjuntos.tokini
+        #Lo quito pues dentro de expresion puede encontrar un identificador y no seria una instruccion de asignacion
+        setpaso[Lexico.token.ident.value] = 0
+        cuerpoestabien = CuerpoInstrucciones(setpaso)
         ic1 = cop.ic
         cop.gen(cop.fcn.SAC, 0, 0)
         cop.codigo[ic1].di = cop.ic
         while(cuerpoestabien):
             if(Lexico.token == Lexico.simbolo.ositok):
-                cuerpoestabien = cuerposiosi()
-
+                cuerpoestabien = CuerpoInstrucciones()
             else:
                 break
         if(Lexico.token == Lexico.simbolo.sinotok):
@@ -526,7 +539,9 @@ def instruccion():
                 cop.gen(cop.fcn.SAC, 0, 0)
                 cop.codigo[ic1].di = cop.ic
                 Scanner.obtoken()
-                InstruccionMientras()
+                setpaso = Conjuntos.tokini
+                setpaso[Lexico.token.ident.value] = 0
+                CuerpoInstrucciones(setpaso)
             else:#Verificando si es HASTOK
                 if(Lexico.token == Lexico.simbolo.hastok):
                     ic1 = cop.ic
@@ -536,7 +551,9 @@ def instruccion():
                     seguir = cuerpoLlavesInstruccion()
                     if(seguir and Lexico.token == Lexico.simbolo.mientrastok):
                         Scanner.obtoken()
-                        InstruccionMientras()
+                        setpaso = Conjuntos.tokini
+                        setpaso[Lexico.token.ident.value] = 0
+                        CuerpoInstrucciones(setpaso)
                     else:
                         error(3)
                 else:
@@ -599,10 +616,10 @@ def termino():
             #Si trae 2 es error por esto se retorna
             return
 
-def condicion():
+def condicion(toksig):
     expresion()
     if((Lexico.token != Lexico.simbolo.igl) and (Lexico.token != Lexico.simbolo.nig) and (Lexico.token != Lexico.simbolo.mnr) and (Lexico.token != Lexico.simbolo.mei) and (Lexico.token != Lexico.simbolo.myr) and (Lexico.token != Lexico.simbolo.mai)):
-        error(20) #error 20: Se esperaba un operador relacional
+        Conjuntos.test(toksig,[],19) #error 19: Se esperaba un operador relacional
     else:
         if Lexico.token == Lexico.simbolo.igl:
             cop.gen(cop.fcn.OPR,0,8)
@@ -619,19 +636,19 @@ def condicion():
         Scanner.obtoken()
         expresion()
 
-def condicionExt():
-    condicion()
+def condicionExt(toksig):
+    condicion(toksig)
     if((Lexico.token == Lexico.simbolo.andtok) or (Lexico.token == Lexico.simbolo.ortok)):
         if Lexico.token == Lexico.simbolo.andtok:
             cop.gen(cop.fcn.OPR,0,14)
         if Lexico.token == Lexico.simbolo.ortok:
             cop.gen(cop.fcn.OPR,0,15)
         Scanner.obtoken()
-        condicionExt()
+        condicionExt(toksig)
     else:
         return
 
-def parametros(toksig):
+def parametros():
     tipao = tipo()
     if(tipao is None):
         show_error(0,False)
